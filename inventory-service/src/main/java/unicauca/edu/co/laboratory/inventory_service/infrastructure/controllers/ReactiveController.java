@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.request.ReactiveRequestDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ParentHouseResponseDTO;
@@ -27,12 +28,16 @@ public class ReactiveController {
     private final ParentHousePort parentHousePort;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<List<ReactiveResponseDTO>> getAllReactives() {
         List<ReactiveResponseDTO> reactives = reactivePort.getReactive();
         return ResponseEntity.ok(reactives);
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<ReactiveResponseDTO> getReactiveById(@PathVariable(value = "id") Long id) {
         return reactivePort.getReactiveById(id)
                 .map(ResponseEntity::ok)
@@ -40,6 +45,8 @@ public class ReactiveController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
     public ResponseEntity<ReactiveResponseDTO> createReactive(@Valid @RequestBody ReactiveRequestDTO requestDTO) {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveByCode(requestDTO.getCode());
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(requestDTO.getHouse());
@@ -57,6 +64,8 @@ public class ReactiveController {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
     public ResponseEntity<Boolean> updateReactive(@PathVariable(value = "id") Long id, @Valid @RequestBody ReactiveRequestDTO requestDTO) {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveById(id);
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(requestDTO.getHouse());
@@ -82,6 +91,8 @@ public class ReactiveController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
     public ResponseEntity<Boolean> deleteReactive(@PathVariable("id") Long id) {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveById(id);
         if (existingReactive.isEmpty()) {
@@ -92,6 +103,8 @@ public class ReactiveController {
     }
 
     @GetMapping("/name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<List<ReactiveResponseDTO>> getReactiveByName(@PathVariable(value = "name") String name) {
         List<ReactiveResponseDTO> reactives = reactivePort.getReactiveByName(name);
         if (reactives.isEmpty()) {
@@ -101,6 +114,8 @@ public class ReactiveController {
     }
 
     @GetMapping("/code/{code}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<ReactiveResponseDTO> getReactiveByCode(@PathVariable(value = "code") String code) {
         return reactivePort.getReactiveByCode(code)
                 .map(ResponseEntity::ok)
@@ -108,6 +123,8 @@ public class ReactiveController {
     }
 
     @GetMapping("/type/{typeStr}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<List<ReactiveResponseDTO>> getReactiveByType(@PathVariable(value = "typeStr") String typeStr) {
         ReactiveType type;
         try {
@@ -125,6 +142,8 @@ public class ReactiveController {
     }
 
     @GetMapping("/risk/{risk}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<List<ReactiveResponseDTO>> getReactiveByRiskType(@PathVariable(value = "risk") String risk) {
         RiskType riskType;
         try {
@@ -141,6 +160,8 @@ public class ReactiveController {
     }
 
     @GetMapping("/parent/{parentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<List<ReactiveResponseDTO>> getReactiveByParent(@PathVariable(value = "parentId") Long parentId) {
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(parentId);
         if (existingParentHouse.isEmpty()) {
@@ -154,6 +175,8 @@ public class ReactiveController {
     }
 
     @GetMapping("/status/{status}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER', 'ROLE_TEACHER')")
     public ResponseEntity<List<ReactiveResponseDTO>> getReactiveByStatus(@PathVariable(value = "status") ReactiveStatus status) {
         List<ReactiveResponseDTO> reactives = reactivePort.getReactiveByStatus(status);
         if (reactives.isEmpty()) {

@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +33,8 @@ public class TakeTestController {
                     @ApiResponse(responseCode = "204", description = "La materia ingresada no tiene preguntas.")
             })
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT')")
     public QuestionListDTO getTestQuestions(@RequestParam("subject_name") String subject_name,
                                             @RequestParam("student_code")Long student_code,
                                             @RequestParam("teacher_name") String teacher_name){
@@ -45,6 +49,8 @@ public class TakeTestController {
                         @ApiResponse(responseCode = "404", description = "Uno de los datos recibidos no se encuentra registrado. Revisar el message."),
                 })
     @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT')")
     public float saveAndScoreTest(@RequestBody StudentTestResponseDTO studentTestResponseDTO){
         return takeTestService.saveTest(studentTestResponseDTO);
     }
