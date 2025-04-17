@@ -32,9 +32,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git://github.com/your-repo.git</connection>
-		<developerConnection>scm:git:ssh://github.com/your-repo.git</developerConnection>
-		<url>https://github.com/your-repo</url>
+		<connection>scm:git:git@github.com:fachaunicauca/microservices.git</connection>
+		<developerConnection>scm:git:ssh://github.com/fachaunicauca/microservices</developerConnection>
+		<url>https://github.com/fachaunicauca/microservices</url>
 	</scm>
 
 	<properties>
@@ -61,6 +61,7 @@
 		<module>test-service</module>
 		<module>api-gateway</module>
 		<module>discovery-service</module>
+		<module>educator-service</module>
 	</modules>
 
 	<dependencies>
