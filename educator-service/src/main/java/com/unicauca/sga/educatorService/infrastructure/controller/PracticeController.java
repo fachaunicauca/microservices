@@ -5,12 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.unicauca.sga.educatorService.core.entities.Practice;
 import com.unicauca.sga.educatorService.core.entities.PracticeMetadata;
@@ -32,6 +29,8 @@ public class PracticeController {
 
    
     @PostMapping("/CreatePractice")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('TEACHER')")
     public Practice CreatePractice(@RequestBody Practice practice){
         String PracticeToJson = this.practiceService.practiceToJson(practice);
         System.out.println(practice.getUser().toString());
@@ -42,6 +41,8 @@ public class PracticeController {
       }
 
     @GetMapping("/ListPracticeByUserId")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('TEACHER')")
     public List<PracticeMetadataDTO> ListPracticeByUserId(@RequestParam Long userId){
       List<PracticeMetadata> practice  = practiceMetadataService.listPracticesMetadataByUser(userId);
       List<PracticeMetadataDTO> practiceDTO = new ArrayList<>();
@@ -53,11 +54,15 @@ public class PracticeController {
     }
 
     @PostMapping("/UpdatePractice")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('TEACHER')")
     public PracticeMetadata updatePractice(@RequestBody PracticeMetadata practice){
      return this.practiceMetadataService.updatePracticeMetada(practice);
     }
 
     @GetMapping("/ListPratice")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('TEACHER')")
     public List<PracticeMetadataDTO> ListPractice(){
 
       List<PracticeMetadata> practice  = practiceMetadataService.listPracticesMetada();
@@ -70,9 +75,4 @@ public class PracticeController {
       
       return  practiceDTO;
     }
-
-
-
-
-    
 }
