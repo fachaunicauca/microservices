@@ -15,7 +15,8 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 # Copia el .jar generado en la etapa anterior
-COPY --from=builder /app/target/inventory-service-0.0.1-SNAPSHOT.jar /app/inventory-service.jar
+COPY --from=builder /app/target/api-gateway-0.0.1-SNAPSHOT.jar /app/api-gateway.jar
 
+EXPOSE 8080
 # Comando para ejecutar el .jar
-CMD ["java", "-jar", "inventory-service.jar"]
+CMD ["java", "-jar", "api-gateway.jar"]

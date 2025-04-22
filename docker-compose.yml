@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   ### Keycloak conectado a PostgreSQL en AWS RDS
   keycloak:
@@ -21,6 +19,53 @@ services:
       - microservices-network
     volumes:
       - keycloak_data:/opt/keycloak/data
+
+    # Servicio de descubrimiento Eureka
+  discovery-service:
+    build:
+      context: .
+      dockerfile: discovery-service/Dockerfile
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+    environment:
+      - EUREKA_USERNAME=${EUREKA_USERNAME}
+      - EUREKA_PASSWORD=${EUREKA_PASSWORD}
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service
+      - keycloak
+    networks:
+      - microservices-network
+    environment:
+      - EUREKA_USERNAME=${EUREKA_USERNAME}
+      - EUREKA_PASSWORD=${EUREKA_PASSWORD}
+      - KC_CLIENT_SECRET=${KC_CLIENT_SECRET}
+
+  ### Inventory Service
+  inventory-service:
+    container_name: inventory-service
+    build: ./inventory-service
+    ports:
+      - "0:8080"
+    environment:
+      INVENTORY_DATASOURCE_URL: ${INVENTORY_DATASOURCE_URL}
+      INVENTORY_DATASOURCE_USERNAME: ${INVENTORY_DATASOURCE_USERNAME}
+      INVENTORY_DATASOURCE_PASSWORD: ${INVENTORY_DATASOURCE_PASSWORD}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+    networks:
+      - microservices-network
 
 networks:
   microservices-network:

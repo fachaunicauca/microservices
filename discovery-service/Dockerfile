@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Compila el proyecto y genera el .jar
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # ---------- Etapa 2: Imagen final ----------
 FROM openjdk:17-slim
@@ -15,7 +15,8 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 # Copia el .jar generado en la etapa anterior
-COPY --from=builder /app/target/inventory-service-0.0.1-SNAPSHOT.jar /app/inventory-service.jar
+COPY --from=builder /app/target/discovery-service-0.0.1-SNAPSHOT.jar /app/discovery-service.jar
 
+EXPOSE 8080
 # Comando para ejecutar el .jar
-CMD ["java", "-jar", "inventory-service.jar"]
+CMD ["java", "-jar", "discovery-service.jar"]
