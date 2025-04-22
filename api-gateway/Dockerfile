@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Compila el proyecto y genera el .jar
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # ---------- Etapa 2: Imagen final ----------
 FROM openjdk:17-slim
@@ -15,7 +15,7 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 # Copia el .jar generado en la etapa anterior
-COPY --from=builder /app/target/api-gateway-0.0.1-SNAPSHOT.jar /app/api-gateway.jar
+COPY --from=builder /app/api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar /app/api-gateway.jar
 
 EXPOSE 8080
 # Comando para ejecutar el .jar

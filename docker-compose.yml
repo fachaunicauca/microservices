@@ -20,7 +20,7 @@ services:
     volumes:
       - keycloak_data:/opt/keycloak/data
 
-    # Servicio de descubrimiento Eureka
+  ### Servicio de descubrimiento Eureka
   discovery-service:
     build:
       context: .
@@ -34,11 +34,11 @@ services:
       - EUREKA_USERNAME=${EUREKA_USERNAME}
       - EUREKA_PASSWORD=${EUREKA_PASSWORD}
 
-  # API Gateway
+  ### API Gateway
   api-gateway:
     build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: api-gateway/Dockerfile
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -55,9 +55,14 @@ services:
   ### Inventory Service
   inventory-service:
     container_name: inventory-service
-    build: ./inventory-service
+    build:
+      context: .
+      dockerfile: inventory-service/Dockerfile
     ports:
-      - "0:8080"
+      - "0:8081"
+    depends_on:
+      - discovery-service
+      - api-gateway
     environment:
       INVENTORY_DATASOURCE_URL: ${INVENTORY_DATASOURCE_URL}
       INVENTORY_DATASOURCE_USERNAME: ${INVENTORY_DATASOURCE_USERNAME}
@@ -67,6 +72,45 @@ services:
     networks:
       - microservices-network
 
+  ### Educator Service
+  educator-service:
+    container_name: educator-service
+    build:
+      context: .
+      dockerfile: educator-service/Dockerfile
+    ports:
+      - "0:8082"
+    depends_on:
+      - discovery-service
+      - api-gateway
+    environment:
+      EDUCATOR_DATASOURCE_URL: ${EDUCATOR_DATASOURCE_URL}
+      EDUCATOR_DATASOURCE_USERNAME: ${EDUCATOR_DATASOURCE_USERNAME}
+      EDUCATOR_DATASOURCE_PASSWORD: ${EDUCATOR_DATASOURCE_PASSWORD}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+    networks:
+      - microservices-network
+
+  ### Test Service
+  test-service:
+    container_name: test-service
+    build:
+      context: .
+      dockerfile: test-service/Dockerfile
+    ports:
+      - "0:8083"
+    depends_on:
+      - discovery-service
+      - api-gateway
+    environment:
+      TEST_DATASOURCE_URL: ${TEST_DATASOURCE_URL}
+      TEST_DATASOURCE_USERNAME: ${TEST_DATASOURCE_USERNAME}
+      TEST_DATASOURCE_PASSWORD: ${TEST_DATASOURCE_PASSWORD}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+    networks:
+      - microservices-network
 networks:
   microservices-network:
     driver: bridge

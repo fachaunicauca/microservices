@@ -3,10 +3,10 @@ FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-# Copia toda la estructura del proyecto
+# Copia todo el proyecto al contenedor
 COPY . .
 
-
+# Compila el proyecto y genera el .jar
 RUN mvn clean package -DskipTests
 
 # ---------- Etapa 2: Imagen final ----------
@@ -15,8 +15,7 @@ FROM openjdk:17-slim
 WORKDIR /app
 
 # Copia el .jar generado en la etapa anterior
-COPY --from=builder /app/discovery-service/target/discovery-service-0.0.1-SNAPSHOT.jar /app/discovery-service.jar
+COPY --from=builder /app/test-service/target/test-service-0.0.1-SNAPSHOT.jar /app/test-service.jar
 
-EXPOSE 8761
 # Comando para ejecutar el .jar
-CMD ["java", "-jar", "discovery-service.jar"]
+CMD ["java", "-jar", "test-service.jar"]
