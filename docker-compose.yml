@@ -47,10 +47,13 @@ services:
       - keycloak
     networks:
       - microservices-network
+    extra_hosts:
+      - "keycloak:host-gateway"
     environment:
-      - EUREKA_USERNAME=${EUREKA_USERNAME}
-      - EUREKA_PASSWORD=${EUREKA_PASSWORD}
-      - KC_CLIENT_SECRET=${KC_CLIENT_SECRET}
+      EUREKA_USERNAME: ${EUREKA_USERNAME}
+      EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      KC_CLIENT_SECRET: ${KC_CLIENT_SECRET}
+      SPRING_PROFILES_ACTIVE: docker
 
   ### Inventory Service
   inventory-service:
@@ -69,6 +72,7 @@ services:
       INVENTORY_DATASOURCE_PASSWORD: ${INVENTORY_DATASOURCE_PASSWORD}
       EUREKA_USERNAME: ${EUREKA_USERNAME}
       EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      SPRING_PROFILES_ACTIVE: docker
     networks:
       - microservices-network
 
@@ -89,6 +93,7 @@ services:
       EDUCATOR_DATASOURCE_PASSWORD: ${EDUCATOR_DATASOURCE_PASSWORD}
       EUREKA_USERNAME: ${EUREKA_USERNAME}
       EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      SPRING_PROFILES_ACTIVE: docker
     networks:
       - microservices-network
 
@@ -109,6 +114,7 @@ services:
       TEST_DATASOURCE_PASSWORD: ${TEST_DATASOURCE_PASSWORD}
       EUREKA_USERNAME: ${EUREKA_USERNAME}
       EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      SPRING_PROFILES_ACTIVE: docker
     networks:
       - microservices-network
 networks:
