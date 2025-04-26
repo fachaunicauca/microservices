@@ -30,7 +30,7 @@ public class PracticeController {
    
     @PostMapping("/CreatePractice")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     public Practice CreatePractice(@RequestBody Practice practice){
         String PracticeToJson = this.practiceService.practiceToJson(practice);
         System.out.println(practice.getUser().toString());
@@ -42,7 +42,7 @@ public class PracticeController {
 
     @GetMapping("/ListPracticeByUserId")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     public List<PracticeMetadataDTO> ListPracticeByUserId(@RequestParam Long userId){
       List<PracticeMetadata> practice  = practiceMetadataService.listPracticesMetadataByUser(userId);
       List<PracticeMetadataDTO> practiceDTO = new ArrayList<>();
@@ -55,14 +55,14 @@ public class PracticeController {
 
     @PostMapping("/UpdatePractice")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     public PracticeMetadata updatePractice(@RequestBody PracticeMetadata practice){
      return this.practiceMetadataService.updatePracticeMetada(practice);
     }
 
-    @GetMapping("/ListPratice")
+    @GetMapping("/ListPractice")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     public List<PracticeMetadataDTO> ListPractice(){
 
       List<PracticeMetadata> practice  = practiceMetadataService.listPracticesMetada();

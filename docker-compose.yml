@@ -15,6 +15,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_HTTP_PORT: 8181
+      KC_HOSTNAME: keycloak.local
     networks:
       - microservices-network
     volumes:
