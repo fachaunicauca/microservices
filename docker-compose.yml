@@ -35,6 +35,22 @@ services:
       - EUREKA_USERNAME=${EUREKA_USERNAME}
       - EUREKA_PASSWORD=${EUREKA_PASSWORD}
 
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - keycloak
+    environment:
+      KC_CLIENT_SECRET: ${KC_CLIENT_SECRET}
+    networks:
+      - microservices-network
+    extra_hosts:
+      - "keycloak:host-gateway"
+
   ### API Gateway
   api-gateway:
     build:
