@@ -61,6 +61,7 @@
 		<module>api-gateway</module>
 		<module>discovery-service</module>
 		<module>educator-service</module>
+		<module>auth-service</module>
 	</modules>
 
 	<dependencies>
