@@ -1,6 +1,5 @@
 package unicauca.edu.co.laboratory.inventory_service.domain.models;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

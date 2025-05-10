@@ -4,5 +4,7 @@ public enum MeasurementUnit {
     G,
     MG,
     L,
-    ML
+    ML,
+    MM,
+    NoAplica
 }
