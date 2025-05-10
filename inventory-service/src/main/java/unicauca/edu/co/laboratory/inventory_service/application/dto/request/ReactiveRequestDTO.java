@@ -51,8 +51,5 @@ public class ReactiveRequestDTO {
     @NotBlank(message = "La ficha de seguridad es obligatoria")
     private String safetySheet;
 
-    @NotNull(message = "La fecha de vencimiento es obligatoria")
-    private LocalDateTime safetySheetUpdate;
-
     private Set<RiskType> riskTypes;
 }

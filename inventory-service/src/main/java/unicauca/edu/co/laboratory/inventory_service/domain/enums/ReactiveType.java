@@ -1,5 +1,8 @@
 package unicauca.edu.co.laboratory.inventory_service.domain.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -25,13 +28,16 @@ public enum ReactiveType {
         this.formattedName = formattedName;
     }
 
+    @JsonValue
     public String getFormattedName() {
         return formattedName;
     }
 
+    @JsonCreator
     public static Optional<ReactiveType> findByFormattedName(String formattedName) {
-        return Arrays.stream(ReactiveType.values())
+        return Optional.ofNullable(Arrays.stream(ReactiveType.values())
                 .filter(type -> type.getFormattedName().equals(formattedName))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ReactiveType: " + formattedName)));
     }
 }
