@@ -3,27 +3,27 @@ package unicauca.edu.co.laboratory.inventory_service.infrastructure.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsWebFilter;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
 public class CorsConfig {
     @Bean
-    public CorsWebFilter corsWebFilter() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("*"));
-        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "x-requested-with"));
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(3600L);
-
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-        return new CorsWebFilter(source);
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowedOrigins(Collections.singletonList("*"));
+
+        config.setAllowedMethods(Collections.singletonList("*"));
+
+        config.setAllowedHeaders(Collections.singletonList("*"));
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
