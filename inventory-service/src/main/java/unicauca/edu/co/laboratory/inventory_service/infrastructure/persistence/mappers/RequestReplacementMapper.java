@@ -23,7 +23,7 @@ public class RequestReplacementMapper {
     public static RequestReplacementEntity toEntity(RequestReplacement domain){
         return new RequestReplacementEntity(
                 domain.getRequestId(),
-                new ReactiveEntity(domain.getReactiveId(), null, null, null, null, null, null,null, null, null, null, null, null, null, null),
+                new ReactiveEntity(domain.getReactiveId(), null, null, null, null, null, null,null, null, null, null, null, null, null, null, null),
                 domain.getChargePerson(),
                 domain.getRequestQuantity(),
                 domain.getRequestDate(),

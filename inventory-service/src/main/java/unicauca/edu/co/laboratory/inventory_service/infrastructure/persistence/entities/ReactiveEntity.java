@@ -65,6 +65,9 @@ public class ReactiveEntity {
     @Column(name = "safety_sheet_update", nullable = false)
     private LocalDateTime safetySheetUpdate;
 
+    @Column(name = "safety_sheet_expiration", nullable = false)
+    private LocalDateTime safetySheetExpiration;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "risk_type_reactive",

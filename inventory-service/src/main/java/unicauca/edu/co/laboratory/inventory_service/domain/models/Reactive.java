@@ -28,6 +28,7 @@ public class Reactive {
     private MeasurementUnit measureUnit;
     private ReactiveStatus status;
     private LocalDateTime safetySheetUpdate;
+    private LocalDateTime safetySheetExpiration;
     private String safetySheet;
     private Set<RiskType> riskTypes;
     private LocalDateTime createAt;

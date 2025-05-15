@@ -1,7 +1,9 @@
 package unicauca.edu.co.laboratory.inventory_service.application.services;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.request.ReactiveRequestDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ParentHouseResponseDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ReactiveResponseDTO;
@@ -29,6 +31,7 @@ public class ReactiveService implements ReactivePort {
     private final ParentHouseRepositoryJPA parentHouseRepositoryJPA;
     private final ReactiveMapper reactiveMapper;
     private final ParentHouseMapper parentHouseMapper;
+    private final CloudinaryService cloudinaryService;
 
     @Override
     public List<ReactiveResponseDTO> getReactive() {
@@ -47,11 +50,20 @@ public class ReactiveService implements ReactivePort {
 
     @Override
     public ReactiveResponseDTO saveReactive(ReactiveRequestDTO reactiveDTO) {
+        String safetySheetUrl;
+        try {
+            safetySheetUrl = cloudinaryService.uploadFile(reactiveDTO.getSafetySheet());
+        } catch (Exception e) {
+            throw new RuntimeException("Error uploading safety sheet: " + e.getMessage());
+        }
+
         Reactive reactive = reactiveMapper.toDomain(reactiveDTO);
         ReactiveEntity reactiveEntity = reactiveMapper.toEntity(reactive);
+        reactiveEntity.setSafetySheet(safetySheetUrl);
         reactiveEntity.setSafetySheetUpdate(LocalDateTime.now());
         reactiveEntity.setCreateAt(LocalDateTime.now());
         reactiveEntity.setUpdateAt(LocalDateTime.now());
+        reactiveEntity.setSafetySheetExpiration(reactiveDTO.getSafetySheetExpiration());
 
         ParentHouseResponseDTO parentHouseResponseDTO = parentHouseRepositoryJPA.findById(reactiveDTO.getHouse())
                 .map(parentHouseMapper::toDomain)
@@ -74,24 +86,33 @@ public class ReactiveService implements ReactivePort {
     }
 
     @Override
+    @Transactional
     public boolean updateReactive(Long id, ReactiveRequestDTO reactive) {
         Optional<ReactiveEntity> reactiveExist = reactiveRepositoryJPA.findById(id);
         if (reactiveExist.isPresent()) {
             ReactiveEntity reactiveEntity = reactiveExist.orElseThrow(() -> new RuntimeException("Reactive not found"));
-            reactiveEntity.setName(reactive.getName());
-            reactiveEntity.getHouse().setParentHouseId(reactive.getHouse());
-            reactiveEntity.setType(reactive.getType());
-            reactiveEntity.setFormula(reactive.getFormula());
-            reactiveEntity.setCode(reactive.getCode());
-            reactiveEntity.setQuantity(reactive.getQuantity());
-            reactiveEntity.setMinimumQuantity(reactive.getMinimumQuantity());
-            reactiveEntity.setMeasureUnit(reactive.getMeasureUnit());
-            reactiveEntity.setStatus(reactive.getStatus());
-            if (reactive.getSafetySheet() != null && !reactive.getSafetySheet().equals(reactiveEntity.getSafetySheet())) {
-                reactiveEntity.setSafetySheet(reactive.getSafetySheet());
-                reactiveEntity.setSafetySheetUpdate(LocalDateTime.now());
+
+            reactiveMapper.updateEntityFromDto(reactive, reactiveEntity);
+
+            ParentHouseEntity parentHouseEntity = parentHouseRepositoryJPA.findById(reactive.getHouse())
+                    .orElseThrow(() -> new RuntimeException("Parent house not found"));
+            reactiveEntity.setHouse(parentHouseEntity);
+
+            MultipartFile newSafetySheet = reactive.getSafetySheet();
+            if (newSafetySheet != null && !newSafetySheet.isEmpty()) {
+                try {
+                    String safetySheetUrl = cloudinaryService.uploadFile(newSafetySheet);
+                    reactiveEntity.setSafetySheet(safetySheetUrl);
+                    reactiveEntity.setSafetySheetUpdate(LocalDateTime.now());
+                } catch (Exception e) {
+                    throw new RuntimeException("Error uploading safety sheet: " + e.getMessage());
+                }
             }
-            reactiveEntity.setRiskTypes(reactive.getRiskTypes());
+
+            if (reactive.getSafetySheetExpiration() != null) {
+                reactiveEntity.setSafetySheetExpiration(reactive.getSafetySheetExpiration());
+            }
+
             reactiveEntity.setUpdateAt(LocalDateTime.now());
             reactiveRepositoryJPA.save(reactiveEntity);
             return true;

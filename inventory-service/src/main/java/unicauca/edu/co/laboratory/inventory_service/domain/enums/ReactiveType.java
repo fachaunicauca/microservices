@@ -34,10 +34,10 @@ public enum ReactiveType {
     }
 
     @JsonCreator
-    public static Optional<ReactiveType> findByFormattedName(String formattedName) {
-        return Optional.ofNullable(Arrays.stream(ReactiveType.values())
+    public static ReactiveType findByFormattedName(String formattedName) {
+        return Arrays.stream(ReactiveType.values())
                 .filter(type -> type.getFormattedName().equals(formattedName))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid ReactiveType: " + formattedName)));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ReactiveType: " + formattedName));
     }
 }

@@ -3,6 +3,7 @@ package unicauca.edu.co.laboratory.inventory_service.infrastructure.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import unicauca.edu.co.laboratory.inventory_service.domain.enums.RiskType;
 import unicauca.edu.co.laboratory.inventory_service.domain.exceptions.AlreadyExistException;
 import unicauca.edu.co.laboratory.inventory_service.domain.exceptions.NotFoundException;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,10 +46,10 @@ public class ReactiveController {
                 .orElseThrow(() -> new NotFoundException("Reactive " + id + " not found"));
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
-    public ResponseEntity<ReactiveResponseDTO> createReactive(@Valid @RequestBody ReactiveRequestDTO requestDTO) {
+    public ResponseEntity<ReactiveResponseDTO> createReactive(@Valid @ModelAttribute ReactiveRequestDTO requestDTO) {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveByCode(requestDTO.getCode());
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(requestDTO.getHouse());
         if (existingParentHouse.isEmpty()) {
@@ -66,7 +68,7 @@ public class ReactiveController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
-    public ResponseEntity<Boolean> updateReactive(@PathVariable(value = "id") Long id, @Valid @RequestBody ReactiveRequestDTO requestDTO) {
+    public ResponseEntity<Boolean> updateReactive(@PathVariable(value = "id") Long id, @Valid @ModelAttribute ReactiveRequestDTO requestDTO) {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveById(id);
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(requestDTO.getHouse());
         if (existingReactive.isEmpty()) {
@@ -130,8 +132,10 @@ public class ReactiveController {
         try {
             type = ReactiveType.valueOf(typeStr);
         } catch (IllegalArgumentException e) {
-            type = ReactiveType.findByFormattedName(typeStr)
-                    .orElseThrow(() -> new NotFoundException("Invalid reactive type: " + typeStr));
+            type = ReactiveType.findByFormattedName(typeStr);
+            if (type == null) {
+                throw new NotFoundException("Invalid reactive type: " + typeStr);
+            }
         }
 
         List<ReactiveResponseDTO> reactives = reactivePort.getReactiveByType(type);

@@ -29,6 +29,7 @@ public class ReactiveResponseDTO {
     private ReactiveStatus status;
     private String safetySheet;
     private LocalDateTime safetySheetUpdate;
+    private LocalDateTime safetySheetExpiration;
     private Set<RiskType> riskTypes;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;

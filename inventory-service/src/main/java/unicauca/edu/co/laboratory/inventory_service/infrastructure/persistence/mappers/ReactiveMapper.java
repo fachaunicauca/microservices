@@ -2,6 +2,7 @@ package unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.request.ReactiveRequestDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ReactiveResponseDTO;
@@ -20,10 +21,27 @@ public interface ReactiveMapper {
     @Mapping(target = "reactiveId", ignore = true)
     @Mapping(target = "createAt", ignore = true)
     @Mapping(target = "updateAt", ignore = true)
+    @Mapping(target = "safetySheet", ignore = true)
     Reactive toDomain(ReactiveRequestDTO dto);
 
     @Mapping(target = "type", expression = "java(domain.getType() != null ? domain.getType().getFormattedName() : null)")
     ReactiveResponseDTO toDTO(Reactive domain);
+
+    @Mapping(target = "reactiveId", ignore = true)
+    @Mapping(target = "createAt", ignore = true)
+    @Mapping(target = "updateAt", ignore = true)
+    @Mapping(target = "safetySheet", ignore = true)
+    @Mapping(target = "safetySheetUpdate", ignore = true)
+    @Mapping(target = "house", source = "house", qualifiedByName = "toParentHouseEntity")
+    ReactiveEntity toEntity(ReactiveRequestDTO dto);
+
+    @Mapping(target = "reactiveId", ignore = true)
+    @Mapping(target = "createAt", ignore = true)
+    @Mapping(target = "updateAt", ignore = true)
+    @Mapping(target = "safetySheet", ignore = true)
+    @Mapping(target = "safetySheetUpdate", ignore = true)
+    @Mapping(target = "house", source = "house", qualifiedByName = "toParentHouseEntity")
+    void updateEntityFromDto(ReactiveRequestDTO dto, @MappingTarget ReactiveEntity entity);
 
     @Named("toParentHouseEntity")
     default ParentHouseEntity toParentHouseEntity(Long houseId) {

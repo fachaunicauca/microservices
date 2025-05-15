@@ -24,7 +24,7 @@ public class InventoryMovementMapper {
     public static InventoryMovementEntity toEntity(InventoryMovement domain){
         return new InventoryMovementEntity(
                 domain.getMovementId(),
-                new ReactiveEntity(domain.getReactiveId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null),
+                new ReactiveEntity(domain.getReactiveId(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null),
                 domain.getMovementType(),
                 domain.getQuantity(),
                 domain.getMovementDescription(),
