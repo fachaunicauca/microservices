@@ -90,6 +90,7 @@ services:
       EUREKA_USERNAME: ${EUREKA_USERNAME}
       EUREKA_PASSWORD: ${EUREKA_PASSWORD}
       SPRING_PROFILES_ACTIVE: docker
+      CLOUDINARY_URL: ${CLOUDINARY_URL}
     networks:
       - microservices-network
 
