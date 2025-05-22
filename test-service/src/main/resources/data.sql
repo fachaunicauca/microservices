@@ -1,4 +1,4 @@
-
+use test;
 -- Inserciones tabla questionTopic
 INSERT INTO question_topic (qt_description)
 VALUES ('TOPIC DEFAULT');
@@ -687,22 +687,23 @@ INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
 VALUES (50, 200, 'Ignorar que no tiene etiqueta', FALSE);
 
 -- Estudiante 101 presenta 3 veces
-INSERT INTO TEST (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
-VALUES (1, 'Julio Hurtado', 101, 20, 'Matemáticas', '2024-02-01', 85);
+INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
+VALUES (1, 'Julio Hurtado', 101, 20, 'Materia 1', '2025-02-01', 85);
 
-INSERT INTO TEST (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
-VALUES (1, 'Julio Hurtado', 101, 20, 'Matemáticas', '2024-03-15', 78);
+INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
+VALUES (1, 'Julio Hurtado', 101, 20, 'Materia 1', '2025-03-15', 78);
 
-INSERT INTO TEST (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
-VALUES (1, 'Julio Hurtado', 101, 20, 'Matemáticas', '2024-05-10', 90);
+INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
+VALUES (1, 'Julio Hurtado', 101, 20, 'Materia 1', '2025-05-10', 90);
 
 -- Estudiante 102 presenta 2 veces
-INSERT INTO TEST (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
-VALUES (2, 'Claudia Muñoz', 102, 25, 'Lengua Castellana', '2024-03-05', 92);
+INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
+VALUES (2, 'Claudia Muñoz', 102, 25, 'Materia 1', '2025-03-05', 92);
 
-INSERT INTO TEST (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
-VALUES (2, 'Claudia Muñoz', 102, 25, 'Lengua Castellana', '2024-06-01', 87);
+INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
+VALUES (2, 'Claudia Muñoz', 102, 25, 'Materia 1', '2025-06-01', 87);
 
 -- Estudiante 103 presenta 1 vez
-INSERT INTO TEST (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
-VALUES (3, 'Carlos Pérez', 103, 30, 'Ciencias Naturales', '2024-04-20', 78);
+INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)
+VALUES (3, 'Carlos Pérez', 103, 30, 'Materia 1', '2025-04-20', 78);
+
