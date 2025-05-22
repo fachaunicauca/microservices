@@ -157,6 +157,7 @@ public class TakeTestService {
         LocalDate end_date = LocalDate.parse(end, formatter);
         try{
             List<Test> semesterTestList = testService.getTestBySemesterAndStudentCode(start_date,end_date,student_code);
+            System.out.println(semesterTestList);
             return (short) semesterTestList.size();
         } catch (Exception e) {
             throw new NotFoundException("No se encontro el estudiante con codigo "+student_code+".");
