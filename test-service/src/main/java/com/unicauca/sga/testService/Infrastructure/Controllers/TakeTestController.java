@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+
 @RestController
 @RequestMapping("/takeTest")
 @Tag(name="Controlador Presentar Test", description = "Funcionalidades necesarias para presentar el examen general del laboratorio.")
@@ -21,6 +23,20 @@ public class TakeTestController {
 
     public TakeTestController(TakeTestService takeTestService){
         this.takeTestService=takeTestService;
+    }
+
+    @Operation(summary = "Obtener los intentos restantes del estudiante",
+                description = "Consulta los intentos restantes de un estudiante para realizar la evaluacion.",
+                responses={
+                    @ApiResponse(responseCode = "200", description = "Cantidad de intentos obtenida con exito."),
+                    @ApiResponse(responseCode = "400", description = "Parametros incorrectos o incompletos.")
+                })
+    @GetMapping("/getTries")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT')")
+    public short getTries(@RequestParam("actual_date")Date request_date,
+                          @RequestParam("student_code") Long student_code){
+        return takeTestService.getTries(request_date,student_code);
     }
 
     @Operation(summary = "Obtener las preguntas del Test",

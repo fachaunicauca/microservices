@@ -6,6 +6,7 @@ import com.unicauca.sga.testService.Domain.Ports.Services.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -50,5 +51,10 @@ public class TestService implements ITestService {
     @Override
     public boolean isPresent(long id) {
         return testRepository.isPresent(id);
+    }
+
+    @Override
+    public List<Test> getTestBySemesterAndStudentCode(LocalDate startDate, LocalDate endDate, Long studentId) {
+        return testRepository.findBySemesterAndStudentCode(startDate, endDate, studentId);
     }
 }

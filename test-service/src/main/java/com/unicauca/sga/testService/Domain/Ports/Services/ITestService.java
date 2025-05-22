@@ -3,6 +3,7 @@ package com.unicauca.sga.testService.Domain.Ports.Services;
 
 import com.unicauca.sga.testService.Domain.Model.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ITestService {
@@ -13,4 +14,5 @@ public interface ITestService {
     void deleteTestById(long id);
     Test updateTest(Test test);
     boolean isPresent(long id);
+    List<Test> getTestBySemesterAndStudentCode(LocalDate startDate, LocalDate endDate, Long studentId);
 }

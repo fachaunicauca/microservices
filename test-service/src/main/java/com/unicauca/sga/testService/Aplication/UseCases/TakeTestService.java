@@ -18,6 +18,10 @@ import com.unicauca.sga.testService.Domain.Ports.Services.ITestService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -129,5 +133,33 @@ public class TakeTestService {
             }
         }
         return (float) correctAnswersCount / num_of_questions;
+    }
+
+    public short getTries(Date request_date, Long student_code){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(request_date);
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH)+1;
+
+        String start, end;
+
+        if(month<=6){
+            start = year+"-01-01";
+            end = year+"-06-30";
+        }else{
+            start = year+"-07-01";
+            end = year+"-12-31";
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start_date = LocalDate.parse(start, formatter);
+        LocalDate end_date = LocalDate.parse(end, formatter);
+        try{
+            List<Test> semesterTestList = testService.getTestBySemesterAndStudentCode(start_date,end_date,student_code);
+            return (short) semesterTestList.size();
+        } catch (Exception e) {
+            throw new NotFoundException("No se encontro el estudiante con codigo "+student_code+".");
+        }
     }
 }

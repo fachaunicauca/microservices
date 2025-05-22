@@ -6,6 +6,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestMappe
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,5 +48,10 @@ public class TestRepository implements ITestRepository {
     @Override
     public boolean isPresent(long id) {
         return testJpaRepository.existsById(id);
+    }
+
+    @Override
+    public List<Test> findBySemesterAndStudentCode(LocalDate startDate, LocalDate endDate, Long studentId) {
+        return testJpaRepository.findBySemesterAndStudentCode(startDate, endDate, studentId).stream().map(testMapper::toModel).collect(Collectors.toList());
     }
 }
