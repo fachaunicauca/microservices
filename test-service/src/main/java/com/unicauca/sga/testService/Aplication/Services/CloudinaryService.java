@@ -16,14 +16,16 @@ import java.util.Objects;
 public class CloudinaryService {
     private final Cloudinary cloudinary;
 
-    public String uploadFile(MultipartFile file) throws IOException {
-        Map<?,?> result = cloudinary.uploader().upload(
+    public String uploadFile(MultipartFile file, String test_guide_id) throws IOException {
+        String formattedId = test_guide_id.replace(" ", "_");
+
+        Map<?, ?> result = cloudinary.uploader().upload(
                 file.getBytes(),
                 ObjectUtils.asMap(
                         "resource_type", "auto",
                         "folder", "test-service",
                         "overwrite", true,
-                        "public_id", Objects.requireNonNull(file.getOriginalFilename()).replace(" ", "_") // Reemplaza espacios por guiones bajos
+                        "public_id", formattedId
                 )
         );
         return result.get("secure_url").toString();
@@ -36,6 +38,18 @@ public class CloudinaryService {
         } catch (Exception e) {
             System.err.println("Error al conectar con Cloudinary: " + e.getMessage());
             return false;
+        }
+    }
+
+    public boolean deleteFile(String file_id) {
+        try {
+            Map result = cloudinary.uploader().destroy(file_id, ObjectUtils.asMap(
+                    "resource_type", "raw",
+                    "folder","test-service"
+            ));
+            return "ok".equals(result.get("result"));
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting file from Cloudinary: " + e.getMessage(), e);
         }
     }
 }

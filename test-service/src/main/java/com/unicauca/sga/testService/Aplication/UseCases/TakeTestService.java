@@ -157,7 +157,11 @@ public class TakeTestService {
         LocalDate end_date = LocalDate.parse(end, formatter);
         try{
             List<Test> semesterTestList = testService.getTestBySemesterAndStudentCode(start_date,end_date,student_code);
-            System.out.println(semesterTestList);
+            if(!semesterTestList.isEmpty()){
+                if(semesterTestList.stream().anyMatch(test -> test.getTest_score() >= 0.7)) {
+                    return (short) -1; //Temporaly test already passed code.
+                }
+            }
             return (short) semesterTestList.size();
         } catch (Exception e) {
             throw new NotFoundException("No se encontro el estudiante con codigo "+student_code+".");

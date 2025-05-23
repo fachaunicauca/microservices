@@ -25,16 +25,16 @@ public class ManageGuidesService {
     private final GuidesListDTOMapper guidesListDTOMapper;
 
     public TestGuideDTO saveTestGuide(TestGuideRequestDTO testGuideDTO) {
-        String safetySheetUrl;
+        String url;
         try {
-            safetySheetUrl = cloudinaryService.uploadFile(testGuideDTO.getTest_guide_archive());
+            url = cloudinaryService.uploadFile(testGuideDTO.getTest_guide_archive(), testGuideDTO.getTest_guide_id());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Error uploading safety sheet: " + e.getMessage());
         }
 
         TestGuide newTestGuide = new TestGuide();
         newTestGuide.setTest_guide_id(testGuideDTO.getTest_guide_id());
-        newTestGuide.setTest_guide_url(safetySheetUrl);
+        newTestGuide.setTest_guide_url(url);
         TestGuide savedTestGuide = testGuidesService.saveTestGuide(newTestGuide);
         return new TestGuideDTO(savedTestGuide.getTest_guide_id(), savedTestGuide.getTest_guide_url());
     }
@@ -45,5 +45,15 @@ public class ManageGuidesService {
             throw new NotFoundException("No se encontro ninguna guia.");
         }
         return guidesListDTOMapper.toDTO(testGuideList);
+    }
+
+    public boolean deleteTestGuide(String test_guide_id) {
+
+        String formattedId = test_guide_id.replace(" ", "_");
+        if(!cloudinaryService.deleteFile(formattedId)){
+            throw new NotFoundException("No se encontro ninguna guia con el id: " + test_guide_id);
+        }
+        testGuidesService.deleteTestGuideById(test_guide_id);
+        return true;
     }
 }

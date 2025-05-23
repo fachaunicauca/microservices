@@ -37,7 +37,7 @@ public class ManageGuidesController {
     }
 
     @Operation(summary = "Subir guias",
-            description = "Permite que docentes y administrador",
+            description = "Permite que docentes y administrador suban guias al servicio de cloudinary.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "La guia se guardo exitosamente."),
                     @ApiResponse(responseCode = "500", description = "Ocurrio un error interno al subir el archivo a cloudinary.")
@@ -47,5 +47,18 @@ public class ManageGuidesController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public TestGuideDTO saveGuide(@Valid @ModelAttribute TestGuideRequestDTO testGuideRequestDTO) {
         return manageGuidesService.saveTestGuide(testGuideRequestDTO);
+    }
+
+    @Operation(summary = "Eliminar guias",
+            description = "Permite que docentes y administrador eliminen guias del servicio de cloudinary.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "La guia se elimino correctamente."),
+                    @ApiResponse(responseCode = "404", description = "No se encontro la guia en el servicio de cloudinary.")
+            })
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    public boolean deleteGuide(@RequestParam("test_guide_id") String test_guide_id) {
+        return manageGuidesService.deleteTestGuide(test_guide_id);
     }
 }
