@@ -24,8 +24,8 @@ services:
   ### Servicio de descubrimiento Eureka
   discovery-service:
     build:
-      context: .
-      dockerfile: discovery-service/Dockerfile
+      context: ./discovery-service
+      dockerfile: Dockerfile
     container_name: discovery-service
     ports:
       - "8761:8761"
@@ -38,8 +38,8 @@ services:
   auth-service:
     container_name: auth-service
     build:
-      context: .
-      dockerfile: auth-service/Dockerfile
+      context: ./auth-service
+      dockerfile: Dockerfile
     ports:
       - "9090:9090"
     depends_on:
@@ -49,13 +49,13 @@ services:
     networks:
       - microservices-network
     extra_hosts:
-      - "keycloak:host-gateway"
+      - "keycloak.local:host-gateway"
 
   ### API Gateway
   api-gateway:
     build:
-      context: .
-      dockerfile: api-gateway/Dockerfile
+      context: ./api-gateway
+      dockerfile: Dockerfile
     container_name: api-gateway
     ports:
       - "8080:8080"
@@ -65,7 +65,7 @@ services:
     networks:
       - microservices-network
     extra_hosts:
-      - "keycloak:host-gateway"
+      - "keycloak.local:host-gateway"
     environment:
       EUREKA_USERNAME: ${EUREKA_USERNAME}
       EUREKA_PASSWORD: ${EUREKA_PASSWORD}
@@ -76,8 +76,8 @@ services:
   inventory-service:
     container_name: inventory-service
     build:
-      context: .
-      dockerfile: inventory-service/Dockerfile
+      context: ./inventory-service
+      dockerfile: Dockerfile
     ports:
       - "0:8081"
     depends_on:
@@ -98,8 +98,8 @@ services:
   educator-service:
     container_name: educator-service
     build:
-      context: .
-      dockerfile: educator-service/Dockerfile
+      context: ./educator-service
+      dockerfile: Dockerfile
     ports:
       - "0:8082"
     depends_on:
@@ -119,8 +119,8 @@ services:
   test-service:
     container_name: test-service
     build:
-      context: .
-      dockerfile: test-service/Dockerfile
+      context: ./test-service
+      dockerfile: Dockerfile
     ports:
       - "0:8083"
     depends_on:
@@ -132,6 +132,7 @@ services:
       TEST_DATASOURCE_PASSWORD: ${TEST_DATASOURCE_PASSWORD}
       EUREKA_USERNAME: ${EUREKA_USERNAME}
       EUREKA_PASSWORD: ${EUREKA_PASSWORD}
+      CLOUDINARY_URL: ${CLOUDINARY_URL}
       SPRING_PROFILES_ACTIVE: docker
     networks:
       - microservices-network
