@@ -19,6 +19,7 @@ import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.m
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.repositories.ParentHouseRepositoryJPA;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.repositories.ReactiveRepositoryJPA;
 
+import java.nio.file.FileSystemException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class ReactiveService implements ReactivePort {
         return reactiveRepositoryJPA.findAll().stream()
                 .map(reactiveMapper::toDomain)
                 .map(reactiveMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -49,12 +50,12 @@ public class ReactiveService implements ReactivePort {
     }
 
     @Override
-    public ReactiveResponseDTO saveReactive(ReactiveRequestDTO reactiveDTO) {
+    public ReactiveResponseDTO saveReactive(ReactiveRequestDTO reactiveDTO) throws FileSystemException{
         String safetySheetUrl;
         try {
             safetySheetUrl = cloudinaryService.uploadFile(reactiveDTO.getSafetySheet());
         } catch (Exception e) {
-            throw new RuntimeException("Error uploading safety sheet: " + e.getMessage());
+            throw new FileSystemException("Error uploading safety sheet: " + e.getMessage());
         }
 
         Reactive reactive = reactiveMapper.toDomain(reactiveDTO);
@@ -64,11 +65,6 @@ public class ReactiveService implements ReactivePort {
         reactiveEntity.setCreateAt(LocalDateTime.now());
         reactiveEntity.setUpdateAt(LocalDateTime.now());
         reactiveEntity.setSafetySheetExpiration(reactiveDTO.getSafetySheetExpiration());
-
-        ParentHouseResponseDTO parentHouseResponseDTO = parentHouseRepositoryJPA.findById(reactiveDTO.getHouse())
-                .map(parentHouseMapper::toDomain)
-                .map(parentHouseMapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Parent house not found"));
 
         return reactiveMapper.toDTO(
                 reactiveMapper.toDomain(
@@ -87,7 +83,7 @@ public class ReactiveService implements ReactivePort {
 
     @Override
     @Transactional
-    public boolean updateReactive(Long id, ReactiveRequestDTO reactive) {
+    public boolean updateReactive(Long id, ReactiveRequestDTO reactive) throws FileSystemException{
         Optional<ReactiveEntity> reactiveExist = reactiveRepositoryJPA.findById(id);
         if (reactiveExist.isPresent()) {
             ReactiveEntity reactiveEntity = reactiveExist.orElseThrow(() -> new RuntimeException("Reactive not found"));
@@ -105,7 +101,7 @@ public class ReactiveService implements ReactivePort {
                     reactiveEntity.setSafetySheet(safetySheetUrl);
                     reactiveEntity.setSafetySheetUpdate(LocalDateTime.now());
                 } catch (Exception e) {
-                    throw new RuntimeException("Error uploading safety sheet: " + e.getMessage());
+                    throw new FileSystemException("Error uploading safety sheet: " + e.getMessage());
                 }
             }
 
@@ -126,7 +122,7 @@ public class ReactiveService implements ReactivePort {
         return reactiveRepositoryJPA.findByStatus(status).stream()
                 .map(reactiveMapper::toDomain)
                 .map(reactiveMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -134,7 +130,7 @@ public class ReactiveService implements ReactivePort {
         return reactiveRepositoryJPA.findByName(nombre).stream()
                 .map(reactiveMapper::toDomain)
                 .map(reactiveMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -142,7 +138,7 @@ public class ReactiveService implements ReactivePort {
         return reactiveRepositoryJPA.findByRiskTypesContaining(risk).stream()
                 .map(reactiveMapper::toDomain)
                 .map(reactiveMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -157,7 +153,7 @@ public class ReactiveService implements ReactivePort {
         return reactiveRepositoryJPA.findByType(type).stream()
                 .map(reactiveMapper::toDomain)
                 .map(reactiveMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -169,6 +165,6 @@ public class ReactiveService implements ReactivePort {
         return reactiveRepositoryJPA.findByHouse(parentHouseEntity).stream()
                 .map(reactiveMapper::toDomain)
                 .map(reactiveMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

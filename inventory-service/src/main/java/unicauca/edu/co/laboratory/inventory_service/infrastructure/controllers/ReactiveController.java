@@ -19,6 +19,7 @@ import unicauca.edu.co.laboratory.inventory_service.domain.exceptions.AlreadyExi
 import unicauca.edu.co.laboratory.inventory_service.domain.exceptions.NotFoundException;
 
 import javax.print.attribute.standard.Media;
+import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ public class ReactiveController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
-    public ResponseEntity<ReactiveResponseDTO> createReactive(@Valid @ModelAttribute ReactiveRequestDTO requestDTO) {
+    public ResponseEntity<ReactiveResponseDTO> createReactive(@Valid @ModelAttribute ReactiveRequestDTO requestDTO) throws FileSystemException {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveByCode(requestDTO.getCode());
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(requestDTO.getHouse());
         if (existingParentHouse.isEmpty()) {
@@ -68,7 +69,7 @@ public class ReactiveController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LABORATORY_WORKER')")
-    public ResponseEntity<Boolean> updateReactive(@PathVariable(value = "id") Long id, @Valid @ModelAttribute ReactiveRequestDTO requestDTO) {
+    public ResponseEntity<Boolean> updateReactive(@PathVariable(value = "id") Long id, @Valid @ModelAttribute ReactiveRequestDTO requestDTO) throws FileSystemException {
         Optional<ReactiveResponseDTO> existingReactive = reactivePort.getReactiveById(id);
         Optional<ParentHouseResponseDTO> existingParentHouse = parentHousePort.getParentHouseById(requestDTO.getHouse());
         if (existingReactive.isEmpty()) {

@@ -1,9 +1,6 @@
 package unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.request.ReactiveRequestDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ReactiveResponseDTO;
 import unicauca.edu.co.laboratory.inventory_service.domain.models.Reactive;
@@ -41,6 +38,7 @@ public interface ReactiveMapper {
     @Mapping(target = "safetySheet", ignore = true)
     @Mapping(target = "safetySheetUpdate", ignore = true)
     @Mapping(target = "house", source = "house", qualifiedByName = "toParentHouseEntity")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(ReactiveRequestDTO dto, @MappingTarget ReactiveEntity entity);
 
     @Named("toParentHouseEntity")
