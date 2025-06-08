@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,14 @@ public class TokenResponse {
 
     @JsonProperty("expires_in")
     private Long expiresIn;
+
+    private String userId;
+
+    private String username;
+
+    private String fullName;
+
+    private String email;
+
+    private List<String> roles;
 }

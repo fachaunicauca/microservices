@@ -1,6 +1,7 @@
 package unicauca.edu.co.laboratory.inventory_service.infrastructure.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -28,8 +29,8 @@ public class DotenvEnvironmentPostProcessor implements EnvironmentPostProcessor 
 
             environment.getPropertySources().addFirst(new MapPropertySource("dotenv", props));
         } catch (Exception e) {
-            System.err.println("Error cargando .env: " + e.getMessage());
-            e.printStackTrace();
+            LoggerFactory.getLogger(DotenvEnvironmentPostProcessor.class)
+                    .error("Error cargando .env: {}", e.getMessage(), e);
         }
     }
 }
