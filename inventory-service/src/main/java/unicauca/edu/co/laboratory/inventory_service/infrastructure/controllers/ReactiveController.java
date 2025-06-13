@@ -18,7 +18,6 @@ import unicauca.edu.co.laboratory.inventory_service.domain.enums.RiskType;
 import unicauca.edu.co.laboratory.inventory_service.domain.exceptions.AlreadyExistException;
 import unicauca.edu.co.laboratory.inventory_service.domain.exceptions.NotFoundException;
 
-import javax.print.attribute.standard.Media;
 import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Optional;

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.MeasurementUnit;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.ReactiveStatus;
-import unicauca.edu.co.laboratory.inventory_service.domain.enums.ReactiveType;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.RiskType;
 
 import java.time.LocalDateTime;

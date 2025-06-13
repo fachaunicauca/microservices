@@ -36,7 +36,7 @@ public class TakeTestService {
     private final ISubjectService subjectService;
     private final ITestService testService;
 
-    private final int num_of_questions = 20;
+    private static final int num_of_questions = 20;
 
     public TakeTestService(QuestionListDTOMapper questionListDTOMapper,
                            IQuestionService questionService,

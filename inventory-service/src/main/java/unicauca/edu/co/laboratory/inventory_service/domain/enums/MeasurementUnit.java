@@ -6,5 +6,5 @@ public enum MeasurementUnit {
     L,
     ML,
     MM,
-    NoAplica
+    NO_APLICA
 }

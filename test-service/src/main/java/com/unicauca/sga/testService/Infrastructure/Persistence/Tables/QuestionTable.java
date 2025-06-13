@@ -31,8 +31,8 @@ public class QuestionTable {
     private String question_text;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private String question_image;
+    @Column(name = "question_image")
+    private byte[] questionImage;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AnswerTable> answers = new ArrayList<>();

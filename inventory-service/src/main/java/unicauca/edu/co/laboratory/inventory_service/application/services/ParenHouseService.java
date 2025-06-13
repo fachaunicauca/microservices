@@ -25,7 +25,7 @@ public class ParenHouseService implements ParentHousePort {
         return parentHouseRepositoryJPA.findAll().stream()
                 .map(parentHouseMapper::toDomain)
                 .map(parentHouseMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -72,6 +72,6 @@ public class ParenHouseService implements ParentHousePort {
         return parentHouseRepositoryJPA.findByName(name).stream()
                 .map(parentHouseMapper::toDomain)
                 .map(parentHouseMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

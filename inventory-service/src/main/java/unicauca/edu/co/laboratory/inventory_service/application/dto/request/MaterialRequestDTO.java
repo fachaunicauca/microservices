@@ -11,8 +11,6 @@ import unicauca.edu.co.laboratory.inventory_service.domain.enums.MaterialType;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.MeasurementUnit;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.StoragePlaces;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

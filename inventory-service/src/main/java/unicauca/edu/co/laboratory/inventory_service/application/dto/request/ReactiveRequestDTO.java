@@ -1,6 +1,5 @@
 package unicauca.edu.co.laboratory.inventory_service.application.dto.request;
 
-import ch.qos.logback.core.util.FileSize;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.MeasurementUnit;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.ReactiveStatus;

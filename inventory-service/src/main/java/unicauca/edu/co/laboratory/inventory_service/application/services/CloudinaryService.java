@@ -4,8 +4,10 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.api.ApiResponse;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import unicauca.edu.co.laboratory.inventory_service.infrastructure.config.DotenvEnvironmentPostProcessor;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,7 +36,8 @@ public class CloudinaryService {
             ApiResponse result = cloudinary.api().ping(ObjectUtils.emptyMap());
             return result.get("status").equals("ok");
         } catch (Exception e) {
-            System.err.println("Error al conectar con Cloudinary: " + e.getMessage());
+            LoggerFactory.getLogger(DotenvEnvironmentPostProcessor.class)
+                    .error("Error al conectar con Cloudinary: {}", e.getMessage(), e);
             return false;
         }
     }

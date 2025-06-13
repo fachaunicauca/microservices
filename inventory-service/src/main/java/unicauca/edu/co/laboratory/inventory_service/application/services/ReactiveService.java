@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.request.ReactiveRequestDTO;
-import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ParentHouseResponseDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.ReactiveResponseDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.ports.ReactivePort;
 import unicauca.edu.co.laboratory.inventory_service.domain.enums.ReactiveStatus;
@@ -14,7 +13,6 @@ import unicauca.edu.co.laboratory.inventory_service.domain.enums.RiskType;
 import unicauca.edu.co.laboratory.inventory_service.domain.models.Reactive;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.entities.ParentHouseEntity;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.entities.ReactiveEntity;
-import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.mappers.ParentHouseMapper;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.mappers.ReactiveMapper;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.repositories.ParentHouseRepositoryJPA;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.repositories.ReactiveRepositoryJPA;
@@ -23,7 +21,6 @@ import java.nio.file.FileSystemException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +28,6 @@ public class ReactiveService implements ReactivePort {
     private final ReactiveRepositoryJPA reactiveRepositoryJPA;
     private final ParentHouseRepositoryJPA parentHouseRepositoryJPA;
     private final ReactiveMapper reactiveMapper;
-    private final ParentHouseMapper parentHouseMapper;
     private final CloudinaryService cloudinaryService;
 
     @Override
