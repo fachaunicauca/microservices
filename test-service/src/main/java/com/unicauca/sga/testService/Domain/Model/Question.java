@@ -11,6 +11,6 @@ public class Question {
     private Subject subject;
     private String question_title;
     private String question_text;
-    private String question_image;
+    private byte[] question_image;
     private List<Answer> answers;
 }
