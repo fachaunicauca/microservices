@@ -3,16 +3,16 @@ package com.unicauca.sga.testService.Aplication.Services;
 import com.unicauca.sga.testService.Domain.Model.TestGuide;
 import com.unicauca.sga.testService.Domain.Ports.Repositories.ITestGuidesRepository;
 import com.unicauca.sga.testService.Domain.Ports.Services.ITestGuidesService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TestGuidesService implements ITestGuidesService {
 
     private final ITestGuidesRepository testGuidesRepository;
-
-    public TestGuidesService(ITestGuidesRepository testGuidesRepository) {this.testGuidesRepository = testGuidesRepository;}
 
     @Override
     public List<TestGuide> getAllTestsGuides() {

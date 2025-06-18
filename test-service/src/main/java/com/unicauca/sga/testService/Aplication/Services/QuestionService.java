@@ -4,19 +4,17 @@ import com.unicauca.sga.testService.Domain.Model.Question;
 import com.unicauca.sga.testService.Domain.Ports.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Ports.Services.IQuestionService;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionTable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService implements IQuestionService {
 
     private final IQuestionRepository questionRepository;
-
-    public QuestionService(IQuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
-    }
 
     @Override
     public List<Question> getAllQuestions(){

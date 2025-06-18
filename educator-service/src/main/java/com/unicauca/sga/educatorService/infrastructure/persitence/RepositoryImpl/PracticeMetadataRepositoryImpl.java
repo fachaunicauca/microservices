@@ -3,11 +3,10 @@ package com.unicauca.sga.educatorService.infrastructure.persitence.RepositoryImp
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.unicauca.sga.educatorService.core.entities.PracticeMetadata;
-import com.unicauca.sga.educatorService.core.repositoires.iPracticeMetadataRepository;
+import com.unicauca.sga.educatorService.core.repositoires.IPracticeMetadataRepository;
 import com.unicauca.sga.educatorService.infrastructure.persitence.RepositoryJPA.PracticeMetadataRepositoryJPA;
 
 import lombok.RequiredArgsConstructor;
@@ -17,14 +16,13 @@ import com.unicauca.sga.educatorService.infrastructure.persitence.Mappers.practi
 
 @Component
 @RequiredArgsConstructor
-public class PracticeMetadataRepositoryImpl implements iPracticeMetadataRepository{
+public class PracticeMetadataRepositoryImpl implements IPracticeMetadataRepository {
 
     //@Autowired
     //@Lazy
     private final PracticeMetadataRepositoryJPA practiceMetadataRepository;
 
-    @Autowired
-    private practiceMetadataMapper practiceMetadataMapper;
+    private final practiceMetadataMapper practiceMetadataMapper;
 
     @Override
     public PracticeMetadata createPracticeMetadata(PracticeMetadata practiceMetdata) {

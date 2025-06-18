@@ -22,20 +22,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PracticeController {
 
-    @Autowired
-    private PracticeMetadataService practiceMetadataService;
-    @Autowired
-    private PracticeService practiceService;
-
+    private final PracticeMetadataService practiceMetadataService;
+    private final PracticeService practiceService;
    
     @PostMapping("/CreatePractice")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_TEACHER')")
     public Practice CreatePractice(@RequestBody Practice practice){
-        String PracticeToJson = this.practiceService.practiceToJson(practice);
-        System.out.println(practice.getUser().toString());
-        PracticeMetadata practiceMetdata = new PracticeMetadata(null,practice.getUser().getId(),new Date(),PracticeToJson,false);
-        System.out.println(practice.toString());
+        String practiceToJson = this.practiceService.practiceToJson(practice);
+        PracticeMetadata practiceMetdata = new PracticeMetadata(null,practice.getUser().getId(),new Date(),practiceToJson,false);
         this.practiceMetadataService.createPracticeMetadata(practiceMetdata);
         return practice;
       }

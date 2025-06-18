@@ -12,7 +12,6 @@ import lombok.*;
 @Builder
 @ToString
 public class PracticeMetadata {
-
     private Long practiceMetadataId;
     private Long userId;
     private Date creationDate;

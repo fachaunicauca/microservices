@@ -7,15 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.unicauca.sga.educatorService.core.entities.Practice;
 import com.unicauca.sga.educatorService.core.entities.PracticeMetadata;
-import com.unicauca.sga.educatorService.core.repositoires.iPracticeMetadataRepository;
+import com.unicauca.sga.educatorService.core.repositoires.IPracticeMetadataRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class PracticeMetadataService {
 
-   @Autowired
-   private iPracticeMetadataRepository ipracticeMetadataRepository;
+   private final IPracticeMetadataRepository ipracticeMetadataRepository;
 
     public PracticeMetadata createPracticeMetadata(PracticeMetadata metdata){ 
         System.out.println("Este es el ID del usuario:"+metdata.getUserId());

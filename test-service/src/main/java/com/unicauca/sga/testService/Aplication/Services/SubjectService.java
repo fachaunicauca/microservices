@@ -3,19 +3,17 @@ package com.unicauca.sga.testService.Aplication.Services;
 import com.unicauca.sga.testService.Domain.Model.Subject;
 import com.unicauca.sga.testService.Domain.Ports.Repositories.ISubjectRepository;
 import com.unicauca.sga.testService.Domain.Ports.Services.ISubjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SubjectService implements ISubjectService {
 
     private final ISubjectRepository subjectRepository;
-
-    public SubjectService(ISubjectRepository subjectRepository) {
-        this.subjectRepository = subjectRepository;
-    }
 
     @Override
     public List<Subject> getAllSubjects(){

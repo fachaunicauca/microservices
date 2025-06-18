@@ -3,6 +3,7 @@ package com.unicauca.sga.testService.Aplication.Services;
 import com.unicauca.sga.testService.Domain.Model.Test;
 import com.unicauca.sga.testService.Domain.Ports.Repositories.ITestRepository;
 import com.unicauca.sga.testService.Domain.Ports.Services.ITestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +11,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TestService implements ITestService {
 
     private final ITestRepository testRepository;
-
-    public TestService(ITestRepository testRepository) {
-        this.testRepository = testRepository;
-    }
 
     @Override
     public List<Test> getAllTests(){

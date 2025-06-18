@@ -3,9 +3,8 @@ package com.unicauca.sga.educatorService.core.repositoires;
 import java.util.List;
 
 import com.unicauca.sga.educatorService.core.entities.PracticeMetadata;
-import com.unicauca.sga.educatorService.core.entities.User;
 
-public interface iPracticeMetadataRepository {
+public interface IPracticeMetadataRepository {
 
     PracticeMetadata createPracticeMetadata(PracticeMetadata practiceMetdata);
     PracticeMetadata delatePracticeMetadata(PracticeMetadata practiceMetdata);

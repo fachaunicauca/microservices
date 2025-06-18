@@ -3,19 +3,16 @@ package com.unicauca.sga.testService.Aplication.Services;
 import com.unicauca.sga.testService.Domain.Model.Answer;
 import com.unicauca.sga.testService.Domain.Ports.Repositories.IAnswerRepository;
 import com.unicauca.sga.testService.Domain.Ports.Services.IAnswerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AnswerService implements IAnswerService {
 
     private final IAnswerRepository answerRepository;
-
-    public AnswerService(IAnswerRepository answerRepository) {
-        this.answerRepository = answerRepository;
-    }
 
     @Override
     public List<Answer> getAllAnswers(){

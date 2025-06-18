@@ -3,19 +3,17 @@ package com.unicauca.sga.testService.Aplication.Services;
 import com.unicauca.sga.testService.Domain.Model.QuestionTopic;
 import com.unicauca.sga.testService.Domain.Ports.Repositories.IQuestionTopicRepository;
 import com.unicauca.sga.testService.Domain.Ports.Services.IQuestionTopicService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionTopicService implements IQuestionTopicService {
 
     private final IQuestionTopicRepository questionTopicRepository;
-
-    public QuestionTopicService(IQuestionTopicRepository questionTopicRepository) {
-        this.questionTopicRepository = questionTopicRepository;
-    }
 
     @Override
     public List<QuestionTopic> getAllQuestionTopics(){
