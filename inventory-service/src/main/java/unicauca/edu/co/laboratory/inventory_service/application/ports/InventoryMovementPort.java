@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface InventoryMovementPort {
     List<InventoryMovementResponseDTO> getInventoryMovements();
-    Optional<InventoryMovementResponseDTO> getInventoryMovementById(Integer id);
-    InventoryMovementResponseDTO saveInventoryMovement(Long id, InventoryMovementRequestDTO movement);
+    Optional<InventoryMovementResponseDTO> getInventoryMovementById(Long id);
+    InventoryMovementResponseDTO saveInventoryMovement(InventoryMovementRequestDTO movement);
+    Boolean updateInventoryMovement(Integer id, InventoryMovementRequestDTO movement);
+    void deleteInventoryMovement(Integer id);
     List<InventoryMovementResponseDTO> getInventoryMovementsByType(MovementType type);
-    Optional<InventoryMovementResponseDTO> getInventoryMovementsByReactive(Integer reactiveId);
+    List<InventoryMovementResponseDTO> getInventoryMovementsByReactive(Integer reactiveId);
 }

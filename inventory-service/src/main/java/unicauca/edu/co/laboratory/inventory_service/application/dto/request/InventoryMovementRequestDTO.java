@@ -29,9 +29,7 @@ public class InventoryMovementRequestDTO {
     @NotBlank(message = "La descripción del movimiento es obligatoria")
     private String movementDescription;
 
-    @NotBlank(message = "La fecha de movimiento es obligatoria")
     private LocalDateTime movementDate;
 
-    @NotNull(message = "El ID de la persona responsable es obligatorio")
-    private Integer chargePerson;
+    private String chargePerson;
 }

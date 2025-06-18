@@ -19,5 +19,5 @@ public class InventoryMovementResponseDTO {
     private Double quantity;
     private String movementDescription;
     private LocalDateTime movementDate;
-    private Integer chargePerson;
+    private String chargePerson;
 }

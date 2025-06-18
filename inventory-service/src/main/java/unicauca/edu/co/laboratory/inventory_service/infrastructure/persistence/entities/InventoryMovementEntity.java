@@ -43,7 +43,7 @@ public class InventoryMovementEntity {
     private LocalDateTime movementDate;
 
     @Column(name = "charge_person", nullable = false)
-    private Integer chargePerson;
+    private String chargePerson;
 
     @Override
     public final boolean equals(Object o) {

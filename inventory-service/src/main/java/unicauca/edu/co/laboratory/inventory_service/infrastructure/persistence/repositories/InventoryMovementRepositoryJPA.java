@@ -12,4 +12,5 @@ import java.util.List;
 public interface InventoryMovementRepositoryJPA extends JpaRepository<InventoryMovementEntity, Long> {
     List<InventoryMovementEntity> findByReactive(ReactiveEntity reactive);
     List<InventoryMovementEntity> findByMovementType(MovementType movementType);
+    List<InventoryMovementEntity> findByReactive_ReactiveId(Long reactiveId);
 }
