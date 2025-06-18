@@ -6,6 +6,7 @@ import unicauca.edu.co.laboratory.inventory_service.domain.enums.MovementType;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.entities.InventoryMovementEntity;
 import unicauca.edu.co.laboratory.inventory_service.infrastructure.persistence.entities.ReactiveEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -13,4 +14,5 @@ public interface InventoryMovementRepositoryJPA extends JpaRepository<InventoryM
     List<InventoryMovementEntity> findByReactive(ReactiveEntity reactive);
     List<InventoryMovementEntity> findByMovementType(MovementType movementType);
     List<InventoryMovementEntity> findByReactive_ReactiveId(Long reactiveId);
+    List<InventoryMovementEntity> findByMovementDateBetween(LocalDateTime start, LocalDateTime end);
 }

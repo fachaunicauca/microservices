@@ -1,7 +1,9 @@
 package unicauca.edu.co.laboratory.inventory_service.application.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.request.InventoryMovementRequestDTO;
 import unicauca.edu.co.laboratory.inventory_service.application.dto.response.InventoryMovementResponseDTO;
@@ -73,8 +75,6 @@ public class InventoryMovementService implements InventoryMovementPort {
 
         InventoryMovement movimiento = inventoryMovementMapper.toDomain(movement);
         movimiento.setReactiveId(reactive.getReactiveId());
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        movimiento.setChargePerson(username);
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime fechaMovimiento = movement.getMovementDate() != null ? movement.getMovementDate() : now;
 
@@ -85,8 +85,13 @@ public class InventoryMovementService implements InventoryMovementPort {
         movimiento.setMovementDate(fechaMovimiento);
         movimiento.setMovementDate(movement.getMovementDate() != null ? movement.getMovementDate() : LocalDateTime.now());
         InventoryMovementEntity entity = inventoryMovementMapper.toEntity(movimiento);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof Jwt jwt) {
+            String username = jwt.getClaimAsString("preferred_username");
+            movimiento.setChargePerson(username);
+            entity.setChargePerson(username);
+        }
         entity.setReactive(reactive);
-        entity.setChargePerson(username);
 
         InventoryMovementEntity saved = inventoryMovementRepositoryJPA.save(entity);
         reactiveRepositoryJPA.save(reactive);
