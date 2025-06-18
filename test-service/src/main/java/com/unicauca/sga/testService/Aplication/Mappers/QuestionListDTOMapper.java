@@ -8,6 +8,7 @@ import com.unicauca.sga.testService.Domain.Model.Question;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -26,7 +27,8 @@ public class QuestionListDTOMapper {
         newQuestionDTO.setQuestion_id(question.getQuestion_id());
         newQuestionDTO.setQuestion_title(question.getQuestion_title());
         newQuestionDTO.setQuestion_text(question.getQuestion_text());
-        newQuestionDTO.setQuestion_image(question.getQuestion_image());
+        String base64image = Base64.getEncoder().encodeToString(question.getQuestion_image());
+        newQuestionDTO.setQuestion_image(base64image);
         List<AnswerDTO> answerDTOList = new ArrayList<>();
         for(Answer answer: question.getAnswers()){
             answerDTOList.add(AnswertoDTO(answer));
