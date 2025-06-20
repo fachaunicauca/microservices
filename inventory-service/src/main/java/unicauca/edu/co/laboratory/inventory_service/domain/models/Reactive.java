@@ -33,8 +33,4 @@ public class Reactive {
     private Set<RiskType> riskTypes;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-
-    public boolean isBelowMinimum(){
-        return quantity < minimumQuantity;
-    }
 }
