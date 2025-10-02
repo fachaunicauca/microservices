@@ -13,9 +13,9 @@ public class GuidesListDTOMapper {
         TestGuideListDTO testGuideListDTO = new TestGuideListDTO();
         for (TestGuide testGuide : testGuideList) {
             TestGuideDTO testGuideDTO = new TestGuideDTO();
-            testGuideDTO.setTest_guide_id(testGuide.getTest_guide_id());
-            testGuideDTO.setTest_guide_url(testGuide.getTest_guide_url());
-            testGuideListDTO.getTest_guide_list().add(testGuideDTO);
+            testGuideDTO.setTestGuideId(testGuide.getTestGuideId());
+            testGuideDTO.setTestGuideUrl(testGuide.getTestGuideUrl());
+            testGuideListDTO.getTestGuideList().add(testGuideDTO);
         }
         return testGuideListDTO;
     }

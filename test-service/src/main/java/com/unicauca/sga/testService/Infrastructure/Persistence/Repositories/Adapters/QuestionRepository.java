@@ -7,6 +7,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ques
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,21 @@ public class QuestionRepository implements IQuestionRepository {
 
     @Override
     public List<Question> findRandomBySubject(String subject_name, int n) {
-        return questionJpaRepository.findRandomBySubject(subject_name, Pageable.ofSize(n)).stream().map(questionMapper::toModel).collect(Collectors.toList());
+        List<Question> questions = questionJpaRepository
+                .findBySubjectSubjectName(subject_name)
+                .stream()
+                .map(questionMapper::toModel)
+                .collect(Collectors.toList());
+
+        // Mezclar la lista en memoria
+        Collections.shuffle(questions);
+
+        // Retornar solo los primeros n elementos
+        if (questions.size() > n) {
+            return questions.subList(0, n);
+        } else {
+            return questions;
+        }
     }
 
     @Override

@@ -6,12 +6,12 @@ import java.sql.Date;
 
 @Data
 public class Test {
-    private Long test_id;
-    private Long teacher_id;
-    private String teacher_name;
-    private Long student_id;
+    private Long testId;
+    private Long teacherId;
+    private String teacherName;
+    private Long studentId;
     private Subject subject;
-    private int num_of_questions;
-    private Date test_date;
-    private float test_score;
+    private int numOfQuestions;
+    private Date testDate;
+    private float testScore;
 }

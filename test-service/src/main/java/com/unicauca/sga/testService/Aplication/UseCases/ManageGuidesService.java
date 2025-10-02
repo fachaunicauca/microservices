@@ -27,16 +27,16 @@ public class ManageGuidesService {
     public TestGuideDTO saveTestGuide(TestGuideRequestDTO testGuideDTO) {
         String url;
         try {
-            url = cloudinaryService.uploadFile(testGuideDTO.getTest_guide_archive(), testGuideDTO.getTest_guide_id());
+            url = cloudinaryService.uploadFile(testGuideDTO.getTestGuideArchive(), testGuideDTO.getTestGuideId());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Error uploading safety sheet: " + e.getMessage());
         }
 
         TestGuide newTestGuide = new TestGuide();
-        newTestGuide.setTest_guide_id(testGuideDTO.getTest_guide_id());
-        newTestGuide.setTest_guide_url(url);
+        newTestGuide.setTestGuideId(testGuideDTO.getTestGuideId());
+        newTestGuide.setTestGuideUrl(url);
         TestGuide savedTestGuide = testGuidesService.saveTestGuide(newTestGuide);
-        return new TestGuideDTO(savedTestGuide.getTest_guide_id(), savedTestGuide.getTest_guide_url());
+        return new TestGuideDTO(savedTestGuide.getTestGuideId(), savedTestGuide.getTestGuideUrl());
     }
 
     public TestGuideListDTO getAllTestGuides() {

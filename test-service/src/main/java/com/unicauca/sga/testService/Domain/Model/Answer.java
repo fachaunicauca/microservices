@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Answer {
-    private Long answer_id;
+    private Long answerId;
     private Question question;
-    private String answer_text;
-    private boolean answer_isCorrect;
+    private String answerText;
+    private boolean correct;
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class QuestionTopic {
-    private int question_topic_id;
-    private String qt_description;
+    private int questionTopicId;
+    private String qtDescription;
 }

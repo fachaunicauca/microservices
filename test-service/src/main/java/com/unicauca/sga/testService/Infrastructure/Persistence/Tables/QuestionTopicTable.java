@@ -9,9 +9,10 @@ import lombok.Data;
 public class QuestionTopicTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int question_topic_id;
+    @Column(name = "question_topic_id")
+    private int questionTopicId;
 
-    @Column
-    private String qt_description;
+    @Column(name = "qt_description")
+    private String qtDescription;
 
 }

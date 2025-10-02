@@ -24,11 +24,9 @@ public class QuestionListDTOMapper {
     }
     private QuestionDTO QuestiontoDTO(Question question){
         QuestionDTO newQuestionDTO = new QuestionDTO();
-        newQuestionDTO.setQuestion_id(question.getQuestion_id());
-        newQuestionDTO.setQuestion_title(question.getQuestion_title());
-        newQuestionDTO.setQuestion_text(question.getQuestion_text());
-        String base64image = Base64.getEncoder().encodeToString(question.getQuestion_image());
-        newQuestionDTO.setQuestion_image(base64image);
+        newQuestionDTO.setQuestionId(question.getQuestionId());
+        newQuestionDTO.setQuestionTitle(question.getQuestionTitle());
+        newQuestionDTO.setQuestionText(question.getQuestionText());
         List<AnswerDTO> answerDTOList = new ArrayList<>();
         for(Answer answer: question.getAnswers()){
             answerDTOList.add(AnswertoDTO(answer));
@@ -38,8 +36,8 @@ public class QuestionListDTOMapper {
     }
     private AnswerDTO AnswertoDTO(Answer answer){
         AnswerDTO newAnswerDTO = new AnswerDTO();
-        newAnswerDTO.setAnswer_id(answer.getAnswer_id());
-        newAnswerDTO.setAnswer_text(answer.getAnswer_text());
+        newAnswerDTO.setAnswerId(answer.getAnswerId());
+        newAnswerDTO.setAnswerText(answer.getAnswerText());
         return newAnswerDTO;
     }
 }

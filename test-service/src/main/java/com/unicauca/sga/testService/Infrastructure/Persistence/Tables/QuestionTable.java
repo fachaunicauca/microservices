@@ -14,7 +14,8 @@ public class QuestionTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long question_id;
+    @Column(name = "question_id")
+    private Long questionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_topic_id", nullable = false)
@@ -24,15 +25,11 @@ public class QuestionTable {
     @JoinColumn(name = "subject_name", nullable = false)
     private SubjectTable subject;
 
-    @Column
-    private String question_title;
+    @Column(name = "question_title")
+    private String questionTitle;
 
-    @Column
-    private String question_text;
-
-    @Lob
-    @Column(name = "question_image")
-    private byte[] questionImage;
+    @Column(name = "question_text")
+    private String questionText;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AnswerTable> answers = new ArrayList<>();

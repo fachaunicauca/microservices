@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface AnswerJpaRepository extends JpaRepository<AnswerTable, Long> {
-    @Query("SELECT a FROM AnswerTable a WHERE a.question.question_id = :question_id")
-    List<AnswerTable> findByQuestionId(Long question_id);
-    @Query("SELECT a.answer_isCorrect FROM AnswerTable a WHERE a.answer_id = :answer_id")
-    boolean isCorrect(@Param("answer_id") long answer_id);
+    List<AnswerTable> findByQuestion_QuestionId(Long questionId);
+    boolean findByAnswerIdAndCorrectIsTrue(Long answerId);
 }

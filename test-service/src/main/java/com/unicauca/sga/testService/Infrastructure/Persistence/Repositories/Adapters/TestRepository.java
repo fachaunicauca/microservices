@@ -52,6 +52,6 @@ public class TestRepository implements ITestRepository {
 
     @Override
     public List<Test> findBySemesterAndStudentCode(LocalDate startDate, LocalDate endDate, Long studentId) {
-        return testJpaRepository.findBySemesterAndStudentCode(startDate, endDate, studentId).stream().map(testMapper::toModel).collect(Collectors.toList());
+        return testJpaRepository.findByTestDateBetweenAndStudentId(startDate, endDate, studentId).stream().map(testMapper::toModel).collect(Collectors.toList());
     }
 }

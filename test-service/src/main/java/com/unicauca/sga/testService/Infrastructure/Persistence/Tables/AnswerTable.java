@@ -11,15 +11,16 @@ public class AnswerTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long answer_id;
+    @Column(name = "answer_id")
+    private Long answerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private QuestionTable question;
 
-    @Column
-    private String answer_text;
+    @Column(name = "answer_text")
+    private String answerText;
 
-    @Column
-    private boolean answer_isCorrect;
+    @Column(name = "answer_is_correct")
+    private boolean correct;
 }

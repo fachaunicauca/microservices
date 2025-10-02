@@ -46,12 +46,12 @@ public class AnswerRepository implements IAnswerRepository {
 
     @Override
     public List<Answer> findByQuestionId(Long question_id) {
-        return answerJpaRepository.findByQuestionId(question_id).stream().map(answerMapper::toModel).collect(Collectors.toList());
+        return answerJpaRepository.findByQuestion_QuestionId(question_id).stream().map(answerMapper::toModel).collect(Collectors.toList());
     }
 
     @Override
     public boolean isCorrect(long id) {
-        return answerJpaRepository.isCorrect(id);
+        return answerJpaRepository.findByAnswerIdAndCorrectIsTrue(id);
     }
 
     @Override

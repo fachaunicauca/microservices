@@ -11,27 +11,28 @@ import java.sql.Date;
 public class TestTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long test_id;
+    @Column(name = "test_id")
+    private Long testId;
 
-    @Column
-    private Long teacher_id;
+    @Column(name = "teacher_id")
+    private Long teacherId;
 
-    @Column
-    private String teacher_name;
+    @Column(name = "teacher_name")
+    private String teacherName;
 
-    @Column
-    private Long student_id;
+    @Column(name = "student_id")
+    private Long studentId;
 
-    @Column
-    private int num_of_questions;
+    @Column(name = "num_of_questions")
+    private int numOfQuestions;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_name", nullable = false)
     private SubjectTable subject;
 
-    @Column(nullable = false)
-    private Date test_date;
+    @Column(nullable = false, name = "test_date")
+    private Date testDate;
 
-    @Column
-    private float test_score;
+    @Column(name = "test_score")
+    private float testScore;
 }

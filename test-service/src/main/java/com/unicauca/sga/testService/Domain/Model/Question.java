@@ -6,11 +6,10 @@ import java.util.List;
 
 @Data
 public class Question {
-    private Long question_id;
+    private Long questionId;
     private QuestionTopic questionTopic;
     private Subject subject;
-    private String question_title;
-    private String question_text;
-    private byte[] question_image;
+    private String questionTitle;
+    private String questionText;
     private List<Answer> answers;
 }

@@ -54,7 +54,11 @@ public class TakeTestController {
     public QuestionListDTO getTestQuestions(@RequestParam("subject_name") String subject_name,
                                             @RequestParam("student_code")Long student_code,
                                             @RequestParam("teacher_name") String teacher_name){
-        return takeTestService.getTestQuestions(subject_name,student_code,teacher_name);
+        QuestionListDTO questionListDTO = takeTestService.getTestQuestions(subject_name,student_code,teacher_name);
+        System.out.println("Hola desde getTestQuestions");
+        System.out.println(questionListDTO.toString());
+
+        return questionListDTO;
     }
 
     @Operation(summary = "Guardar y calificar test",

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestGuideDTO {
-    private String test_guide_id;
-    private String test_guide_url;
+    private String testGuideId;
+    private String testGuideUrl;
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class TestGuide {
-    String test_guide_id;
-    String test_guide_url;
+    String testGuideId;
+    String testGuideUrl;
 }

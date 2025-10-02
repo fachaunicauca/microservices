@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 public class TestGuideListDTO {
-    private List<TestGuideDTO> test_guide_list;
+    private List<TestGuideDTO> testGuideList;
     public TestGuideListDTO() {
-        this.test_guide_list = new ArrayList<TestGuideDTO>();
+        this.testGuideList = new ArrayList<TestGuideDTO>();
     }
 }

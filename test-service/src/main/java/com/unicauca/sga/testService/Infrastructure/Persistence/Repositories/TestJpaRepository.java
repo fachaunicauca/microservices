@@ -11,6 +11,5 @@ import java.util.List;
 
 @Repository
 public interface TestJpaRepository extends JpaRepository<TestTable, Long> {
-    @Query("SELECT t from TestTable t WHERE t.test_date BETWEEN :startDate AND :endDate AND t.student_id = :studentId")
-    List<TestTable> findBySemesterAndStudentCode(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, Long studentId);
+    List<TestTable> findByTestDateBetweenAndStudentId(LocalDate startDate, LocalDate endDate, Long studentId);
 }

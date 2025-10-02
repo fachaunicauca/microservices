@@ -11,8 +11,9 @@ import lombok.Data;
 @Table(name="test_guides")
 public class TestGuideTable {
     @Id
-    private String test_guide_id;
+    @Column(name = "test_guide_id")
+    private String testGuideId;
 
-    @Column
-    private String test_guide_url;
+    @Column(name = "test_guide_url")
+    private String testGuideUrl;
 }

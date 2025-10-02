@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class StudentAnswerDTO {
-    private long question_id;
-    private List<Long> answers_ids;
+    private long questionId;
+    private List<Long> answersIds;
 }

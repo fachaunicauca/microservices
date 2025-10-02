@@ -1,540 +1,418 @@
-use test;
--- Inserciones tabla questionTopic
-INSERT INTO question_topic (qt_description)
-VALUES ('TOPIC DEFAULT');
+-- Inserciones tabla question_topic
+INSERT INTO question_topic (qt_description) VALUES ('TOPIC DEFAULT');
 
--- Inserciones tabla subject
-INSERT INTO subject (subject_name)
-VALUES ('Materia 4');
-INSERT INTO subject (subject_name)
-VALUES ('Materia 3');
-INSERT INTO subject (subject_name)
-VALUES ('Materia 2');
-INSERT INTO subject (subject_name)
-VALUES ('Materia 1');
+-- Inserciones tabla "subject"
+INSERT INTO "subject" (subject_name)
+VALUES ('Materia 4'),
+       ('Materia 3'),
+       ('Materia 2'),
+       ('Materia 1');
 
--- Incersiones tabla question
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (1, 1, 'Materia 1',
-        '¿Cuál es la primera acción que debe tomar un estudiante al ingresar a un laboratorio de química?', NULL);
+-- Inserciones tabla question
+INSERT INTO question (question_id, question_topic_id, subject_name, question_text) VALUES
+(1, 1, 'Materia 1', '¿Cuál es la primera acción que debe tomar un estudiante al ingresar a un laboratorio de química?'),
+(2, 1, 'Materia 1', '¿Qué debe hacer un estudiante si se derrama un reactivo químico en la piel?'),
+(3, 1, 'Materia 1', '¿Qué se debe hacer con los desechos químicos generados en el laboratorio?'),
+(4, 1, 'Materia 1', '¿Cuál es el propósito de las gafas de seguridad en un laboratorio de química?'),
+(5, 1, 'Materia 1', '¿Qué debe hacer un estudiante si detecta un incendio en el laboratorio?'),
+(6, 1, 'Materia 1', '¿Por qué es importante mantener el área de trabajo limpia en un laboratorio de química?'),
+(7, 1, 'Materia 1', '¿Qué acción debe tomarse si una persona tiene una quemadura química?'),
+(8, 1, 'Materia 1', '¿Dónde se deben almacenar los productos químicos en el laboratorio?'),
+(9, 1, 'Materia 1', '¿Qué tipo de extintor se utiliza para fuegos causados por líquidos inflamables?'),
+(10, 1, 'Materia 1', '¿Qué debe hacer un estudiante antes de comenzar a trabajar con reactivos químicos?'),
+(11, 1, 'Materia 1', '¿Cómo se debe manejar un frasco de ácido en el laboratorio?'),
+(12, 1, 'Materia 1', '¿Qué debe hacer un estudiante si se siente mareado o intoxicado en el laboratorio?'),
+(13, 1, 'Materia 1', '¿Qué debe estar siempre disponible en un laboratorio de química?'),
+(14, 1, 'Materia 1', '¿Qué se debe hacer con las sustancias químicas caducadas?'),
+(15, 1, 'Materia 1', '¿Por qué es importante no comer ni beber en el laboratorio de química?'),
+(16, 1, 'Materia 1', '¿Cómo se debe manipular un vaso medidor en el laboratorio?'),
+(17, 1, 'Materia 1', '¿Qué equipo se debe utilizar para protegerse del riesgo de inhalación de vapores tóxicos?'),
+(18, 1, 'Materia 1', '¿Dónde se encuentra el equipo de emergencia en un laboratorio?'),
+(19, 1, 'Materia 1', '¿Qué precaución debe tomarse al trabajar con líquidos inflamables?'),
+(20, 1, 'Materia 1', '¿Qué se debe hacer en caso de que un compañero de laboratorio sufra una quemadura?'),
+(21, 1, 'Materia 1', '¿Cuál es el procedimiento correcto para diluir un ácido?'),
+(22, 1, 'Materia 1', '¿Qué se debe hacer antes de encender un mechero Bunsen?'),
+(23, 1, 'Materia 1', '¿Qué equipo se debe usar para calentar sustancias de forma segura?'),
+(24, 1, 'Materia 1', '¿Cuál es la medida de seguridad más importante al manejar sustancias corrosivas?'),
+(25, 1, 'Materia 1', '¿Qué debe hacer un estudiante al finalizar una práctica de laboratorio?');
 
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (2, 1, 'Materia 1', '¿Qué debe hacer un estudiante si se derrama un reactivo químico en la piel?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (3, 1, 'Materia 1', '¿Qué se debe hacer con los desechos químicos generados en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (4, 1, 'Materia 1', '¿Cuál es el propósito de las gafas de seguridad en un laboratorio de química?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (5, 1, 'Materia 1', '¿Qué debe hacer un estudiante si detecta un incendio en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (6, 1, 'Materia 1', '¿Por qué es importante mantener el área de trabajo limpia en un laboratorio de química?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (7, 1, 'Materia 1', '¿Qué acción debe tomarse si una persona tiene una quemadura química?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (8, 1, 'Materia 1', '¿Dónde se deben almacenar los productos químicos en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (9, 1, 'Materia 1', '¿Qué tipo de extintor se utiliza para fuegos causados por líquidos inflamables?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (10, 1, 'Materia 1', '¿Qué debe hacer un estudiante antes de comenzar a trabajar con reactivos químicos?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (11, 1, 'Materia 1', '¿Cómo se debe manejar un frasco de ácido en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (12, 1, 'Materia 1', '¿Qué debe hacer un estudiante si se siente mareado o intoxicado en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (13, 1, 'Materia 1', '¿Qué debe estar siempre disponible en un laboratorio de química?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (14, 1, 'Materia 1', '¿Qué se debe hacer con las sustancias químicas caducadas?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (15, 1, 'Materia 1', '¿Por qué es importante no comer ni beber en el laboratorio de química?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (16, 1, 'Materia 1', '¿Cómo se debe manipular un vaso medidor en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (17, 1, 'Materia 1', '¿Qué equipo se debe utilizar para protegerse del riesgo de inhalación de vapores tóxicos?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (18, 1, 'Materia 1', '¿Dónde se encuentra el equipo de emergencia en un laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (19, 1, 'Materia 1', '¿Qué precaución debe tomarse al trabajar con líquidos inflamables?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (20, 1, 'Materia 1', '¿Qué se debe hacer en caso de que un compañero de laboratorio sufra una quemadura?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (21, 1, 'Materia 1', '¿Qué tipo de bata es la adecuada para usar en un laboratorio de química?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (22, 1, 'Materia 1', '¿Cómo se debe almacenar el gas en un laboratorio de química?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (23, 1, 'Materia 1', '¿Qué se debe hacer si se sospecha que un producto químico está contaminado?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (24, 1, 'Materia 1', '¿Cuál es la forma correcta de medir un volumen de líquido en un cilindro medidor?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (25, 1, 'Materia 1', '¿Qué debe hacerse con un frasco roto de vidrio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (26, 1, 'Materia 2', '¿Qué tipo de guantes se deben utilizar para manejar sustancias químicas peligrosas?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (27, 1, 'Materia 2', '¿Cómo se debe ventilar un laboratorio con productos químicos volátiles?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (28, 1, 'Materia 2',
-        '¿Por qué es importante seguir los procedimientos de seguridad al trabajar con reacciones químicas?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (29, 1, 'Materia 2', '¿Qué debe hacer un estudiante si observa una fuga de gas en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (30, 1, 'Materia 2', '¿Qué equipo de protección personal debe usarse al manipular productos corrosivos?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (31, 1, 'Materia 2', '¿Qué se debe hacer si se produce un derrame de un líquido tóxico en el laboratorio?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (32, 1, 'Materia 2',
-        '¿Cuál de las siguientes es una acción correcta cuando se trabaja con sustancias altamente volátiles?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (33, 1, 'Materia 2', '¿Por qué se deben almacenar los productos químicos de manera separada según su clase?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (34, 1, 'Materia 2', '¿Qué debe hacer un estudiante si un frasco de reactivo se cae al suelo?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (35, 1, 'Materia 2',
-        '¿Qué tipo de protección es necesaria cuando se trabaja con sustancias que pueden liberar gases peligrosos?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (36, 1, 'Materia 2',
-        '¿Por qué es importante conocer la ficha de datos de seguridad (MSDS) de los productos químicos?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (37, 1, 'Materia 2', '¿Cuál es la forma correcta de manipular un cilindro de gas?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (38, 1, 'Materia 2', '¿Qué debe hacer un estudiante al terminar una práctica en el laboratorio de química?',
-        NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (39, 1, 'Materia 2', '¿Qué se debe hacer si se detecta una fuga en un tubo de gas?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (40, 1, 'Materia 2', '¿Qué equipo es esencial para manipular reactivos sólidos de manera segura?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (41, 1, 'Materia 2',
-        '¿Qué precaución debe tomarse cuando se trabaja con productos químicos que liberan vapores nocivos?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (42, 1, 'Materia 2',
-        '¿Cómo debe proceder un estudiante si se rompe un frasco de vidrio con una sustancia peligrosa dentro?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (43, 1, 'Materia 2',
-        '¿Por qué se deben utilizar frascos de vidrio adecuados para almacenar sustancias químicas?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (44, 1, 'Materia 2',
-        '¿Qué debe hacer un estudiante si la campana de extracción de gases no está funcionando correctamente?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (45, 1, 'Materia 2', '¿Por qué es esencial mantener una adecuada ventilación en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (46, 1, 'Materia 2',
-        '¿Qué debe hacer un estudiante si entra en contacto con un producto químico irritante en los ojos?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (47, 1, 'Materia 2', '¿Cuál es la forma correcta de medir una cantidad de sólido en el laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (48, 1, 'Materia 3',
-        '¿Qué se debe hacer si se produce una reacción inesperada o peligrosa durante un experimento?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (49, 1, 'Materia 3', '¿Cómo se debe almacenar el mercurio en un laboratorio?', NULL);
-
-INSERT INTO question (question_id, question_topic_id, subject_name, question_text, question_image)
-VALUES (50, 1, 'Materia 3',
-        '¿Qué se debe hacer al utilizar una sustancia química que se encuentra en una botella sin etiqueta?', NULL);
-
+INSERT INTO question (question_id, question_topic_id, subject_name, question_text) VALUES
+(26, 1, 'Materia 2', '¿Qué tipo de guantes se deben utilizar para manejar sustancias químicas peligrosas?'),
+(27, 1, 'Materia 2', '¿Cómo se debe ventilar un laboratorio con productos químicos volátiles?'),
+(28, 1, 'Materia 2', '¿Por qué es importante seguir los procedimientos de seguridad al trabajar con reacciones químicas?'),
+(29, 1, 'Materia 2', '¿Qué debe hacer un estudiante si observa una fuga de gas en el laboratorio?'),
+(30, 1, 'Materia 2', '¿Qué equipo de protección personal debe usarse al manipular productos corrosivos?'),
+(31, 1, 'Materia 2', '¿Qué se debe hacer si se produce un derrame de un líquido tóxico en el laboratorio?'),
+(32, 1, 'Materia 2', '¿Cuál de las siguientes es una acción correcta cuando se trabaja con sustancias altamente volátiles?'),
+(33, 1, 'Materia 2', '¿Por qué se deben almacenar los productos químicos de manera separada según su clase?'),
+(34, 1, 'Materia 2', '¿Qué debe hacer un estudiante si un frasco de reactivo se cae al suelo?'),
+(35, 1, 'Materia 2', '¿Qué tipo de protección es necesaria cuando se trabaja con sustancias que pueden liberar gases peligrosos?'),
+(36, 1, 'Materia 2', '¿Por qué es importante conocer la ficha de datos de seguridad (MSDS) de los productos químicos?'),
+(37, 1, 'Materia 2', '¿Cuál es la forma correcta de manipular un cilindro de gas?'),
+(38, 1, 'Materia 2', '¿Qué debe hacer un estudiante al terminar una práctica en el laboratorio de química?'),
+(39, 1, 'Materia 2', '¿Qué se debe hacer si se detecta una fuga en un tubo de gas?'),
+(40, 1, 'Materia 2', '¿Qué equipo es esencial para manipular reactivos sólidos de manera segura?'),
+(41, 1, 'Materia 2', '¿Qué precaución debe tomarse cuando se trabaja con productos químicos que liberan vapores nocivos?'),
+(42, 1, 'Materia 2', '¿Cómo debe proceder un estudiante si se rompe un frasco de vidrio con una sustancia peligrosa dentro?'),
+(43, 1, 'Materia 2', '¿Por qué se deben utilizar frascos de vidrio adecuados para almacenar sustancias químicas?'),
+(44, 1, 'Materia 2', '¿Qué debe hacer un estudiante si la campana de extracción de gases no está funcionando correctamente?'),
+(45, 1, 'Materia 2', '¿Por qué es esencial mantener una adecuada ventilación en el laboratorio?'),
+(46, 1, 'Materia 2', '¿Qué debe hacer un estudiante si entra en contacto con un producto químico irritante en los ojos?'),
+(47, 1, 'Materia 2', '¿Cuál es la forma correcta de medir una cantidad de sólido en el laboratorio?'),
+(48, 1, 'Materia 3', '¿Qué se debe hacer si se produce una reacción inesperada o peligrosa durante un experimento?'),
+(49, 1, 'Materia 3', '¿Cómo se debe almacenar el mercurio en un laboratorio?'),
+(50, 1, 'Materia 3', '¿Qué se debe hacer al utilizar una sustancia química que se encuentra en una botella sin etiqueta?');
 
 -- Inserciones tabla answer
 -- Respuestas para la pregunta 1
 -- Respuestas para la pregunta 1
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (1, 1, 'Leer las normas de seguridad del laboratorio.', true);
+VALUES (1, 1, 'Leer las normas de seguridad del laboratorio.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (1, 2, 'Comenzar a mezclar reactivos.', false);
+VALUES (1, 2, 'Comenzar a mezclar reactivos.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (1, 3, 'Encender el mechero Bunsen.', false);
+VALUES (1, 3, 'Encender el mechero Bunsen.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (1, 4, 'Tomar asiento sin hacer nada.', false);
+VALUES (1, 4, 'Tomar asiento sin hacer nada.', FALSE);
 
 -- Respuestas para la pregunta 2
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (2, 5, 'Lavar la zona afectada con abundante agua.', true);
+VALUES (2, 5, 'Lavar la zona afectada con abundante agua.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (2, 6, 'Cubrir la piel sin lavar la zona.', false);
+VALUES (2, 6, 'Cubrir la piel sin lavar la zona.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (2, 7, 'Aplicar alcohol directamente.', false);
+VALUES (2, 7, 'Aplicar alcohol directamente.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (2, 8, 'Ignorar el incidente.', false);
+VALUES (2, 8, 'Ignorar el incidente.', FALSE);
 
 -- Respuestas para la pregunta 3
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (3, 9, 'Desecharlos en los contenedores adecuados.', true);
+VALUES (3, 9, 'Desecharlos en los contenedores adecuados.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (3, 10, 'Verterlos en el fregadero.', false);
+VALUES (3, 10, 'Verterlos en el fregadero.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (3, 11, 'Tirarlos a la basura común.', false);
+VALUES (3, 11, 'Tirarlos a la basura común.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (3, 12, 'Guardarlos para uso futuro.', false);
+VALUES (3, 12, 'Guardarlos para uso futuro.', FALSE);
 
 -- Respuestas para la pregunta 4
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (4, 13, 'Proteger los ojos de salpicaduras y vapores.', true);
+VALUES (4, 13, 'Proteger los ojos de salpicaduras y vapores.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (4, 14, 'Mejorar la visión en el laboratorio.', false);
+VALUES (4, 14, 'Mejorar la visión en el laboratorio.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (4, 15, 'Proteger la cara del calor.', false);
+VALUES (4, 15, 'Proteger la cara del calor.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (4, 16, 'Evitar la fatiga visual.', false);
+VALUES (4, 16, 'Evitar la fatiga visual.', FALSE);
 
 -- Respuestas para la pregunta 5
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (5, 17, 'Activar la alarma y evacuar el laboratorio.', true);
+VALUES (5, 17, 'Activar la alarma y evacuar el laboratorio.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (5, 18, 'Intentar apagar el fuego sin protección.', false);
+VALUES (5, 18, 'Intentar apagar el fuego sin protección.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (5, 19, 'Ignorar el fuego.', false);
+VALUES (5, 19, 'Ignorar el fuego.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (5, 20, 'Esperar instrucciones sin moverse.', false);
+VALUES (5, 20, 'Esperar instrucciones sin moverse.', FALSE);
 
 -- Respuestas para la pregunta 6
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (6, 21, 'Evitar accidentes y contaminaciones cruzadas.', true);
+VALUES (6, 21, 'Evitar accidentes y contaminaciones cruzadas.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (6, 22, 'Mejorar la estética del laboratorio.', false);
+VALUES (6, 22, 'Mejorar la estética del laboratorio.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (6, 23, 'Ahorrar tiempo en la limpieza final.', false);
+VALUES (6, 23, 'Ahorrar tiempo en la limpieza final.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (6, 24, 'Impresionar al profesor.', false);
+VALUES (6, 24, 'Impresionar al profesor.', FALSE);
 
 -- Respuestas para la pregunta 7
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (7, 25, 'Lavar la zona con abundante agua durante al menos 15 minutos.', true);
+VALUES (7, 25, 'Lavar la zona con abundante agua durante al menos 15 minutos.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (7, 26, 'Cubrir la quemadura con un paño seco.', false);
+VALUES (7, 26, 'Cubrir la quemadura con un paño seco.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (7, 27, 'Aplicar ungüento directamente.', false);
+VALUES (7, 27, 'Aplicar ungüento directamente.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (7, 28, 'No hacer nada y seguir trabajando.', false);
+VALUES (7, 28, 'No hacer nada y seguir trabajando.', FALSE);
 
 -- Respuestas para la pregunta 8
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (8, 29, 'En armarios ventilados y etiquetados correctamente.', true);
+VALUES (8, 29, 'En armarios ventilados y etiquetados correctamente.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (8, 30, 'En cualquier lugar del laboratorio.', false);
+VALUES (8, 30, 'En cualquier lugar del laboratorio.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (8, 31, 'Cerca de fuentes de calor.', false);
+VALUES (8, 31, 'Cerca de fuentes de calor.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (8, 32, 'Junto a alimentos.', false);
+VALUES (8, 32, 'Junto a alimentos.', FALSE);
 
 -- Respuestas para la pregunta 9
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (9, 33, 'Extintor tipo B.', true);
+VALUES (9, 33, 'Extintor tipo B.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (9, 34, 'Extintor tipo A.', false);
+VALUES (9, 34, 'Extintor tipo A.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (9, 35, 'Extintor tipo C.', false);
+VALUES (9, 35, 'Extintor tipo C.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (9, 36, 'Extintor tipo D.', false);
+VALUES (9, 36, 'Extintor tipo D.', FALSE);
 
 -- Respuestas para la pregunta 10
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (10, 37, 'Leer las etiquetas y fichas de seguridad de los reactivos.', true);
+VALUES (10, 37, 'Leer las etiquetas y fichas de seguridad de los reactivos.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (10, 38, 'Oler el reactivo directamente.', false);
+VALUES (10, 38, 'Oler el reactivo directamente.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (10, 39, 'Probar el reactivo para identificarlo.', false);
+VALUES (10, 39, 'Probar el reactivo para identificarlo.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (10, 40, 'Mezclar los reactivos al azar.', false);
+VALUES (10, 40, 'Mezclar los reactivos al azar.', FALSE);
 
 -- Respuestas para la pregunta 11
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (11, 41, 'Con guantes y gafas de seguridad, y transportarlo con ambas manos.', true);
+VALUES (11, 41, 'Con guantes y gafas de seguridad, y transportarlo con ambas manos.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (11, 42, 'Sin protección y usando una sola mano.', false);
+VALUES (11, 42, 'Sin protección y usando una sola mano.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (11, 43, 'Apoyándolo sobre el borde de la mesa.', false);
+VALUES (11, 43, 'Apoyándolo sobre el borde de la mesa.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (11, 44, 'Sacudiéndolo antes de abrirlo.', false);
+VALUES (11, 44, 'Sacudiéndolo antes de abrirlo.', FALSE);
 
 -- Respuestas para la pregunta 12
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (12, 45, 'Avisar al profesor y salir a tomar aire fresco.', true);
+VALUES (12, 45, 'Avisar al profesor y salir a tomar aire fresco.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (12, 46, 'Seguir trabajando hasta desmayarse.', false);
+VALUES (12, 46, 'Seguir trabajando hasta desmayarse.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (12, 47, 'Tomar algún reactivo para recuperarse.', false);
+VALUES (12, 47, 'Tomar algún reactivo para recuperarse.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (12, 48, 'Ignorar la situación.', false);
+VALUES (12, 48, 'Ignorar la situación.', FALSE);
 
 -- Respuestas para la pregunta 13
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (13, 49, 'Equipo de primeros auxilios.', true);
+VALUES (13, 49, 'Equipo de primeros auxilios.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (13, 50, 'Comida y bebida.', false);
+VALUES (13, 50, 'Comida y bebida.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (13, 51, 'Libros de lectura.', false);
+VALUES (13, 51, 'Libros de lectura.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (13, 52, 'Juegos de mesa.', false);
+VALUES (13, 52, 'Juegos de mesa.', FALSE);
 
 -- Respuestas para la pregunta 14
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (14, 53, 'Desecharlas siguiendo los protocolos de seguridad.', true);
+VALUES (14, 53, 'Desecharlas siguiendo los protocolos de seguridad.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (14, 54, 'Mezclarlas con nuevas sustancias.', false);
+VALUES (14, 54, 'Mezclarlas con nuevas sustancias.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (14, 55, 'Guardarlas en cualquier lugar.', false);
+VALUES (14, 55, 'Guardarlas en cualquier lugar.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (14, 56, 'Darlas a los estudiantes para practicar.', false);
+VALUES (14, 56, 'Darlas a los estudiantes para practicar.', FALSE);
 
 -- Respuestas para la pregunta 15
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (15, 57, 'Para evitar contaminación química y riesgos para la salud.', true);
+VALUES (15, 57, 'Para evitar contaminación química y riesgos para la salud.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (15, 58, 'Porque es una regla sin sentido.', false);
+VALUES (15, 58, 'Porque es una regla sin sentido.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (15, 59, 'Porque no hay tiempo para comer.', false);
+VALUES (15, 59, 'Porque no hay tiempo para comer.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (15, 60, 'Para evitar manchas en los informes.', false);
+VALUES (15, 60, 'Para evitar manchas en los informes.', FALSE);
 
 -- Respuestas para la pregunta 16
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (16, 61, 'Sosteniéndolo firmemente con ambas manos y nivelando a la vista.', true);
+VALUES (16, 61, 'Sosteniéndolo firmemente con ambas manos y nivelando a la vista.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (16, 62, 'Agitándolo mientras se mide.', false);
+VALUES (16, 62, 'Agitándolo mientras se mide.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (16, 63, 'Colocándolo sobre una superficie inclinada.', false);
+VALUES (16, 63, 'Colocándolo sobre una superficie inclinada.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (16, 64, 'Vertiendo líquidos a la fuerza.', false);
+VALUES (16, 64, 'Vertiendo líquidos a la fuerza.', FALSE);
 
 -- Respuestas para la pregunta 17
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (17, 65, 'Mascarilla o campana extractora.', true);
+VALUES (17, 65, 'Mascarilla o campana extractora.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (17, 66, 'Guantes de látex solamente.', false);
+VALUES (17, 66, 'Guantes de látex solamente.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (17, 67, 'Gorro de baño.', false);
+VALUES (17, 67, 'Gorro de baño.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (17, 68, 'Ningún equipo es necesario.', false);
+VALUES (17, 68, 'Ningún equipo es necesario.', FALSE);
 
 -- Respuestas para la pregunta 18
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (18, 69, 'En un lugar visible y de fácil acceso.', true);
+VALUES (18, 69, 'En un lugar visible y de fácil acceso.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (18, 70, 'Guardado bajo llave.', false);
+VALUES (18, 70, 'Guardado bajo llave.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (18, 71, 'En el almacén general.', false);
+VALUES (18, 71, 'En el almacén general.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (18, 72, 'En la oficina del director.', false);
+VALUES (18, 72, 'En la oficina del director.', FALSE);
 
 -- Respuestas para la pregunta 19
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (19, 73, 'Mantenerlos alejados de fuentes de ignición y usar protección adecuada.', true);
+VALUES (19, 73, 'Mantenerlos alejados de fuentes de ignición y usar protección adecuada.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (19, 74, 'Calentarlos directamente sobre fuego.', false);
+VALUES (19, 74, 'Calentarlos directamente sobre fuego.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (19, 75, 'Almacenarlos en recipientes abiertos.', false);
+VALUES (19, 75, 'Almacenarlos en recipientes abiertos.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (19, 76, 'Transportarlos sin precauciones.', false);
+VALUES (19, 76, 'Transportarlos sin precauciones.', FALSE);
 
 -- Respuestas para la pregunta 20
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (20, 77, 'Aplicar agua fría sobre la quemadura y avisar al profesor.', true);
+VALUES (20, 77, 'Aplicar agua fría sobre la quemadura y avisar al profesor.', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (20, 78, 'Cubrir la quemadura con una manta.', false);
+VALUES (20, 78, 'Cubrir la quemadura con una manta.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (20, 79, 'Ponerle hielo directamente.', false);
+VALUES (20, 79, 'Ponerle hielo directamente.', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (20, 80, 'Seguir trabajando sin atenderlo.', false);
+VALUES (20, 80, 'Seguir trabajando sin atenderlo.', FALSE);
 
 -- Respuestas para la pregunta 21
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (21, 81, 'Una bata de algodón normal', 0);
+VALUES (21, 81, 'Una bata de algodón normal', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (21, 82, 'Una bata de laboratorio resistente a productos químicos', 1);
+VALUES (21, 82, 'Una bata de laboratorio resistente a productos químicos', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (21, 83, 'Una camiseta vieja y pantalones largos', 0);
+VALUES (21, 83, 'Una camiseta vieja y pantalones largos', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (21, 84, 'Cualquier ropa que cubra la piel', 0);
+VALUES (21, 84, 'Cualquier ropa que cubra la piel', FALSE);
 
 -- Respuestas para la pregunta 22
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (22, 85, 'En lugares ventilados, lejos de fuentes de calor', 1);
+VALUES (22, 85, 'En lugares ventilados, lejos de fuentes de calor', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (22, 86, 'En cualquier lugar de la sala', 0);
+VALUES (22, 86, 'En cualquier lugar de la sala', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (22, 87, 'Junto con los productos inflamables', 0);
+VALUES (22, 87, 'Junto con los productos inflamables', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (22, 88, 'No es necesario almacenarlo de forma especial', 0);
+VALUES (22, 88, 'No es necesario almacenarlo de forma especial', FALSE);
 
 -- Respuestas para la pregunta 23
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (23, 89, 'Usarlo sin preocupación', 0);
+VALUES (23, 89, 'Usarlo sin preocupación', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (23, 90, 'Informar al profesor y no usarlo', 1);
+VALUES (23, 90, 'Informar al profesor y no usarlo', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (23, 91, 'Descartarlo en el agua corriente', 0);
+VALUES (23, 91, 'Descartarlo en el agua corriente', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (23, 92, 'No hacer nada', 0);
+VALUES (23, 92, 'No hacer nada', FALSE);
 
 -- Respuestas para la pregunta 24
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (24, 93, 'Mirar la lectura desde arriba', 0);
+VALUES (24, 93, 'Mirar la lectura desde arriba', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (24, 94, 'Leer la medición a la altura del menisco del líquido', 1);
+VALUES (24, 94, 'Leer la medición a la altura del menisco del líquido', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (24, 95, 'Verificar la medición desde un lado', 0);
+VALUES (24, 95, 'Verificar la medición desde un lado', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (24, 96, 'Aproximarse al volumen deseado sin ser exacto', 0);
+VALUES (24, 96, 'Aproximarse al volumen deseado sin ser exacto', FALSE);
 
 -- Respuestas para la pregunta 25
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (25, 97, 'Ignorarlo y seguir trabajando', 0);
+VALUES (25, 97, 'Ignorarlo y seguir trabajando', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (25, 98, 'Limpiar los fragmentos con las manos', 0);
+VALUES (25, 98, 'Limpiar los fragmentos con las manos', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (25, 99, 'Usar un barrido adecuado y desecharlo en el recipiente de vidrio roto', 1);
+VALUES (25, 99, 'Usar un barrido adecuado y desecharlo en el recipiente de vidrio roto', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (25, 100, 'Tirarlo al cubo de basura común', 0);
+VALUES (25, 100, 'Tirarlo al cubo de basura común', FALSE);
 
 -- Respuestas para la pregunta 26
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (26, 101, 'Guantes de tela', 0);
+VALUES (26, 101, 'Guantes de tela', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (26, 102, 'Guantes de goma o látex adecuados para sustancias químicas', 1);
+VALUES (26, 102, 'Guantes de goma o látex adecuados para sustancias químicas', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (26, 103, 'Guantes de cocina', 0);
+VALUES (26, 103, 'Guantes de cocina', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (26, 104, 'No es necesario usar guantes', 0);
+VALUES (26, 104, 'No es necesario usar guantes', FALSE);
 
 -- Respuestas para la pregunta 27
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (27, 105, 'Usando una campana de extracción de gases', 1);
+VALUES (27, 105, 'Usando una campana de extracción de gases', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (27, 106, 'Abriendo las ventanas', 0);
+VALUES (27, 106, 'Abriendo las ventanas', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (27, 107, 'Apagando los sistemas de calefacción', 0);
+VALUES (27, 107, 'Apagando los sistemas de calefacción', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (27, 108, 'No es necesario ventilar', 0);
+VALUES (27, 108, 'No es necesario ventilar', FALSE);
 
 -- Respuestas para la pregunta 28
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (28, 109, 'Para obtener resultados más rápidos', 0);
+VALUES (28, 109, 'Para obtener resultados más rápidos', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (28, 110, 'Para evitar accidentes y mantener un ambiente seguro', 1);
+VALUES (28, 110, 'Para evitar accidentes y mantener un ambiente seguro', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (28, 111, 'Para evitar que los productos cambien de color', 0);
+VALUES (28, 111, 'Para evitar que los productos cambien de color', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (28, 112, 'Porque es una regla de la universidad', 0);
+VALUES (28, 112, 'Porque es una regla de la universidad', FALSE);
 
 -- Respuestas para la pregunta 29
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (29, 113, 'Ignorarla', 0);
+VALUES (29, 113, 'Ignorarla', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (29, 114, 'Apagar todas las luces y equipos eléctricos', 0);
+VALUES (29, 114, 'Apagar todas las luces y equipos eléctricos', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (29, 115, 'Informar inmediatamente al profesor y evacuar el área', 1);
+VALUES (29, 115, 'Informar inmediatamente al profesor y evacuar el área', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (29, 116, 'Intentar sellar la fuga con cinta', 0);
+VALUES (29, 116, 'Intentar sellar la fuga con cinta', FALSE);
 
 -- Respuestas para la pregunta 30
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (30, 117, 'Solo guantes', 0);
+VALUES (30, 117, 'Solo guantes', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (30, 118, 'Bata de laboratorio y gafas de seguridad', 1);
+VALUES (30, 118, 'Bata de laboratorio y gafas de seguridad', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (30, 119, 'Solo gafas de seguridad', 0);
+VALUES (30, 119, 'Solo gafas de seguridad', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (30, 120, 'Ningún equipo es necesario', 0);
+VALUES (30, 120, 'Ningún equipo es necesario', FALSE);
 
 -- Respuestas para la pregunta 31
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (31, 121, 'Ignorarlo si el derrame es pequeño', 0);
+VALUES (31, 121, 'Ignorarlo si el derrame es pequeño', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (31, 122, 'Limpiar el derrame inmediatamente con un trapo seco', 0);
+VALUES (31, 122, 'Limpiar el derrame inmediatamente con un trapo seco', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (31, 123, 'Avisar al profesor, evacuar el área y limpiar el derrame con materiales adecuados', 1);
+VALUES (31, 123, 'Avisar al profesor, evacuar el área y limpiar el derrame con materiales adecuados', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (31, 124, 'Tirar el líquido al inodoro', 0);
+VALUES (31, 124, 'Tirar el líquido al inodoro', FALSE);
 
 -- Respuestas para la pregunta 32
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (32, 125, 'Trabajar bajo una campana de extracción de gases', 1);
+VALUES (32, 125, 'Trabajar bajo una campana de extracción de gases', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (32, 126, 'Abrir las ventanas del laboratorio para mejorar la ventilación', 0);
+VALUES (32, 126, 'Abrir las ventanas del laboratorio para mejorar la ventilación', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (32, 127, 'Usar solo guantes sin máscara', 0);
+VALUES (32, 127, 'Usar solo guantes sin máscara', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (32, 128, 'No es necesario tomar precauciones', 0);
+VALUES (32, 128, 'No es necesario tomar precauciones', FALSE);
 
 -- Respuestas para la pregunta 33
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (33, 129, 'Para ahorrar espacio', 0);
+VALUES (33, 129, 'Para ahorrar espacio', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (33, 130, 'Para evitar reacciones peligrosas en caso de derrames', 1);
+VALUES (33, 130, 'Para evitar reacciones peligrosas en caso de derrames', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (33, 131, 'Para facilitar su identificación', 0);
+VALUES (33, 131, 'Para facilitar su identificación', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (33, 132, 'No es necesario almacenarlos separados', 0);
+VALUES (33, 132, 'No es necesario almacenarlos separados', FALSE);
 
 -- Respuestas para la pregunta 34
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (34, 133, 'Recoger los fragmentos con las manos', 0);
+VALUES (34, 133, 'Recoger los fragmentos con las manos', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (34, 134, 'Limpiar el área de inmediato sin precauciones', 0);
+VALUES (34, 134, 'Limpiar el área de inmediato sin precauciones', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (34, 135, 'Avisar al profesor y seguir las instrucciones del protocolo de limpieza', 1);
+VALUES (34, 135, 'Avisar al profesor y seguir las instrucciones del protocolo de limpieza', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (34, 136, 'No hacer nada y continuar trabajando', 0);
-
+VALUES (34, 136, 'No hacer nada y continuar trabajando', FALSE);
 -- Respuestas para la pregunta 35
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (35, 137, 'Solo gafas de seguridad', 0);
+VALUES (35, 137, 'Solo gafas de seguridad', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (35, 138, 'Máscara con filtro adecuado y guantes', 1);
+VALUES (35, 138, 'Máscara con filtro adecuado y guantes', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (35, 139, 'Solo guantes', 0);
+VALUES (35, 139, 'Solo guantes', FALSE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
-VALUES (35, 140, 'Ninguna protección es necesaria', 0);
+VALUES (35, 140, 'Ninguna protección es necesaria', FALSE);
 
 -- Respuestas para la pregunta 36
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
@@ -685,6 +563,7 @@ INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
 VALUES (50, 199, 'Consultar al profesor para que identifique la sustancia antes de usarla', TRUE);
 INSERT INTO answer (question_id, answer_id, answer_text, answer_is_correct)
 VALUES (50, 200, 'Ignorar que no tiene etiqueta', FALSE);
+
 
 -- Estudiante 101 presenta 3 veces
 INSERT INTO test (teacher_id, teacher_name, student_id, num_of_questions, subject_name, test_date, test_score)

@@ -79,18 +79,18 @@ public class TakeTestService {
     public float saveTest(StudentTestResponseDTO studentTestResponseDTO){
                 //Score the test
         float test_score = scoreTest(studentTestResponseDTO);
-        if(!subjectService.isPresent(studentTestResponseDTO.getSubject_name())){
-            throw new NotFoundException("No se encontro la materia "+studentTestResponseDTO.getSubject_name()+".");
+        if(!subjectService.isPresent(studentTestResponseDTO.getSubjectName())){
+            throw new NotFoundException("No se encontro la materia "+studentTestResponseDTO.getSubjectName()+".");
         }
-        Subject subject = subjectService.getSubjectById(studentTestResponseDTO.getSubject_name());
+        Subject subject = subjectService.getSubjectById(studentTestResponseDTO.getSubjectName());
         //Create a new test
         Test newTest = new Test();
-        newTest.setTeacher_name(studentTestResponseDTO.getTeacher_name());
-        newTest.setStudent_id(studentTestResponseDTO.getStudent_code());
+        newTest.setTeacherName(studentTestResponseDTO.getTeacherName());
+        newTest.setStudentId(studentTestResponseDTO.getStudentCode());
         newTest.setSubject(subject);
-        newTest.setNum_of_questions(num_of_questions);
-        newTest.setTest_date(studentTestResponseDTO.getTest_date());
-        newTest.setTest_score(test_score);
+        newTest.setNumOfQuestions(num_of_questions);
+        newTest.setTestDate(studentTestResponseDTO.getTestDate());
+        newTest.setTestScore(test_score);
         
         testService.saveTest(newTest);
         //Send the test score
@@ -100,19 +100,19 @@ public class TakeTestService {
     private float scoreTest(StudentTestResponseDTO studentTestResponseDTO){
         int correctAnswersCount = 0;
         boolean isCorrect;
-        for(StudentAnswerDTO studentAnswerDTO: studentTestResponseDTO.getStudent_response()){
+        for(StudentAnswerDTO studentAnswerDTO: studentTestResponseDTO.getStudentResponse()){
             //If answer id is a list, it means that there are multiple answers
-            if(studentAnswerDTO.getAnswers_ids().size()!=1) {
-                List<Long> student_answers = studentAnswerDTO.getAnswers_ids();
+            if(studentAnswerDTO.getAnswersIds().size()!=1) {
+                List<Long> student_answers = studentAnswerDTO.getAnswersIds();
                 //Get all the question answers
-                List<Answer> answers = answerService.getAllAnswersByQuestion(studentAnswerDTO.getQuestion_id());
+                List<Answer> answers = answerService.getAllAnswersByQuestion(studentAnswerDTO.getQuestionId());
                 if(answers.isEmpty()){
-                    throw new NotFoundException("La pregunta con id: "+studentAnswerDTO.getQuestion_id()+" no tiene respuestas registradas.");
+                    throw new NotFoundException("La pregunta con id: "+studentAnswerDTO.getQuestionId()+" no tiene respuestas registradas.");
                 }
                 //Get the correct answers
                 List<Long> correct_answers = answers.stream()
-                        .filter(Answer::isAnswer_isCorrect)
-                        .map(Answer::getAnswer_id)
+                        .filter(Answer::isCorrect)
+                        .map(Answer::getAnswerId)
                         .toList();
                 //If the list are the same it means that the answers are correct
                 if (correct_answers.size() == student_answers.size()) {
@@ -124,10 +124,10 @@ public class TakeTestService {
                 }
             }//If the answer id isn't a list, then just validate that is the correct answer
             else{
-                if(!answerService.isPresent(studentAnswerDTO.getAnswers_ids().get(0))){
-                    throw new NotFoundException("La respuesta con id: "+studentAnswerDTO.getAnswers_ids()+" no esta registrada.");
+                if(!answerService.isPresent(studentAnswerDTO.getAnswersIds().get(0))){
+                    throw new NotFoundException("La respuesta con id: "+studentAnswerDTO.getAnswersIds().get(0)+" no esta registrada.");
                 }
-                isCorrect=answerService.getAnswerById(studentAnswerDTO.getAnswers_ids().get(0)).isAnswer_isCorrect();
+                isCorrect=answerService.getAnswerById(studentAnswerDTO.getAnswersIds().get(0)).isCorrect();
 
                 if(isCorrect) correctAnswersCount++;
             }
@@ -158,7 +158,7 @@ public class TakeTestService {
         try{
             List<Test> semesterTestList = testService.getTestBySemesterAndStudentCode(start_date,end_date,student_code);
             if(!semesterTestList.isEmpty()){
-                if(semesterTestList.stream().anyMatch(test -> test.getTest_score() >= 0.7)) {
+                if(semesterTestList.stream().anyMatch(test -> test.getTestScore() >= 0.7)) {
                     return (short) -1; //Temporaly test already passed code.
                 }
             }

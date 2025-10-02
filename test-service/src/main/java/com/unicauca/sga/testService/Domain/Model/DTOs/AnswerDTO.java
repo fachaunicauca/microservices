@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AnswerDTO {
-    private long answer_id;
-    private String answer_text;
+    private long answerId;
+    private String answerText;
 }
