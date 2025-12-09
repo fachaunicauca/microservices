@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
-import com.unicauca.sga.testService.Domain.Model.Subject;
+import com.unicauca.sga.testService.Domain.Models.OldVersion.Subject;
 import com.unicauca.sga.testService.Domain.Repositories.ISubjectRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.SubjectMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.SubjectJpaRepository;

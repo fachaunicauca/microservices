@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Mappers;
 
-import com.unicauca.sga.testService.Domain.Model.Question;
+import com.unicauca.sga.testService.Domain.Models.OldVersion.Question;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionTable;
 import org.mapstruct.Mapper;
 

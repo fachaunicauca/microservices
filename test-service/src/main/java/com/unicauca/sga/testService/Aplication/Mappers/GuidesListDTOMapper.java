@@ -1,8 +1,8 @@
 package com.unicauca.sga.testService.Aplication.Mappers;
 
-import com.unicauca.sga.testService.Domain.Model.DTOs.TestGuideDTO;
-import com.unicauca.sga.testService.Domain.Model.DTOs.TestGuideListDTO;
-import com.unicauca.sga.testService.Domain.Model.TestGuide;
+import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideListDTO;
+import com.unicauca.sga.testService.Domain.Models.OldVersion.TestGuide;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

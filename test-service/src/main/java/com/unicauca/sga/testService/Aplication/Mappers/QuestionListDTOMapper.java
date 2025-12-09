@@ -1,10 +1,10 @@
 package com.unicauca.sga.testService.Aplication.Mappers;
 
-import com.unicauca.sga.testService.Domain.Model.Answer;
-import com.unicauca.sga.testService.Domain.Model.DTOs.AnswerDTO;
-import com.unicauca.sga.testService.Domain.Model.DTOs.QuestionDTO;
-import com.unicauca.sga.testService.Domain.Model.DTOs.QuestionListDTO;
-import com.unicauca.sga.testService.Domain.Model.Question;
+import com.unicauca.sga.testService.Domain.Models.OldVersion.Answer;
+import com.unicauca.sga.testService.Domain.Models.DTOs.AnswerDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionListDTO;
+import com.unicauca.sga.testService.Domain.Models.OldVersion.Question;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

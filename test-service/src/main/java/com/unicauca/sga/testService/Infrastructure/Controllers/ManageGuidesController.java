@@ -1,9 +1,9 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers;
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageGuidesService;
-import com.unicauca.sga.testService.Domain.Model.DTOs.TestGuideDTO;
-import com.unicauca.sga.testService.Domain.Model.DTOs.TestGuideListDTO;
-import com.unicauca.sga.testService.Domain.Model.DTOs.TestGuideRequestDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideListDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

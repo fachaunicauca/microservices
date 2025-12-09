@@ -1,8 +1,8 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers;
 
 import com.unicauca.sga.testService.Aplication.UseCases.TakeTestService;
-import com.unicauca.sga.testService.Domain.Model.DTOs.QuestionListDTO;
-import com.unicauca.sga.testService.Domain.Model.DTOs.StudentTestResponseDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionListDTO;
+import com.unicauca.sga.testService.Domain.Models.DTOs.StudentTestResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
