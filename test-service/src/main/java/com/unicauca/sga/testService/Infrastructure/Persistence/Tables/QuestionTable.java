@@ -1,6 +1,5 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Tables;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 

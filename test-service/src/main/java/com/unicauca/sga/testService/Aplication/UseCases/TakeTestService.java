@@ -11,10 +11,11 @@ import com.unicauca.sga.testService.Domain.Model.DTOs.StudentTestResponseDTO;
 import com.unicauca.sga.testService.Domain.Model.Question;
 import com.unicauca.sga.testService.Domain.Model.Subject;
 import com.unicauca.sga.testService.Domain.Model.Test;
-import com.unicauca.sga.testService.Domain.Ports.Services.IAnswerService;
-import com.unicauca.sga.testService.Domain.Ports.Services.IQuestionService;
-import com.unicauca.sga.testService.Domain.Ports.Services.ISubjectService;
-import com.unicauca.sga.testService.Domain.Ports.Services.ITestService;
+import com.unicauca.sga.testService.Domain.Repositories.IAnswerRepository;
+import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
+import com.unicauca.sga.testService.Domain.Repositories.ISubjectRepository;
+import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,62 +28,51 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class TakeTestService {
 
     private final QuestionListDTOMapper questionListDTOMapper;
 
-    private final IQuestionService questionService;
-    private final IAnswerService answerService;
-    private final ISubjectService subjectService;
-    private final ITestService testService;
+    private final IQuestionRepository questionRepository;
+    private final IAnswerRepository answerRepository;
+    private final ISubjectRepository subjectRepository;
+    private final ITestRepository testRepository;
 
     private static final int num_of_questions = 20;
 
-    public TakeTestService(QuestionListDTOMapper questionListDTOMapper,
-                           IQuestionService questionService,
-                           IAnswerService answerService,
-                           ISubjectService subjectService,
-                           ITestService testService) {
-        this.questionListDTOMapper=questionListDTOMapper;
-        this.questionService = questionService;
-        this.answerService=answerService;
-        this.subjectService=subjectService;
-        this.testService=testService;
-    }
-
     /*
      * First, the user sends the data to validate that he can present
-     * the evaluation. Once, the data is validated, the exam questions
+     * the evaluation. Once the data is validated, the exam questions
      * are returned. If the data is invalid, an exception is sent.
      */
     @Transactional(readOnly = true)
     public QuestionListDTO getTestQuestions(String subject_name,
                                             Long student_code,
                                             String teacher_name){
-        //Validate that the teacher exists. Teachers Microservice call
-        //Validate that the student code exists. Teachers Microservice call
+        //Validate that the teacher exists. Teacher Microservice call
+        //Validate that the student code exists. Teacher Microservice call
         //Validate that the subject exists.
-        if(!subjectService.isPresent(subject_name)){
-            throw new NotFoundException("No se encontro la materia "+subject_name+".");
+        if(!subjectRepository.isPresent(subject_name)){
+            throw new NotFoundException("No se encontró la materia "+subject_name+".");
         }
 
         //Get and return the Questions by Subject
-        List<Question> questionList = questionService.getRandomQuestionsBySubject(subject_name, num_of_questions);
+        List<Question> questionList = questionRepository.getRandomQuestionsBySubject(subject_name, num_of_questions);
         if(questionList.isEmpty()) {
             throw new NoQuestionsException("La materia " + subject_name + " no tiene preguntas asociadas.");
         }else if(questionList.size()<num_of_questions){
-            throw new InsufficientQuestionsException("La materia " + subject_name +" no tiene la cantidad de preguntas minimas.");
+            throw new InsufficientQuestionsException("La materia " + subject_name +" no tiene la cantidad de preguntas mínima.");
         }
         return questionListDTOMapper.toDTO(questionList);
     }
 
     public float saveTest(StudentTestResponseDTO studentTestResponseDTO){
-                //Score the test
+        //Score the test
         float test_score = scoreTest(studentTestResponseDTO);
-        if(!subjectService.isPresent(studentTestResponseDTO.getSubjectName())){
-            throw new NotFoundException("No se encontro la materia "+studentTestResponseDTO.getSubjectName()+".");
+        if(!subjectRepository.isPresent(studentTestResponseDTO.getSubjectName())){
+            throw new NotFoundException("No se encontró la materia "+studentTestResponseDTO.getSubjectName()+".");
         }
-        Subject subject = subjectService.getSubjectById(studentTestResponseDTO.getSubjectName());
+        Subject subject = subjectRepository.getSubjectById(studentTestResponseDTO.getSubjectName());
         //Create a new test
         Test newTest = new Test();
         newTest.setTeacherName(studentTestResponseDTO.getTeacherName());
@@ -92,7 +82,7 @@ public class TakeTestService {
         newTest.setTestDate(studentTestResponseDTO.getTestDate());
         newTest.setTestScore(test_score);
         
-        testService.saveTest(newTest);
+        testRepository.save(newTest);
         //Send the test score
         return test_score;
     }
@@ -105,7 +95,7 @@ public class TakeTestService {
             if(studentAnswerDTO.getAnswersIds().size()!=1) {
                 List<Long> student_answers = studentAnswerDTO.getAnswersIds();
                 //Get all the question answers
-                List<Answer> answers = answerService.getAllAnswersByQuestion(studentAnswerDTO.getQuestionId());
+                List<Answer> answers = answerRepository.getAllAnswersByQuestion(studentAnswerDTO.getQuestionId());
                 if(answers.isEmpty()){
                     throw new NotFoundException("La pregunta con id: "+studentAnswerDTO.getQuestionId()+" no tiene respuestas registradas.");
                 }
@@ -114,7 +104,7 @@ public class TakeTestService {
                         .filter(Answer::isCorrect)
                         .map(Answer::getAnswerId)
                         .toList();
-                //If the list are the same it means that the answers are correct
+                //If the list is the same, it means that the answers are correct
                 if (correct_answers.size() == student_answers.size()) {
                     //Ignore the order
                     Set<Long> correctSet = new HashSet<>(correct_answers);
@@ -124,10 +114,10 @@ public class TakeTestService {
                 }
             }//If the answer id isn't a list, then just validate that is the correct answer
             else{
-                if(!answerService.isPresent(studentAnswerDTO.getAnswersIds().get(0))){
+                if(!answerRepository.isPresent(studentAnswerDTO.getAnswersIds().get(0))){
                     throw new NotFoundException("La respuesta con id: "+studentAnswerDTO.getAnswersIds().get(0)+" no esta registrada.");
                 }
-                isCorrect=answerService.getAnswerById(studentAnswerDTO.getAnswersIds().get(0)).isCorrect();
+                isCorrect=answerRepository.getAnswerById(studentAnswerDTO.getAnswersIds().get(0)).isCorrect();
 
                 if(isCorrect) correctAnswersCount++;
             }
@@ -156,15 +146,15 @@ public class TakeTestService {
         LocalDate start_date = LocalDate.parse(start, formatter);
         LocalDate end_date = LocalDate.parse(end, formatter);
         try{
-            List<Test> semesterTestList = testService.getTestBySemesterAndStudentCode(start_date,end_date,student_code);
+            List<Test> semesterTestList = testRepository.getTestBySemesterAndStudentCode(start_date,end_date,student_code);
             if(!semesterTestList.isEmpty()){
                 if(semesterTestList.stream().anyMatch(test -> test.getTestScore() >= 0.7)) {
-                    return (short) -1; //Temporaly test already passed code.
+                    return (short) -1; //Temporally test already passed code.
                 }
             }
             return (short) semesterTestList.size();
         } catch (Exception e) {
-            throw new NotFoundException("No se encontro el estudiante con codigo "+student_code+".");
+            throw new NotFoundException("No se encontró el estudiante con code "+student_code+".");
         }
     }
 }

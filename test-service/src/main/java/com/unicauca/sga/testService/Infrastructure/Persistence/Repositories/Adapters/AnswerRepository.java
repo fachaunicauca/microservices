@@ -1,7 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
 import com.unicauca.sga.testService.Domain.Model.Answer;
-import com.unicauca.sga.testService.Domain.Ports.Repositories.IAnswerRepository;
+import com.unicauca.sga.testService.Domain.Repositories.IAnswerRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.AnswerMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.AnswerJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,12 +20,7 @@ public class AnswerRepository implements IAnswerRepository {
     }
 
     @Override
-    public List<Answer> findAll() {
-        return answerJpaRepository.findAll().stream().map(answerMapper::toModel).collect(Collectors.toList());
-    }
-
-    @Override
-    public Answer findById(long id) {
+    public Answer getAnswerById(long id) {
         return answerMapper.toModel(answerJpaRepository.findById(id).get());
     }
 
@@ -45,13 +40,8 @@ public class AnswerRepository implements IAnswerRepository {
     }
 
     @Override
-    public List<Answer> findByQuestionId(Long question_id) {
+    public List<Answer> getAllAnswersByQuestion(Long question_id) {
         return answerJpaRepository.findByQuestion_QuestionId(question_id).stream().map(answerMapper::toModel).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean isCorrect(long id) {
-        return answerJpaRepository.findByAnswerIdAndCorrectIsTrue(id);
     }
 
     @Override

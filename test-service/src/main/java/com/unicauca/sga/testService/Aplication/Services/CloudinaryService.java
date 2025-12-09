@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -41,13 +40,20 @@ public class CloudinaryService {
         }
     }
 
-    public boolean deleteFile(String file_id) {
+    public String deleteFile(String file_id) {
         try {
-            Map result = cloudinary.uploader().destroy(file_id, ObjectUtils.asMap(
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> result = cloudinary.uploader().destroy(file_id, ObjectUtils.asMap(
                     "resource_type", "raw",
-                    "folder","test-service"
+                    "folder", "test-service"
             ));
-            return "ok".equals(result.get("result"));
+            String deleteResult = (String) result.get("result");
+            if (deleteResult.equals("ok") ) {
+                return "ok";
+            }
+            return deleteResult;
+
         } catch (Exception e) {
             throw new RuntimeException("Error deleting file from Cloudinary: " + e.getMessage(), e);
         }

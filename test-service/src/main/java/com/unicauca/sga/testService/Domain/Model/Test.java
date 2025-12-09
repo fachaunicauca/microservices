@@ -3,6 +3,7 @@ package com.unicauca.sga.testService.Domain.Model;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 public class Test {
@@ -12,6 +13,6 @@ public class Test {
     private Long studentId;
     private Subject subject;
     private int numOfQuestions;
-    private Date testDate;
+    private LocalDate testDate;
     private float testScore;
 }

@@ -1,12 +1,11 @@
-package com.unicauca.sga.testService.Domain.Ports.Repositories;
+package com.unicauca.sga.testService.Domain.Repositories;
 
 import com.unicauca.sga.testService.Domain.Model.TestGuide;
 
 import java.util.List;
 
 public interface ITestGuidesRepository {
-    List<TestGuide> findAll();
-    TestGuide findById(String id);
+    List<TestGuide> getAllTestsGuides();
     TestGuide save(TestGuide testGuide);
     void delete(TestGuide testGuide);
     void deleteById(String id);

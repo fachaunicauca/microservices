@@ -1,10 +1,9 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
 import com.unicauca.sga.testService.Domain.Model.Question;
-import com.unicauca.sga.testService.Domain.Ports.Repositories.IQuestionRepository;
+import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.QuestionMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.QuestionJpaRepository;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -22,12 +21,7 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public List<Question> findAll() {
-        return questionJpaRepository.findAll().stream().map(questionMapper::toModel).collect(Collectors.toList());
-    }
-
-    @Override
-    public Question findById(long id) {
+    public Question getQuestionById(long id) {
         return questionMapper.toModel(questionJpaRepository.findById(id).get());
     }
 
@@ -47,7 +41,7 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public List<Question> findRandomBySubject(String subject_name, int n) {
+    public List<Question> getRandomQuestionsBySubject(String subject_name, int n) {
         List<Question> questions = questionJpaRepository
                 .findBySubjectSubjectName(subject_name)
                 .stream()
@@ -57,7 +51,7 @@ public class QuestionRepository implements IQuestionRepository {
         // Mezclar la lista en memoria
         Collections.shuffle(questions);
 
-        // Retornar solo los primeros n elementos
+        // Retornar solo los primeros N elementos
         if (questions.size() > n) {
             return questions.subList(0, n);
         } else {

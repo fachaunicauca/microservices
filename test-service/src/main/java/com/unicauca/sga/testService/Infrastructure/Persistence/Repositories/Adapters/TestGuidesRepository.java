@@ -1,7 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
 import com.unicauca.sga.testService.Domain.Model.TestGuide;
-import com.unicauca.sga.testService.Domain.Ports.Repositories.ITestGuidesRepository;
+import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestGuideMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestGuidesJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -22,13 +22,8 @@ public class TestGuidesRepository implements ITestGuidesRepository {
     }
 
     @Override
-    public List<TestGuide> findAll() {
+    public List<TestGuide> getAllTestsGuides() {
         return testGuidesJpaRepository.findAll().stream().map(testGuideMapper::toModel).collect(Collectors.toList());
-    }
-
-    @Override
-    public TestGuide findById(String id) {
-        return testGuideMapper.toModel(testGuidesJpaRepository.findById(id).get());
     }
 
     @Override

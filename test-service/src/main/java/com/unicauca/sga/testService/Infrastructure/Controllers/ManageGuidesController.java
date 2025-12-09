@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/guides")
-@Tag(name="Controlador Gestion de Guias",description="Funcionalidades necesarias para la gestion de las guias de capacitacion.")
+@Tag(name="Controlador Gestion de Guias",description="Funcionalidades necesarias para la gestion de las guias de capacitación.")
 public class ManageGuidesController {
     private final ManageGuidesService manageGuidesService;
 
@@ -23,11 +23,11 @@ public class ManageGuidesController {
         this.manageGuidesService = manageGuidesService;
     }
 
-    @Operation(summary = "Obtener guias de capacitacion.",
-                description = "Obtiene todas las guias de capacitacion registradas en el sistema.",
+    @Operation(summary = "Obtener guias de capacitación.",
+                description = "Obtiene todas las guias de capacitación registradas en el sistema.",
                 responses = {
-                    @ApiResponse(responseCode = "200", description = "Guias obtenidas con exito."),
-                    @ApiResponse(responseCode = "404", description = "No se encontro ninguna guia.")
+                    @ApiResponse(responseCode = "200", description = "Guias obtenidas con éxito."),
+                    @ApiResponse(responseCode = "404", description = "No se encontró ninguna guia.")
                 })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -40,7 +40,7 @@ public class ManageGuidesController {
             description = "Permite que docentes y administrador suban guias al servicio de cloudinary.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "La guia se guardo exitosamente."),
-                    @ApiResponse(responseCode = "500", description = "Ocurrio un error interno al subir el archivo a cloudinary.")
+                    @ApiResponse(responseCode = "500", description = "Ocurrió un error interno al subir el archivo a cloudinary.")
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -53,7 +53,7 @@ public class ManageGuidesController {
             description = "Permite que docentes y administrador eliminen guias del servicio de cloudinary.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "La guia se elimino correctamente."),
-                    @ApiResponse(responseCode = "404", description = "No se encontro la guia en el servicio de cloudinary.")
+                    @ApiResponse(responseCode = "404", description = "No se encontró la guia en el servicio de cloudinary.")
             })
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping

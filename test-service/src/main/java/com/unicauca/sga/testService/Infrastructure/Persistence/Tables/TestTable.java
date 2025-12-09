@@ -3,7 +3,7 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Tables;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -31,7 +31,7 @@ public class TestTable {
     private SubjectTable subject;
 
     @Column(nullable = false, name = "test_date")
-    private Date testDate;
+    private LocalDate testDate;
 
     @Column(name = "test_score")
     private float testScore;

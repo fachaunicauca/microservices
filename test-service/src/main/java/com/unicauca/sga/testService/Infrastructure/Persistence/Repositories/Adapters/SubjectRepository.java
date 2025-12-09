@@ -1,7 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
 import com.unicauca.sga.testService.Domain.Model.Subject;
-import com.unicauca.sga.testService.Domain.Ports.Repositories.ISubjectRepository;
+import com.unicauca.sga.testService.Domain.Repositories.ISubjectRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.SubjectMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.SubjectJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,12 +20,12 @@ public class SubjectRepository implements ISubjectRepository {
     }
 
     @Override
-    public List<Subject> findAll() {
+    public List<Subject> getAllSubjects() {
         return subjectJpaRepository.findAll().stream().map(subjectMapper::toModel).collect(Collectors.toList());
     }
 
     @Override
-    public Subject findById(String id) {
+    public Subject getSubjectById(String id) {
         return subjectMapper.toModel(subjectJpaRepository.findById(id).get());
     }
 
