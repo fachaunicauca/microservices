@@ -1,7 +1,5 @@
 package com.unicauca.sga.testService.Domain.Repositories;
 
-
-
 import com.unicauca.sga.testService.Domain.Models.Answer;
 
 import java.util.List;

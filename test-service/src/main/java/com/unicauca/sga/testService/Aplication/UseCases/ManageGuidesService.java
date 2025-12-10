@@ -6,7 +6,7 @@ import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideDTO;
 import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideListDTO;
 import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideRequestDTO;
-import com.unicauca.sga.testService.Domain.Models.OldVersion.TestGuide;
+import com.unicauca.sga.testService.Domain.Models.TestGuide;
 import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -5,19 +5,20 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "question")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class QuestionTable {
+@Table(name = "studentTestConfig")
+public class StudentTestConfigTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long questionId;
+    private long studentTestConfigId;
 
     @Column(nullable = false)
-    private String questionText;
+    private String studentEmail;
 
-    private String questionTitle;
+    @Column(nullable = false)
+    private int attemptLimit;
 
-    private byte[] questionImage;
+    @Column(nullable = false)
+    private int attemptsUsed;
 
     @ManyToOne
     @JoinColumn(name = "testId", nullable = false)

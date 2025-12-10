@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface ITestRepository {
     List<Test> getAllTests();
-    Test getTestById(long id);
+    List<Test> getTeacherTests(String teacherEmail);
+    Test getTestById(int id);
     Test save(Test test);
-    void deleteById(long id);
-    boolean isPresent(long id);
+    void deleteById(int id);
+    boolean isPresent(int id);
 }

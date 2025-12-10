@@ -6,20 +6,13 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "answer")
-public class AnswerTable {
-
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class AnswerTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "answer_id")
-    private Long answerId;
+    private long answerId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "questionId", nullable = false)
     private QuestionTable question;
-
-    @Column(name = "answer_text")
-    private String answerText;
-
-    @Column(name = "answer_is_correct")
-    private boolean correct;
 }

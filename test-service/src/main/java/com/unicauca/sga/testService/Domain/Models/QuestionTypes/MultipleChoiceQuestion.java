@@ -1,14 +1,15 @@
 package com.unicauca.sga.testService.Domain.Models.QuestionTypes;
 
-import com.unicauca.sga.testService.Domain.Models.Answer;
+import com.unicauca.sga.testService.Domain.Models.AnswerTypes.ChoiceAnswer;
 import com.unicauca.sga.testService.Domain.Models.Question;
 
 import java.util.List;
 
-public class MultipleChoiceQuestion extends Question {
-    private List<Long> correctAnswersIds;
+public class MultipleChoiceQuestion extends Question<List<ChoiceAnswer>> {
+    private List<ChoiceAnswer> answers;
 
-    public int grade(Answer answer) {
+    @Override
+    public int grade(List<ChoiceAnswer> studentResponse) {
         return 0;
     }
 

@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
-import com.unicauca.sga.testService.Domain.Models.OldVersion.TestGuide;
+import com.unicauca.sga.testService.Domain.Models.TestGuide;
 import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestGuideMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestGuidesJpaRepository;
@@ -27,13 +27,13 @@ public class TestGuidesRepository implements ITestGuidesRepository {
     }
 
     @Override
-    public TestGuide save(TestGuide testGuide) {
-        return testGuideMapper.toModel(testGuidesJpaRepository.save(testGuideMapper.toInfra(testGuide)));
+    public List<TestGuide> getTeacherTestsGuides(String teacherEmail) {
+        return testGuidesJpaRepository.findByTeacherEmail(teacherEmail);
     }
 
     @Override
-    public void delete(TestGuide testGuide) {
-        testGuidesJpaRepository.delete(testGuideMapper.toInfra(testGuide));
+    public TestGuide save(TestGuide testGuide) {
+        return testGuideMapper.toModel(testGuidesJpaRepository.save(testGuideMapper.toInfra(testGuide)));
     }
 
     @Override

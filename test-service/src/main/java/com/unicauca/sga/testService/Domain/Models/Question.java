@@ -3,7 +3,7 @@ package com.unicauca.sga.testService.Domain.Models;
 import lombok.Data;
 
 @Data
-public abstract class Question {
+public abstract class Question<T> {
     private long questionId;
     private String questionText;
     private String questionTitle;
@@ -11,5 +11,6 @@ public abstract class Question {
 
     private Test test;
 
+    public abstract int grade(T studentResponse);
     public abstract boolean requiresManualGrade();
 }

@@ -3,7 +3,7 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Tables;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -11,28 +11,31 @@ import java.time.LocalDate;
 public class TestTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "test_id")
-    private Long testId;
+    private int testId;
 
-    @Column(name = "teacher_id")
-    private Long teacherId;
+    @Column(nullable = false)
+    private String teacherEmail;
 
-    @Column(name = "teacher_name")
-    private String teacherName;
+    @Column(unique = true, nullable = false)
+    private String testTitle;
 
-    @Column(name = "student_id")
-    private Long studentId;
+    private String testDescription;
 
-    @Column(name = "num_of_questions")
-    private int numOfQuestions;
+    @Column(nullable = false)
+    private int testDurationMinutes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_name", nullable = false)
-    private SubjectTable subject;
+    @Column(nullable = false)
+    private int testNumberOfQuestions;
 
-    @Column(nullable = false, name = "test_date")
-    private LocalDate testDate;
+    @Column(nullable = false)
+    private int testAttemptLimit;
 
-    @Column(name = "test_score")
-    private float testScore;
+    @Column(nullable = false)
+    private byte testState;
+
+    @Column(nullable = false)
+    private boolean isPeriodic;
+
+    @OneToMany(mappedBy = "test")
+    private List<QuestionTable> questions;
 }

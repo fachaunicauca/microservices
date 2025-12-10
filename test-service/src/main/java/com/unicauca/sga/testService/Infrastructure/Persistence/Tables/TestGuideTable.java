@@ -8,12 +8,12 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="test_guides")
+@Table(name="testGuides")
 public class TestGuideTable {
     @Id
-    @Column(name = "test_guide_id")
     private String testGuideId;
 
-    @Column(name = "test_guide_url")
     private String testGuideUrl;
+
+    private String teacherEmail;
 }

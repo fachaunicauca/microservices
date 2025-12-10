@@ -1,10 +1,10 @@
 package com.unicauca.sga.testService.Aplication.Mappers;
 
-import com.unicauca.sga.testService.Domain.Models.OldVersion.Answer;
+import com.unicauca.sga.testService.Domain.Models.Answer;
 import com.unicauca.sga.testService.Domain.Models.DTOs.AnswerDTO;
 import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionDTO;
 import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionListDTO;
-import com.unicauca.sga.testService.Domain.Models.OldVersion.Question;
+import com.unicauca.sga.testService.Domain.Models.Question;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,16 +27,16 @@ public class QuestionListDTOMapper {
         newQuestionDTO.setQuestionTitle(question.getQuestionTitle());
         newQuestionDTO.setQuestionText(question.getQuestionText());
         List<AnswerDTO> answerDTOList = new ArrayList<>();
-        for(Answer answer: question.getAnswers()){
+        /*for(Answer answer: question.getAnswers()){
             answerDTOList.add(AnswertoDTO(answer));
         }
-        newQuestionDTO.setAnswers(answerDTOList);
+        newQuestionDTO.setAnswers(answerDTOList);*/
         return newQuestionDTO;
     }
-    private AnswerDTO AnswertoDTO(Answer answer){
+    /*private AnswerDTO AnswertoDTO(Answer answer){
         AnswerDTO newAnswerDTO = new AnswerDTO();
         newAnswerDTO.setAnswerId(answer.getAnswerId());
         newAnswerDTO.setAnswerText(answer.getAnswerText());
         return newAnswerDTO;
-    }
+    }*/
 }

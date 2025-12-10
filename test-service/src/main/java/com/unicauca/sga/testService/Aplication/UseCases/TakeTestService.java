@@ -4,16 +4,11 @@ import com.unicauca.sga.testService.Aplication.Mappers.QuestionListDTOMapper;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NoQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
-import com.unicauca.sga.testService.Domain.Models.OldVersion.Answer;
 import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionListDTO;
 import com.unicauca.sga.testService.Domain.Models.DTOs.StudentAnswerDTO;
 import com.unicauca.sga.testService.Domain.Models.DTOs.StudentTestResponseDTO;
-import com.unicauca.sga.testService.Domain.Models.OldVersion.Question;
-import com.unicauca.sga.testService.Domain.Models.OldVersion.Subject;
-import com.unicauca.sga.testService.Domain.Models.OldVersion.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IAnswerRepository;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
-import com.unicauca.sga.testService.Domain.Repositories.ISubjectRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,19 +27,20 @@ import java.util.Set;
 public class TakeTestService {
 
     private final QuestionListDTOMapper questionListDTOMapper;
-
+    /*
     private final IQuestionRepository questionRepository;
     private final IAnswerRepository answerRepository;
     private final ISubjectRepository subjectRepository;
     private final ITestRepository testRepository;
 
-    private static final int num_of_questions = 20;
+    private static final int num_of_questions = 20;*/
 
     /*
      * First, the user sends the data to validate that he can present
      * the evaluation. Once the data is validated, the exam questions
      * are returned. If the data is invalid, an exception is sent.
      */
+    /*
     @Transactional(readOnly = true)
     public QuestionListDTO getTestQuestions(String subject_name,
                                             Long student_code,
@@ -64,9 +60,9 @@ public class TakeTestService {
             throw new InsufficientQuestionsException("La materia " + subject_name +" no tiene la cantidad de preguntas mínima.");
         }
         return questionListDTOMapper.toDTO(questionList);
-    }
+    }*/
 
-    public float saveTest(StudentTestResponseDTO studentTestResponseDTO){
+    /*public float saveTest(StudentTestResponseDTO studentTestResponseDTO){
         //Score the test
         float test_score = scoreTest(studentTestResponseDTO);
         if(!subjectRepository.isPresent(studentTestResponseDTO.getSubjectName())){
@@ -85,9 +81,9 @@ public class TakeTestService {
         testRepository.save(newTest);
         //Send the test score
         return test_score;
-    }
+    }*/
 
-    private float scoreTest(StudentTestResponseDTO studentTestResponseDTO){
+    /*private float scoreTest(StudentTestResponseDTO studentTestResponseDTO){
         int correctAnswersCount = 0;
         boolean isCorrect;
         for(StudentAnswerDTO studentAnswerDTO: studentTestResponseDTO.getStudentResponse()){
@@ -156,5 +152,5 @@ public class TakeTestService {
         } catch (Exception e) {
             throw new NotFoundException("No se encontró el estudiante con code "+student_code+".");
         }
-    }
+    }*/
 }
