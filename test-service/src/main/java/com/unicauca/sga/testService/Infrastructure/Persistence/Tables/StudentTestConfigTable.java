@@ -20,7 +20,7 @@ public class StudentTestConfigTable {
     @Column(nullable = false)
     private int attemptsUsed;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId", nullable = false)
     private TestTable test;
 }

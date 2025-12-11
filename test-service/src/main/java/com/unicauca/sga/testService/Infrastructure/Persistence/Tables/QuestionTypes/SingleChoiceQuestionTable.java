@@ -12,6 +12,6 @@ import java.util.List;
 @Table(name = "singleChoiceQuestion")
 @PrimaryKeyJoinColumn(name = "questionId")
 public class SingleChoiceQuestionTable extends QuestionTable {
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnswerTable> answers;
 }

@@ -27,7 +27,7 @@ public class TestAttemptTable {
     @Column(nullable = false)
     private boolean isFullyScored;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId",nullable = false)
     private TestTable test;
 

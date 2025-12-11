@@ -4,22 +4,18 @@ import com.unicauca.sga.testService.Domain.Models.TestGuide;
 import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestGuideMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestGuidesJpaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
 public class TestGuidesRepository implements ITestGuidesRepository {
 
     private final TestGuidesJpaRepository testGuidesJpaRepository;
     private final TestGuideMapper testGuideMapper;
-
-    public TestGuidesRepository(TestGuidesJpaRepository testGuidesJpaRepository,
-                                TestGuideMapper testGuideMapper) {
-        this.testGuidesJpaRepository = testGuidesJpaRepository;
-        this.testGuideMapper = testGuideMapper;
-    }
 
     @Override
     public List<TestGuide> getAllTestsGuides() {
@@ -28,7 +24,7 @@ public class TestGuidesRepository implements ITestGuidesRepository {
 
     @Override
     public List<TestGuide> getTeacherTestsGuides(String teacherEmail) {
-        return testGuidesJpaRepository.findByTeacherEmail(teacherEmail);
+        return testGuidesJpaRepository.findByTeacherEmail(teacherEmail).stream().map(testGuideMapper::toModel).toList();
     }
 
     @Override

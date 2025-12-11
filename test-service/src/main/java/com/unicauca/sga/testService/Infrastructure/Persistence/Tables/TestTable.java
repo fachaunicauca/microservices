@@ -36,6 +36,6 @@ public class TestTable {
     @Column(nullable = false)
     private boolean isPeriodic;
 
-    @OneToMany(mappedBy = "test")
+    @OneToMany(mappedBy = "test", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionTable> questions;
 }

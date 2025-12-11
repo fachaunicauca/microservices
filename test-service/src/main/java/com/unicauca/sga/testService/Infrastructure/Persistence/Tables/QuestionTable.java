@@ -19,7 +19,7 @@ public abstract class QuestionTable {
 
     private byte[] questionImage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId", nullable = false)
     private TestTable test;
 }

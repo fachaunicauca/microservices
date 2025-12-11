@@ -12,7 +12,7 @@ public abstract class AnswerTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long answerId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "questionId", nullable = false)
     private QuestionTable question;
 }
