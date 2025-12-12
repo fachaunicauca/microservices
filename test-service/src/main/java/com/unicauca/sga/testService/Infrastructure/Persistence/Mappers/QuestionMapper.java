@@ -11,9 +11,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionTy
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionTypes.SingleChoiceQuestionTable;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", uses = {
-        TestMapper.class,
-})
+@Mapper(componentModel = "spring")
 public interface QuestionMapper {
     MultipleChoiceQuestion MCQuestionToModel(MultipleChoiceQuestionTable question, @Context CycleAvoidingMappingContext context);
     MultipleChoiceQuestionTable MCQuestionToInfra(MultipleChoiceQuestion question, @Context CycleAvoidingMappingContext context);
