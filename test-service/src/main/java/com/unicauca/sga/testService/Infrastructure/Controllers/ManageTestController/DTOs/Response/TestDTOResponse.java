@@ -1,5 +1,6 @@
-package com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs;
+package com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManageTestDTO {
+public class TestDTOResponse {
     private int testId;
     private String teacherEmail;
     private String testTitle;
@@ -16,5 +17,6 @@ public class ManageTestDTO {
     private int testNumberOfQuestions;
     private int testAttemptLimit;
     private byte testState;
+    @JsonProperty("isPeriodic")
     private boolean isPeriodic;
 }

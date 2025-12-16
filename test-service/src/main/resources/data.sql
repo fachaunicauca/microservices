@@ -9,16 +9,16 @@ INSERT INTO test (
     testState,
     isPeriodic
 ) VALUES (
-     1,
-     'admin@unicauca.edu.co',
-     'Evaluación General',
-     'Evaluación destinada a medir los conocimientos básicos sobre normas de seguridad que deben poseer los estudiantes antes de ingresar a los laboratorios.',
-     10,
-     20,
-     3,
-     1,
-     true
-);
+             1,
+             'admin@unicauca.edu.co',
+             'Evaluación General',
+             'Evaluación destinada a medir los conocimientos básicos sobre normas de seguridad que deben poseer los estudiantes antes de ingresar a los laboratorios.',
+             10,
+             20,
+             3,
+             1,
+             true
+         );
 
 INSERT INTO question (questionId, questionText, questionTitle, questionImage, testId) VALUES
   (1, '¿Cuál es la primera acción que debe tomar un estudiante al ingresar a un laboratorio de química?', NULL, NULL, 1),
@@ -176,133 +176,169 @@ VALUES (20, 'Esperar instrucciones sin moverse.', FALSE);
 
 -- Pregunta 6
 INSERT INTO answer (answerId, questionId) VALUES (21, 6);
-INSERT INTO choiceAnswer VALUES (21, 'Evitar accidentes y contaminaciones cruzadas.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect) VALUES (21, 'Evitar accidentes y contaminaciones cruzadas.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (22, 6);
-INSERT INTO choiceAnswer VALUES (22, 'Mejorar la estética del laboratorio.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect) VALUES (22, 'Mejorar la estética del laboratorio.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (23, 6);
-INSERT INTO choiceAnswer VALUES (23, 'Ahorrar tiempo en la limpieza final.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect) VALUES (23, 'Ahorrar tiempo en la limpieza final.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (24, 6);
-INSERT INTO choiceAnswer VALUES (24, 'Impresionar al profesor.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect) VALUES (24, 'Impresionar al profesor.', FALSE);
 
 -- Pregunta 7
 INSERT INTO answer (answerId, questionId) VALUES (25, 7);
-INSERT INTO choiceAnswer VALUES (25, 'Lavar la zona con abundante agua durante al menos 15 minutos.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (25, 'Lavar la zona con abundante agua durante al menos 15 minutos.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (26, 7);
-INSERT INTO choiceAnswer VALUES (26, 'Cubrir la quemadura con un paño seco.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (26, 'Cubrir la quemadura con un paño seco.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (27, 7);
-INSERT INTO choiceAnswer VALUES (27, 'Aplicar ungüento directamente.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (27, 'Aplicar ungüento directamente.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (28, 7);
-INSERT INTO choiceAnswer VALUES (28, 'No hacer nada y seguir trabajando.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (28, 'No hacer nada y seguir trabajando.', FALSE);
 
 -- Pregunta 8
 INSERT INTO answer (answerId, questionId) VALUES (29, 8);
-INSERT INTO choiceAnswer VALUES (29, 'En armarios ventilados y etiquetados correctamente.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (29, 'En armarios ventilados y etiquetados correctamente.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (30, 8);
-INSERT INTO choiceAnswer VALUES (30, 'En cualquier lugar del laboratorio.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (30, 'En cualquier lugar del laboratorio.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (31, 8);
-INSERT INTO choiceAnswer VALUES (31, 'Cerca de fuentes de calor.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (31, 'Cerca de fuentes de calor.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (32, 8);
-INSERT INTO choiceAnswer VALUES (32, 'Junto a alimentos.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (32, 'Junto a alimentos.', FALSE);
 
 -- Pregunta 9
 INSERT INTO answer (answerId, questionId) VALUES (33, 9);
-INSERT INTO choiceAnswer VALUES (33, 'Extintor tipo B.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (33, 'Extintor tipo B.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (34, 9);
-INSERT INTO choiceAnswer VALUES (34, 'Extintor tipo A.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (34, 'Extintor tipo A.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (35, 9);
-INSERT INTO choiceAnswer VALUES (35, 'Extintor tipo C.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (35, 'Extintor tipo C.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (36, 9);
-INSERT INTO choiceAnswer VALUES (36, 'Extintor tipo D.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (36, 'Extintor tipo D.', FALSE);
 
 -- Pregunta 10
 INSERT INTO answer (answerId, questionId) VALUES (37, 10);
-INSERT INTO choiceAnswer VALUES (37, 'Leer las etiquetas y fichas de seguridad de los reactivos.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (37, 'Leer las etiquetas y fichas de seguridad de los reactivos.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (38, 10);
-INSERT INTO choiceAnswer VALUES (38, 'Oler el reactivo directamente.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (38, 'Oler el reactivo directamente.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (39, 10);
-INSERT INTO choiceAnswer VALUES (39, 'Probar el reactivo para identificarlo.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (39, 'Probar el reactivo para identificarlo.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (40, 10);
-INSERT INTO choiceAnswer VALUES (40, 'Mezclar los reactivos al azar.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (40, 'Mezclar los reactivos al azar.', FALSE);
 
---Pregunta 11
+-- Pregunta 11
 INSERT INTO answer (answerId, questionId) VALUES (41, 11);
-INSERT INTO choiceAnswer VALUES (41, 'Con guantes y gafas de seguridad, y transportarlo con ambas manos.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (41, 'Con guantes y gafas de seguridad, y transportarlo con ambas manos.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (42, 11);
-INSERT INTO choiceAnswer VALUES (42, 'Sin protección y usando una sola mano.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (42, 'Sin protección y usando una sola mano.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (43, 11);
-INSERT INTO choiceAnswer VALUES (43, 'Apoyándolo sobre el borde de la mesa.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (43, 'Apoyándolo sobre el borde de la mesa.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (44, 11);
-INSERT INTO choiceAnswer VALUES (44, 'Sacudiéndolo antes de abrirlo.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (44, 'Sacudiéndolo antes de abrirlo.', FALSE);
 
 -- Pregunta 12
 INSERT INTO answer (answerId, questionId) VALUES (45, 12);
-INSERT INTO choiceAnswer VALUES (45, 'Avisar al profesor y salir a tomar aire fresco.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (45, 'Avisar al profesor y salir a tomar aire fresco.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (46, 12);
-INSERT INTO choiceAnswer VALUES (46, 'Seguir trabajando hasta desmayarse.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (46, 'Seguir trabajando hasta desmayarse.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (47, 12);
-INSERT INTO choiceAnswer VALUES (47, 'Tomar algún reactivo para recuperarse.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (47, 'Tomar algún reactivo para recuperarse.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (48, 12);
-INSERT INTO choiceAnswer VALUES (48, 'Ignorar la situación.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (48, 'Ignorar la situación.', FALSE);
 
 -- Pregunta 13
 INSERT INTO answer (answerId, questionId) VALUES (49, 13);
-INSERT INTO choiceAnswer VALUES (49, 'Equipo de primeros auxilios.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (49, 'Equipo de primeros auxilios.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (50, 13);
-INSERT INTO choiceAnswer VALUES (50, 'Comida y bebida.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (50, 'Comida y bebida.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (51, 13);
-INSERT INTO choiceAnswer VALUES (51, 'Libros de lectura.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (51, 'Libros de lectura.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (52, 13);
-INSERT INTO choiceAnswer VALUES (52, 'Juegos de mesa.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (52, 'Juegos de mesa.', FALSE);
 
 -- Pregunta 14
 INSERT INTO answer (answerId, questionId) VALUES (53, 14);
-INSERT INTO choiceAnswer VALUES (53, 'Desecharlas siguiendo los protocolos de seguridad.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (53, 'Desecharlas siguiendo los protocolos de seguridad.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (54, 14);
-INSERT INTO choiceAnswer VALUES (54, 'Mezclarlas con nuevas sustancias.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (54, 'Mezclarlas con nuevas sustancias.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (55, 14);
-INSERT INTO choiceAnswer VALUES (55, 'Guardarlas en cualquier lugar.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (55, 'Guardarlas en cualquier lugar.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (56, 14);
-INSERT INTO choiceAnswer VALUES (56, 'Darlas a los estudiantes para practicar.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (56, 'Darlas a los estudiantes para practicar.', FALSE);
 
 -- Pregunta 15
 INSERT INTO answer (answerId, questionId) VALUES (57, 15);
-INSERT INTO choiceAnswer VALUES (57, 'Para evitar contaminación química y riesgos para la salud.', TRUE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (57, 'Para evitar contaminación química y riesgos para la salud.', TRUE);
 
 INSERT INTO answer (answerId, questionId) VALUES (58, 15);
-INSERT INTO choiceAnswer VALUES (58, 'Porque es una regla sin sentido.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (58, 'Porque es una regla sin sentido.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (59, 15);
-INSERT INTO choiceAnswer VALUES (59, 'Porque no hay tiempo para comer.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (59, 'Porque no hay tiempo para comer.', FALSE);
 
 INSERT INTO answer (answerId, questionId) VALUES (60, 15);
-INSERT INTO choiceAnswer VALUES (60, 'Para evitar manchas en los informes.', FALSE);
+INSERT INTO choiceAnswer (answerId, answerText, isCorrect)
+VALUES (60, 'Para evitar manchas en los informes.', FALSE);
 
 -- Respuestas para la pregunta 16
 -- Base AnswerTable

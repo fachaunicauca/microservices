@@ -46,7 +46,14 @@ public class TestRepository implements ITestRepository {
 
     @Override
     public Test save(Test test) {
-        return toModel(testJpaRepository.save(toInfra(test)));
+        if (test.getTestId() == 0){
+            return toModel(testJpaRepository.save(toInfra(test)));
+        }
+
+        TestTable testTable = testJpaRepository.getReferenceById(test.getTestId());
+        testMapper.update(test, testTable);
+
+        return toModel(testJpaRepository.save(testTable));
     }
 
     @Override
@@ -58,4 +65,5 @@ public class TestRepository implements ITestRepository {
     public boolean isPresent(int id) {
         return testJpaRepository.existsById(id);
     }
+
 }

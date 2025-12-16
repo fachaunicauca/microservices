@@ -16,5 +16,9 @@ public class Test {
     private byte testState;
     private boolean isPeriodic;
 
-    private List<Question> questions;
+    private List<Question<?>> questions;
+
+    public boolean hasEnoughQuestion(int totalQuestions){
+        return totalQuestions >= this.testNumberOfQuestions;
+    }
 }
