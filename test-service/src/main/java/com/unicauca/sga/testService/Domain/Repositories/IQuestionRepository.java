@@ -11,4 +11,5 @@ public interface IQuestionRepository {
     boolean isPresent(long id);
     List<Question> getRandomAndLimitedTestQuestions(int testId, int numberOfQuestions);
     List<Question> getTestQuestions(int id);
+    long getTestTotalQuestions(int testId);
 }

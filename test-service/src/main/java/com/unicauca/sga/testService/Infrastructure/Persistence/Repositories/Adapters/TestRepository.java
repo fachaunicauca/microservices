@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
+import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
@@ -7,6 +8,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestMappe
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestTable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,14 +48,20 @@ public class TestRepository implements ITestRepository {
 
     @Override
     public Test save(Test test) {
-        if (test.getTestId() == 0){
-            return toModel(testJpaRepository.save(toInfra(test)));
+        try {
+            if (test.getTestId() == 0) {
+                return toModel(testJpaRepository.save(toInfra(test)));
+            }
+
+            TestTable testTable = testJpaRepository.getReferenceById(test.getTestId());
+
+            testMapper.update(test, testTable);
+
+            return toModel(testJpaRepository.save(testTable));
+
+        } catch (DataIntegrityViolationException ex) {
+            throw new AlreadyExistsException("El título de la evaluación ya está en uso.");
         }
-
-        TestTable testTable = testJpaRepository.getReferenceById(test.getTestId());
-        testMapper.update(test, testTable);
-
-        return toModel(testJpaRepository.save(testTable));
     }
 
     @Override

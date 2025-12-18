@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientQuestionsException.class)
     public ResponseEntity<String> handleInsufficientQuestionsException(InsufficientQuestionsException ex){
-        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(NoQuestionsException.class)

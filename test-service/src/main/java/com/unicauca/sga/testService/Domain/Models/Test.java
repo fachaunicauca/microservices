@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Domain.Models;
 
+import com.unicauca.sga.testService.Domain.Constants.TestState;
 import lombok.Data;
 
 import java.util.List;
@@ -14,11 +15,15 @@ public class Test {
     private int testNumberOfQuestions;
     private int testAttemptLimit;
     private byte testState;
-    private boolean isPeriodic;
+    private boolean periodic;
 
     private List<Question<?>> questions;
 
-    public boolean hasEnoughQuestion(int totalQuestions){
+    public boolean hasEnoughQuestions(long totalQuestions){
         return totalQuestions >= this.testNumberOfQuestions;
+    }
+
+    public boolean isActive(){
+        return testState == TestState.ACTIVE;
     }
 }

@@ -54,4 +54,9 @@ public class QuestionRepository implements IQuestionRepository {
     public List<Question> getTestQuestions(int id) {
         return questionJpaRepository.findByTest_TestId(id).stream().map(this::toModel).toList();
     }
+
+    @Override
+    public long getTestTotalQuestions(int testId) {
+        return questionJpaRepository.countByTest_TestId(testId);
+    }
 }

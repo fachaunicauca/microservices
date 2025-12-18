@@ -33,8 +33,8 @@ public class TestTable {
     @Column(nullable = false)
     private byte testState;
 
-    @Column(nullable = false)
-    private boolean isPeriodic;
+    @Column(nullable = false, name = "isperiodic")
+    private boolean periodic;
 
     @OneToMany(mappedBy = "test", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionTable> questions;

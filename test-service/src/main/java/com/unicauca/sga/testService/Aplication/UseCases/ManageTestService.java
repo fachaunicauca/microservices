@@ -2,9 +2,12 @@ package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Exceptions.ForbiddenOperationException;
+import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Test;
+import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManageTestService {
     private final ITestRepository testRepository;
+    private final IQuestionRepository questionRepository;
 
     @Transactional(readOnly = true)
     public List<Test> getAllTests() {
@@ -41,13 +45,18 @@ public class ManageTestService {
 
     @Transactional
     public Test saveTest(Test test) {
-        try {
-            return testRepository.save(test);
-        } catch (DataIntegrityViolationException ex) {
-            throw new AlreadyExistsException(
-                    "El titulo de la evaluación ya esta en uso."
-            );
+        // When editing a test and its state is set to active
+        // look if there is enough questions
+        if(test.getTestId() != 0 && test.isActive()){
+            long totalQuestions = questionRepository.getTestTotalQuestions(test.getTestId());
+            System.out.println("Total: " + totalQuestions);
+            if(!test.hasEnoughQuestions(totalQuestions) ){
+                throw new InsufficientQuestionsException("La evaluación no tiene la suficiente cantidad"+
+                                                            " de preguntas para estar activa. (Total actual: "+totalQuestions+")");
+            };
         }
+
+        return testRepository.save(test);
     }
 
     @Transactional

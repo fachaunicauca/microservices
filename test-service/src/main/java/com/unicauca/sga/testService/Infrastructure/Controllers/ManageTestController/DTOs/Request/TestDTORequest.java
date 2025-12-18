@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,5 +39,6 @@ public class TestDTORequest {
     private Byte testState;
 
     @NotNull(message = "Debe especificar si la evaluación se realizara semestralmente.")
-    private Boolean isPeriodic;
+    @JsonProperty("isPeriodic")
+    private Boolean periodic;
 }

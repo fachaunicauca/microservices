@@ -69,6 +69,8 @@ public class ManageTestController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public TestDTOResponse saveTest(@RequestBody @Valid TestDTORequest testDTORequest){
+        System.out.println("Test recibido: " + testDTORequest.toString());
+        System.out.println("Test mapeado: " + testDTORequestMapper.toModel(testDTORequest));
         return testDTOResponseMapper.toDTO(manageTestService.saveTest(testDTORequestMapper.toModel(testDTORequest)));
     }
 

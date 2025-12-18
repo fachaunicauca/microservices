@@ -18,5 +18,5 @@ public class TestDTOResponse {
     private int testAttemptLimit;
     private byte testState;
     @JsonProperty("isPeriodic")
-    private boolean isPeriodic;
+    private boolean periodic;
 }
