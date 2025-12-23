@@ -5,7 +5,7 @@ import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigReposi
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentTestConfigMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.StudentTestConfigJpaRepository;
-import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentTestConfigTable;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentTestConfigEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,12 +16,12 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
     private final StudentTestConfigJpaRepository studentTestConfigJpaRepository;
     private final StudentTestConfigMapper studentTestConfigMapper;
 
-    private StudentTestConfig toModel(StudentTestConfigTable studentTestConfig) {
+    private StudentTestConfig toModel(StudentTestConfigEntity studentTestConfig) {
         if (studentTestConfig == null) return null;
         return studentTestConfigMapper.toModel(studentTestConfig, new CycleAvoidingMappingContext());
     };
 
-    private StudentTestConfigTable toInfra(StudentTestConfig studentTestConfig) {
+    private StudentTestConfigEntity toInfra(StudentTestConfig studentTestConfig) {
         if (studentTestConfig == null) return null;
         return studentTestConfigMapper.toInfra(studentTestConfig, new CycleAvoidingMappingContext());
     }

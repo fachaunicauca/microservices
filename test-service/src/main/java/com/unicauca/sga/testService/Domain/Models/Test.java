@@ -1,6 +1,7 @@
 package com.unicauca.sga.testService.Domain.Models;
 
 import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import lombok.Data;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class Test {
     private byte testState;
     private boolean periodic;
 
-    private List<Question<?>> questions;
+    private List<Question> questions;
 
     public boolean hasEnoughQuestions(long totalQuestions){
         return totalQuestions >= this.testNumberOfQuestions;

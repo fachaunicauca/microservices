@@ -13,5 +13,5 @@ public class TestAttempt {
     private boolean isFullyScored;
 
     private Test test;
-    private List<Answer> studentAnswers;
+    private List<StudentResponse> studentResponses;
 }

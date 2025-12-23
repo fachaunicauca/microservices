@@ -3,9 +3,9 @@ package com.unicauca.sga.testService.Aplication.UseCases;
 import com.unicauca.sga.testService.Aplication.Mappers.GuidesListDTOMapper;
 import com.unicauca.sga.testService.Aplication.Services.CloudinaryService;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
-import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideDTO;
-import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideListDTO;
-import com.unicauca.sga.testService.Domain.Models.DTOs.TestGuideRequestDTO;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.DTOs.Response.TestGuideDTOResponse;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.DTOs.Response.TestGuideListDTOResponse;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.DTOs.Request.TestGuideDTORequest;
 import com.unicauca.sga.testService.Domain.Models.TestGuide;
 import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ManageGuidesService {
         }
         return true;
     }
-    public TestGuideDTO saveTestGuide(TestGuideRequestDTO testGuideDTO) {
+    public TestGuideDTOResponse saveTestGuide(TestGuideDTORequest testGuideDTO) {
         String url = "";
         if(testConnection()){
             try {
@@ -44,10 +44,10 @@ public class ManageGuidesService {
         newTestGuide.setTestGuideId(testGuideDTO.getTestGuideId());
         newTestGuide.setTestGuideUrl(url);
         TestGuide savedTestGuide = testGuidesRepository.save(newTestGuide);
-        return new TestGuideDTO(savedTestGuide.getTestGuideId(), savedTestGuide.getTestGuideUrl());
+        return new TestGuideDTOResponse(savedTestGuide.getTestGuideId(), savedTestGuide.getTestGuideUrl());
     }
 
-    public TestGuideListDTO getAllTestGuides() {
+    public TestGuideListDTOResponse getAllTestGuides() {
         List<TestGuide> testGuideList = testGuidesRepository.getAllTestsGuides();
         if(testGuideList.isEmpty()){
             throw new NotFoundException("No se encontró ninguna guia.");

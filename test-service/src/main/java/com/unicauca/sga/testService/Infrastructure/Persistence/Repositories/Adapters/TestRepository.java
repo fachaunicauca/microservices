@@ -6,13 +6,12 @@ import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestJpaRepository;
-import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestTable;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,12 +20,12 @@ public class TestRepository implements ITestRepository {
     private final TestJpaRepository testJpaRepository;
     private final TestMapper testMapper;
 
-    private Test toModel(TestTable test) {
+    private Test toModel(TestEntity test) {
         if (test == null) return null;
         return testMapper.toModel(test, new CycleAvoidingMappingContext());
     }
 
-    private TestTable toInfra(Test test) {
+    private TestEntity toInfra(Test test) {
         if (test == null) return null;
         return testMapper.toInfra(test, new CycleAvoidingMappingContext());
     }
@@ -53,11 +52,11 @@ public class TestRepository implements ITestRepository {
                 return toModel(testJpaRepository.save(toInfra(test)));
             }
 
-            TestTable testTable = testJpaRepository.getReferenceById(test.getTestId());
+            TestEntity testEntity = testJpaRepository.getReferenceById(test.getTestId());
 
-            testMapper.update(test, testTable);
+            testMapper.update(test, testEntity);
 
-            return toModel(testJpaRepository.save(testTable));
+            return toModel(testJpaRepository.save(testEntity));
 
         } catch (DataIntegrityViolationException ex) {
             throw new AlreadyExistsException("El título de la evaluación ya está en uso.");

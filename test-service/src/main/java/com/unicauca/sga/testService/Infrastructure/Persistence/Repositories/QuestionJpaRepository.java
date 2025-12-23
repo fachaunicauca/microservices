@@ -1,18 +1,19 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories;
 
-import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionTable;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionEntity;
 import org.springframework.data.domain.Limit;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface QuestionJpaRepository extends JpaRepository<QuestionTable, Long> {
+public interface QuestionJpaRepository extends JpaRepository<QuestionEntity, Long> {
 
-    List<QuestionTable> findByTest_TestId(int testTestId, Limit limit);
-    List<QuestionTable> findByTest_TestId(int testTestId);
+    List<QuestionEntity> findByTest_TestId(int testTestId, Limit limit);
+    Page<QuestionEntity> findByTest_TestId(int testTestId, Pageable pageable);
 
     long countByTest_TestId(int testTestId);
 }

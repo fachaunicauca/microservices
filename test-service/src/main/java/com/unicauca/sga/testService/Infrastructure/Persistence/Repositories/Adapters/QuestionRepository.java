@@ -1,14 +1,15 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
-import com.unicauca.sga.testService.Domain.Models.Question;
+import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.QuestionMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.QuestionJpaRepository;
-import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionTable;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,12 +21,12 @@ public class QuestionRepository implements IQuestionRepository {
     private final QuestionJpaRepository questionJpaRepository;
     private final QuestionMapper questionMapper;
 
-    private Question toModel(QuestionTable question){
+    private Question toModel(QuestionEntity question){
         if(question == null) return null;
         return questionMapper.toModel(question, new CycleAvoidingMappingContext());
     }
 
-    private QuestionTable toInfra(Question question){
+    private QuestionEntity toInfra(Question question){
         if(question == null) return null;
         return questionMapper.toInfra(question, new CycleAvoidingMappingContext());
     }
@@ -51,8 +52,8 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public List<Question> getTestQuestions(int id) {
-        return questionJpaRepository.findByTest_TestId(id).stream().map(this::toModel).toList();
+    public Page<Question> getTestQuestionsPaged(int id, Pageable pageable) {
+        return questionJpaRepository.findByTest_TestId(id, pageable).map(this::toModel);
     }
 
     @Override
