@@ -1,15 +1,14 @@
 package com.unicauca.sga.testService.Domain.Models.Question.QuestionStructures;
 
-import com.unicauca.sga.testService.Domain.Models.Question.AnswerTypes.OpenEndedAnswer;
 import lombok.Data;
 
 @Data
 public class OpenEndedStructure implements QuestionStructure {
-    private OpenEndedAnswer response;
+    private int maxResponseSize;
 
     @Override
     public QuestionStructure getCleanCopy() {
-        return new OpenEndedStructure();
+        return this;
     }
 
     @Override

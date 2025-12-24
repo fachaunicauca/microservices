@@ -18,7 +18,7 @@ public class QuestionEntity {
 
     private String questionTitle;
 
-    private byte[] questionImage;
+    private String questionImageUrl;
 
     @Column(nullable = false)
     private String questionType;
