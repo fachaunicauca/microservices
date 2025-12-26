@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class StudentResponse {
-    private long studentResponseId;
+    private Long studentResponseId;
     private String response;
     private int score;
     private boolean isGraded;

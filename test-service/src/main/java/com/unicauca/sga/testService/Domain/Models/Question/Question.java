@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class Question{
-    private long questionId;
+    private Long questionId;
     private String questionText;
     private String questionTitle;
     private String questionImageUrl;

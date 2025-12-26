@@ -7,9 +7,9 @@ import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +22,22 @@ public class ManageTestService {
     private final IQuestionRepository questionRepository;
 
     @Transactional(readOnly = true)
-    public List<Test> getAllTests() {
-        List<Test> testList = testRepository.getAllTests();
+    public Page<Test> getAllTests(Pageable pageable) {
+        Page<Test> testList = testRepository.getAllTests(pageable);
 
-        if (testList.isEmpty()){
-            throw new NotFoundException("No hay evaluaciones almacenadas");
+        if (testList.isEmpty() || testList.getTotalElements() == 0) {
+            throw new NotFoundException("No hay evaluaciones especificas almacenadas");
+        }
+
+        return testList;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Test> getAllTeacherTests(String teacherEmail, Pageable pageable) {
+        Page<Test> testList = testRepository.getTeacherTests(teacherEmail, pageable);
+
+        if (testList.isEmpty() || testList.getTotalElements() == 0) {
+            throw new NotFoundException("No ha creado ninguna evaluación.");
         }
 
         return testList;
@@ -47,7 +58,7 @@ public class ManageTestService {
     public Test saveTest(Test test) {
         // When editing a test and its state is set to active
         // look if there is enough questions
-        if(test.getTestId() != 0 && test.isActive()){
+        if(test.getTestId() != null && test.isActive()){
             long totalQuestions = questionRepository.getTestTotalQuestions(test.getTestId());
             System.out.println("Total: " + totalQuestions);
             if(!test.hasEnoughQuestions(totalQuestions) ){
@@ -55,7 +66,6 @@ public class ManageTestService {
                                                             " de preguntas para estar activa. (Total actual: "+totalQuestions+")");
             };
         }
-
         return testRepository.save(test);
     }
 

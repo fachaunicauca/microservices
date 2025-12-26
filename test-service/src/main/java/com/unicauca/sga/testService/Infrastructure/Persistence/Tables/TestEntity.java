@@ -11,7 +11,7 @@ import java.util.List;
 public class TestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int testId;
+    private Integer testId;
 
     @Column(nullable = false)
     private String teacherEmail;

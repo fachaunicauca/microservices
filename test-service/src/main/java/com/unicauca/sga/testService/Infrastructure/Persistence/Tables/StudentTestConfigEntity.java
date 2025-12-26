@@ -9,7 +9,7 @@ import lombok.Data;
 public class StudentTestConfigEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long studentTestConfigId;
+    private Long studentTestConfigId;
 
     @Column(nullable = false)
     private String studentEmail;

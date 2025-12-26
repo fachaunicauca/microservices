@@ -9,6 +9,8 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Test
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,13 +33,13 @@ public class TestRepository implements ITestRepository {
     }
 
     @Override
-    public List<Test> getAllTests() {
-        return testJpaRepository.findAll().stream().map(this::toModel).toList();
+    public Page<Test> getAllTests(Pageable pageable) {
+        return testJpaRepository.findByTestIdNot(1, pageable).map(this::toModel);
     }
 
     @Override
-    public List<Test> getTeacherTests(String teacherEmail) {
-        return testJpaRepository.findByTeacherEmail(teacherEmail).stream().map(this::toModel).toList();
+    public Page<Test> getTeacherTests(String teacherEmail, Pageable pageable) {
+        return testJpaRepository.findByTeacherEmail(teacherEmail, pageable).map(this::toModel);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class TestRepository implements ITestRepository {
     @Override
     public Test save(Test test) {
         try {
-            if (test.getTestId() == 0) {
+            if (test.getTestId() == null) {
                 return toModel(testJpaRepository.save(toInfra(test)));
             }
 

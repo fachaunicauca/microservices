@@ -10,11 +10,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,8 +44,9 @@ public class ManageTestController {
     }
 
     @Operation(
-            summary = "Obtener todas las evaluaciones sin preguntas",
-            description = "Método para obtener la información de todas las evaluaciones almacenadas sin obtener las preguntas",
+            summary = "Obtener todas las evaluaciones docente sin preguntas",
+            description = "Método para obtener la información de todas las evaluaciones creadas por un docente sin obtener las preguntas."+
+                                "Si el token tiene el rol de admin se le devuelven todas las evaluaciones almacenadas.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Evaluaciones obtenidas con éxito."),
                     @ApiResponse(responseCode = "404", description = "No hay evaluaciones almacenadas.")
@@ -51,8 +55,8 @@ public class ManageTestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
-    public List<TestDTOResponse> getAllTests(){
-        return manageTestService.getAllTests().stream().map(testDTOResponseMapper::toDTO).toList();
+    public Page<TestDTOResponse> getAllTests(Pageable pageable){
+        return this.getTests(pageable);
     }
 
     @Operation(
@@ -76,10 +80,11 @@ public class ManageTestController {
 
     @Operation(
             summary = "Eliminar una evaluación",
-            description = "Metodo para eliminar una evaluacion mediante su id.",
+            description = "Método para eliminar una evaluación mediante su id.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "La evaluacion se ha eliminado exitosamente."),
-                    @ApiResponse(responseCode = "404", description = "No se encontro la evaluacion que se quiere eliminar.")
+                    @ApiResponse(responseCode = "200", description = "La evaluación se ha eliminado exitosamente."),
+                    @ApiResponse(responseCode = "404", description = "No se encontró la evaluación que se quiere eliminar."),
+                    @ApiResponse(responseCode = "403", description = "No se puede eliminar la evaluación general.")
             }
     )
     @DeleteMapping("/{id}")
@@ -87,5 +92,21 @@ public class ManageTestController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public void deleteTestById(@PathVariable int id){
         manageTestService.deleteTestById(id);
+    }
+
+    private Page<TestDTOResponse> getTests(Pageable pageable){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isAdmin) {
+            return manageTestService.getAllTests(pageable).map(testDTOResponseMapper::toDTO);
+        }
+
+        Jwt jwt = (Jwt) auth.getPrincipal();
+        String email = jwt.getClaimAsString("email");
+
+        return manageTestService.getAllTeacherTests(email, pageable).map(testDTOResponseMapper::toDTO);
     }
 }

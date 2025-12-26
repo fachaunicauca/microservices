@@ -9,12 +9,12 @@ import lombok.Data;
 public class StudentResponseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long studentResponseId;
+    private Long studentResponseId;
 
     @Column(nullable = false)
     private String response;
 
-    private int score;
+    private Integer score;
 
     @Column(nullable = false)
     private boolean isGraded;

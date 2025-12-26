@@ -11,7 +11,7 @@ import org.hibernate.type.SqlTypes;
 public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long questionId;
+    private Long questionId;
 
     @Column(nullable = false)
     private String questionText;

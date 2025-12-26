@@ -13,7 +13,7 @@ import java.util.List;
 public class TestAttemptEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long testAttemptId;
+    private Long testAttemptId;
 
     @Column(nullable = false)
     private String studentEmail;

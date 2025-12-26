@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class TestAttempt {
-    private long testAttemptId;
+    private Long testAttemptId;
     private String studentEmail;
     private LocalDateTime testAttemptDate;
     private double testAttemptScore;

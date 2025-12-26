@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class StudentTestConfig {
-    private long studentTestConfigId;
+    private Long studentTestConfigId;
     private String studentEmail;
     private int attemptLimit;
     private int attemptsUsed;
