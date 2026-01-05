@@ -1,6 +1,5 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request;
 
-import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Request.TestDTORequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,6 +7,9 @@ import lombok.Data;
 
 @Data
 public class QuestionDTORequest {
+
+    private Long questionId;
+
     @NotBlank(message = "Debe especificar el texto de la pregunta")
     @Size(max = 5000, message = "El texto de la pregunta puede tener como máximo 5000 caracteres")
     private String questionText;
@@ -25,5 +27,5 @@ public class QuestionDTORequest {
     private String questionStructure;
 
     @NotNull(message = "Debe especificar la evaluación a la que pertenece la pregunta")
-    private TestDTORequest test;
+    private Long testId;
 }

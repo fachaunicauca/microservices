@@ -11,7 +11,7 @@ public class MultipleChoiceStructure implements QuestionStructure {
     private int correctAnswerCount;
 
     @Override
-    public QuestionStructure getCleanCopy() {
+    public QuestionStructure createCleanCopy() {
         MultipleChoiceStructure cleanCopy = new MultipleChoiceStructure();
 
         cleanCopy.setAnswers(this.answers.stream().map(ch -> {

@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Aplication.UseCases.TakeTest;
+package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Mappers.QuestionListDTOMapper;
 import lombok.RequiredArgsConstructor;

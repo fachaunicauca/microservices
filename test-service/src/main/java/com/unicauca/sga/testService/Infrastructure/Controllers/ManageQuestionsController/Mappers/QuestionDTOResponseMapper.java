@@ -7,5 +7,4 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface QuestionDTOResponseMapper {
     QuestionDTOResponse toDTO(Question question);
-    Question toModel(QuestionDTOResponse questionDTO);
 }

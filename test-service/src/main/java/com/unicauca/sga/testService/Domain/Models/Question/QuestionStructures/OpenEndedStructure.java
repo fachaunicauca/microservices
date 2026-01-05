@@ -7,7 +7,7 @@ public class OpenEndedStructure implements QuestionStructure {
     private int maxResponseSize;
 
     @Override
-    public QuestionStructure getCleanCopy() {
+    public QuestionStructure createCleanCopy() {
         return this;
     }
 

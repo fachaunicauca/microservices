@@ -1,6 +1,5 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
-import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Exceptions.ForbiddenOperationException;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
@@ -12,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

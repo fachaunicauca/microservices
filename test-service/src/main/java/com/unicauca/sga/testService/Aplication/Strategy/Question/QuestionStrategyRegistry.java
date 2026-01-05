@@ -1,7 +1,8 @@
-package com.unicauca.sga.testService.Aplication.UseCases.TakeTest.Registry;
+package com.unicauca.sga.testService.Aplication.Strategy.Question;
 
 
-import com.unicauca.sga.testService.Aplication.UseCases.TakeTest.Strategy.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
+import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -20,6 +21,12 @@ public class QuestionStrategyRegistry {
     }
 
     public QuestionStrategy get(String questionType){
-        return questionBehaviorsMap.get(questionType);
+        QuestionStrategy questionStrategy = questionBehaviorsMap.get(questionType);
+
+        if(questionStrategy == null){
+            throw new NotFoundException("No se encontró el algoritmo de validación para el tipo " + questionType);
+        }
+
+        return questionStrategy;
     }
 }

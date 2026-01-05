@@ -32,8 +32,8 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public void save(Question question) {
-        questionJpaRepository.save(toInfra(question));
+    public Question save(Question question) {
+        return toModel(questionJpaRepository.save(toInfra(question)));
     }
 
     @Override
