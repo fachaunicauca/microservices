@@ -35,7 +35,7 @@ public class ManageQuestionsService {
         if(!testRepository.isPresent(question.getTest().getTestId())){
             throw new NotFoundException("No se encontró la evaluación a la que se quiere asignar la pregunta.");
         }
-
+        System.out.println(question);
         QuestionStrategy questionStrategy = questionStrategyRegistry.get(question.getQuestionType());
         String validatedQuestionStructure = questionStrategy.validateStructure(question.getQuestionStructure());
 

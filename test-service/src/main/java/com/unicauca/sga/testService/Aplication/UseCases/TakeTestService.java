@@ -1,15 +1,57 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Mappers.QuestionListDTOMapper;
+import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
+import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
+import com.unicauca.sga.testService.Domain.Models.DTOs.QuestionListDTO;
+import com.unicauca.sga.testService.Domain.Models.Question.Question;
+import com.unicauca.sga.testService.Domain.Models.Test;
+import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
+import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TakeTestService {
 
-    private final QuestionListDTOMapper questionListDTOMapper;
-    /*
+    private final ITestRepository testRepository;
+    private final IQuestionRepository questionRepository;
+
+    @Transactional(readOnly = true)
+    public Test getGeneralTest(){
+        if(!testRepository.isPresent(1)){
+            throw new NotFoundException("No se encontró la evaluación general");
+        }
+
+        Test generalTest = testRepository.getTestById(1);
+
+        if(generalTest.getTestState() == TestState.INACTIVE){
+            throw new InactiveTestException("La evaluación general se encuentra inactiva");
+        }
+
+        return generalTest;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Test> getAllActiveTests(Pageable pageable){
+        Page<Test> activeTests = testRepository.getAllActiveTests(pageable);
+
+        if(activeTests.getTotalElements() == 0){
+            throw new NotFoundException("No se encontraron evaluaciones especificas activas");
+        }
+
+        return activeTests;
+    }
+
+    /*private final QuestionListDTOMapper questionListDTOMapper;
+
     private final IQuestionRepository questionRepository;
     private final IAnswerRepository answerRepository;
     private final ISubjectRepository subjectRepository;

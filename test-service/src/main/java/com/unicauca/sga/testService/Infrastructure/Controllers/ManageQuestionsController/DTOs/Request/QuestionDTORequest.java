@@ -27,5 +27,5 @@ public class QuestionDTORequest {
     private String questionStructure;
 
     @NotNull(message = "Debe especificar la evaluación a la que pertenece la pregunta")
-    private Long testId;
+    private Integer testId;
 }

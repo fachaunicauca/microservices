@@ -11,4 +11,6 @@ public interface TestJpaRepository extends JpaRepository<TestEntity, Integer> {
     Page<TestEntity> findByTeacherEmail(String teacherEmail, Pageable pageable);
 
     Page<TestEntity> findByTestIdNot(int testId, Pageable pageable);
+
+    Page<TestEntity> findByTestStateAndTestIdNot(byte testState, int testId, Pageable pageable);
 }

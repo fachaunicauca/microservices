@@ -54,6 +54,7 @@ public class ManageQuestionsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public QuestionDTOResponse saveTestQuestion(@RequestBody @Valid QuestionDTORequest questionDTORequest){
+        System.out.println("Question"  +  questionDTORequest.toString());
         return questionDTOResponseMapper.toDTO(manageQuestionsService.saveQuestion(questionDTORequestMapper.toModel(questionDTORequest)));
     }
 

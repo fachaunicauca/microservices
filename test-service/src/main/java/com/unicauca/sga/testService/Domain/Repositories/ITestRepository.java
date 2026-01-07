@@ -10,6 +10,7 @@ import java.util.List;
 public interface ITestRepository {
     Page<Test> getAllTests(Pageable pageable);
     Page<Test> getTeacherTests(String teacherEmail, Pageable pageable);
+    Page<Test> getAllActiveTests(Pageable pageable);
     Test getTestById(int id);
     Test save(Test test);
     void deleteById(int id);

@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
+import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
@@ -40,6 +41,11 @@ public class TestRepository implements ITestRepository {
     @Override
     public Page<Test> getTeacherTests(String teacherEmail, Pageable pageable) {
         return testJpaRepository.findByTeacherEmail(teacherEmail, pageable).map(this::toModel);
+    }
+
+    @Override
+    public Page<Test> getAllActiveTests(Pageable pageable) {
+        return testJpaRepository.findByTestStateAndTestIdNot(TestState.ACTIVE, 1,pageable).map(this::toModel);
     }
 
     @Override
