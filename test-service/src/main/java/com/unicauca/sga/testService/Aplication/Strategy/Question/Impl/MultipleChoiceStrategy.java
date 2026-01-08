@@ -8,6 +8,7 @@ import com.unicauca.sga.testService.Domain.Models.Question.AnswerTypes.ChoiceAns
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStructures.MultipleChoiceStructure;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Models.Question.Views;
 import com.unicauca.sga.testService.Domain.Models.StudentResponse;
 import org.springframework.stereotype.Component;
 
@@ -87,6 +88,19 @@ public class MultipleChoiceStrategy implements QuestionStrategy {
             return mapper.writeValueAsString(structure);
         } catch (JsonProcessingException e) {
             throw new InvalidQuestionStructureException("El formato de la estructura de la pregunta es inválido.");
+        }
+    }
+
+    @Override
+    public String cleanStructure(String questionStructure) {
+        try {
+            MultipleChoiceStructure structure = mapper.readValue(questionStructure, MultipleChoiceStructure.class);
+
+            return mapper.writerWithView(Views.Student.class)
+                    .writeValueAsString(structure);
+
+        } catch (JsonProcessingException e) {
+            throw new InvalidQuestionStructureException("Error al procesar la estructura.");
         }
     }
 }

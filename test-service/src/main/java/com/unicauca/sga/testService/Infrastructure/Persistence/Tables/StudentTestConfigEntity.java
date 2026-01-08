@@ -3,6 +3,8 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Tables;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Table(name = "studentTestConfig")
@@ -19,6 +21,10 @@ public class StudentTestConfigEntity {
 
     @Column(nullable = false)
     private int attemptsUsed;
+
+    private LocalDateTime lastAttemptAt;
+
+    private Double finalScore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId", nullable = false)

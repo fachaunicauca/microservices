@@ -1,10 +1,12 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Strategy.Question.QuestionStrategyRegistry;
+import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Exceptions.NoQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,18 @@ public class ManageQuestionsService {
     public void deleteQuestionById(long questionId) {
         if(!questionRepository.isPresent(questionId)) {
             throw new NotFoundException("No se encontró la pregunta con id: " + questionId);
+        }
+
+        Question question = questionRepository.getById(questionId);
+        Test test = testRepository.getTestById(question.getTest().getTestId()); // Si existe la pregunta existe el test
+
+        long totalQuestions = questionRepository.getTestTotalQuestions(test.getTestId());
+
+        // Validar que al eliminar la pregunta el test siga teniendo suficientes preguntas para estar activo
+        // Si no las tiene desactivar el test
+        if(!test.hasEnoughQuestions(totalQuestions - 1) && test.getTestState() == TestState.ACTIVE) {
+            test.setTestState(TestState.INACTIVE);
+            testRepository.save(test);
         }
 
         questionRepository.deleteById(questionId);

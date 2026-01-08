@@ -6,7 +6,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestAttemp
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {TestMapper.class})
+@Mapper(componentModel = "spring", uses = {TestMapper.class, StudentResponseMapper.class})
 public interface TestAttemptMapper {
     TestAttempt toModel(TestAttemptEntity testAttempt, @Context CycleAvoidingMappingContext context);
     TestAttemptEntity toInfra(TestAttempt testAttempt, @Context CycleAvoidingMappingContext context);

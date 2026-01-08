@@ -35,4 +35,10 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
     public StudentTestConfig getStudentTestConfig(String studentEmail, int testId) {
         return toModel(studentTestConfigJpaRepository.findByStudentEmailAndTest_TestId(studentEmail, testId));
     }
+
+    @Override
+    public boolean isPresent(String studentEmail, int testId) {
+        return studentTestConfigJpaRepository.existsByStudentEmailAndTest_TestId(studentEmail, testId);
+    }
+
 }

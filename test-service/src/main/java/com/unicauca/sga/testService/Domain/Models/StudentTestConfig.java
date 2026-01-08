@@ -2,23 +2,39 @@ package com.unicauca.sga.testService.Domain.Models;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class StudentTestConfig {
     private Long studentTestConfigId;
     private String studentEmail;
     private int attemptLimit;
     private int attemptsUsed;
+    private LocalDateTime lastAttemptAt;
+    private Double finalScore;
 
     private Test test;
 
-    public boolean hasRemainingAttempts() {
-        return attemptLimit - attemptsUsed > 0;
+    public boolean isSameSemester() {
+        if (lastAttemptAt == null) return false;
+
+        return resolveSemester(lastAttemptAt)
+                .equals(resolveSemester(LocalDateTime.now()));
     }
 
-    public void registerAttempt() {
-        if(!hasRemainingAttempts()){
-            throw new IllegalStateException("No remaining attempts");
-        }
-        attemptsUsed++;
+    public boolean hasPassedCurrentSemester(double passingScore) {
+        if (finalScore == null || lastAttemptAt == null) return false;
+
+        String lastSemester = resolveSemester(lastAttemptAt);
+        String currentSemester = resolveSemester(LocalDateTime.now());
+
+        return lastSemester.equals(currentSemester) && finalScore > passingScore;
     }
+
+    private String resolveSemester(LocalDateTime date) {
+        int year = date.getYear();
+        int semester = date.getMonthValue() <= 6 ? 1 : 2;
+        return year + "-" + semester;
+    }
+
 }

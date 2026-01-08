@@ -7,11 +7,11 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.QuestionM
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.QuestionJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -47,8 +47,21 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
+    public Question getById(long id) {
+        return toModel(questionJpaRepository.findById(id).get());
+    }
+
+    @Override
     public List<Question> getRandomAndLimitedTestQuestions(int testId, int numberOfQuestions) {
-        return questionJpaRepository.findByTest_TestId(testId, Limit.of(numberOfQuestions)).stream().map(this::toModel).toList();
+        List<Long> questionIds = questionJpaRepository.findIdsByTestId(testId);
+        Collections.shuffle(questionIds);
+
+        List<Long> selectedIds = questionIds.subList(0, numberOfQuestions);
+
+        List<QuestionEntity> entities = questionJpaRepository.findAllById(selectedIds);
+        Collections.shuffle(entities);
+
+        return entities.stream().map(this::toModel).toList();
     }
 
     @Override

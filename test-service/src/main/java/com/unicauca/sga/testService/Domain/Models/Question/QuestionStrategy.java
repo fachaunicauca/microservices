@@ -8,4 +8,6 @@ public interface QuestionStrategy {
     int grade(Question question, StudentResponse studentResponse);
 
     String validateStructure(String questionStructure);
+
+    String cleanStructure(String questionStructure);
 }

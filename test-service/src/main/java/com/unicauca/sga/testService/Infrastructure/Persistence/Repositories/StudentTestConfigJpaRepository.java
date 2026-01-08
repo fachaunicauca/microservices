@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StudentTestConfigJpaRepository extends JpaRepository<StudentTestConfigEntity, Long> {
     StudentTestConfigEntity findByStudentEmailAndTest_TestId(String studentEmail, int testTestId);
+
+    boolean existsByStudentEmailAndTest_TestId(String studentEmail, Integer testTestId);
 }

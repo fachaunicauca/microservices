@@ -10,6 +10,7 @@ public interface IQuestionRepository {
     Question save(Question question);
     void deleteById(long id);
     boolean isPresent(long id);
+    Question getById(long id);
     List<Question> getRandomAndLimitedTestQuestions(int testId, int numberOfQuestions);
     Page<Question> getTestQuestionsPaged(int id, Pageable pageable);
     long getTestTotalQuestions(int testId);
