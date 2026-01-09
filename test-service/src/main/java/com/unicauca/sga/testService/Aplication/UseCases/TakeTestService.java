@@ -2,6 +2,7 @@ package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Strategy.Question.QuestionStrategyRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Exceptions.ForbiddenOperationException;
 import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
@@ -12,13 +13,13 @@ import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestAttemptRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
+import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Response.TakeTestDTOResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,27 +61,25 @@ public class TakeTestService {
     }
 
     @Transactional
-    public List<Question> startTestAttempt(String studentEmail, int testId){
+    public Test startTestAttempt(String studentEmail, int testId) {
 
-        // 1. Verificar que el test exista
+        // Verificar que el test exista
         if (!testRepository.isPresent(testId)) {
             throw new NotFoundException("No se encontró la evaluación");
         }
 
         Test test = testRepository.getTestById(testId);
 
-        // 2. Verificar que el test esté activo
+        // Verificar que el test esté activo
         if (test.getTestState() == TestState.INACTIVE) {
             throw new InactiveTestException("La evaluación se encuentra inactiva");
         }
 
-        // 3. Verificar si ya existe una configuración del estudiante para el test
-        boolean configExists = studentTestConfigRepository.isPresent(studentEmail, testId);
-
+        // Obtener o crear la configuración del estudiante para el test
         StudentTestConfig config;
 
-        // 4. Si NO existe una configuración previa es la primera vez que va a presentar el test
-        if (!configExists) {
+        // Si no existe la configuración crearla (No hay validaciones)
+        if (!studentTestConfigRepository.isPresent(studentEmail, testId)) {
 
             config = new StudentTestConfig();
             config.setStudentEmail(studentEmail);
@@ -92,39 +91,42 @@ public class TakeTestService {
 
             studentTestConfigRepository.save(config);
 
-            return cleanQuestionStructures(questionRepository.getRandomAndLimitedTestQuestions(testId, test.getTestNumberOfQuestions()));
+        } else {
+            // Si existe la configuración obtenerla y verificar si el estudiante puede presentar la evaluación
+            config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
+            config.setTest(test);
+
+            // Si el test es periódico y cambió el semestre reiniciar los intentos
+            if (test.isPeriodic() && !config.isSameSemester()) {
+                config.setAttemptsUsed(0);
+                config.setFinalScore(null);
+                config.setLastAttemptAt(null);
+                studentTestConfigRepository.save(config);
+            }
+
+            // Verificar si ya ha aprobado el test
+            if (config.hasAlreadyPassed(passingScore)) {
+                throw new ForbiddenOperationException("El estudiante ya aprobó esta evaluación");
+            }
+
+            // Verificar si tiene intentos disponibles
+            if (config.getAttemptsUsed() >= config.getAttemptLimit()) {
+                throw new ForbiddenOperationException("El estudiante no tiene intentos disponibles para esta evaluación");
+            }
         }
 
-        // 5. Ya existe una configuración
-        config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
+        // Si el test está activo significa que tiene la suficiente cantidad de preguntas
+        List<Question> testQuestions = questionRepository.getRandomAndLimitedTestQuestions(testId, test.getTestNumberOfQuestions());
 
-        // 6. Si el test es periódico y cambió el semestre reiniciar los intentos
-        if (test.isPeriodic() && !config.isSameSemester()) {
+        // Construir Test con los campos necesarios para presentar la evaluación
+        Test studentTest = new Test();
+        studentTest.setTestId(test.getTestId());
+        studentTest.setTestTitle(test.getTestTitle());
+        studentTest.setTestDurationMinutes(test.getTestDurationMinutes());
+        studentTest.setTestNumberOfQuestions(test.getTestNumberOfQuestions());
+        studentTest.setQuestions(cleanQuestionStructures(testQuestions));
 
-            config.setAttemptsUsed(0);
-            config.setFinalScore(null);
-            config.setLastAttemptAt(null);
-
-            studentTestConfigRepository.save(config);
-        }
-
-        // 7. Verificar si ya aprobó el test en el semestre actual
-        // Nota: Aquí se podría pasar el passingScore que tenga el objeto Test
-        if (config.hasPassedCurrentSemester(passingScore)) {
-            throw new IllegalStateException(
-                    "El estudiante ya aprobó esta evaluación en el semestre actual"
-            );
-        }
-
-        // 8. Verificar si tiene intentos disponibles
-        if (config.getAttemptsUsed() >= config.getAttemptLimit()) {
-            throw new IllegalStateException(
-                    "El estudiante no tiene intentos disponibles para esta evaluación"
-            );
-        }
-
-        // 9. Si se cumplieron todas las validaciones retornar las preguntas
-        return cleanQuestionStructures(questionRepository.getRandomAndLimitedTestQuestions(testId, test.getTestNumberOfQuestions()));
+        return studentTest;
     }
 
     private List<Question> cleanQuestionStructures(List<Question> questions){

@@ -25,7 +25,7 @@ public class TestAttemptEntity {
     private double testAttemptScore;
 
     @Column(nullable = false)
-    private boolean isFullyScored;
+    private boolean fullyScored;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId",nullable = false)

@@ -22,6 +22,17 @@ public class StudentTestConfig {
                 .equals(resolveSemester(LocalDateTime.now()));
     }
 
+    public boolean hasAlreadyPassed(double passingScore) {
+        if (test.isPeriodic()) {
+            return hasPassedCurrentSemester(passingScore);
+        }
+        return hasPassed(passingScore);
+    }
+
+    public boolean hasPassed(double passingScore) {
+        return finalScore != null && finalScore >= passingScore;
+    }
+
     public boolean hasPassedCurrentSemester(double passingScore) {
         if (finalScore == null || lastAttemptAt == null) return false;
 

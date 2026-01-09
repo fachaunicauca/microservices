@@ -7,9 +7,11 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = {QuestionMapper.class})
 public interface TestMapper {
-    Test toModel(TestEntity testEntity, @Context CycleAvoidingMappingContext context);
-    TestEntity toInfra(Test test, @Context CycleAvoidingMappingContext context);
+    @Mapping(target = "questions", ignore = true)
+    Test toModel(TestEntity testEntity);
+    @Mapping(target = "questions", ignore = true)
+    TestEntity toInfra(Test test);
 
     @Mapping(target = "questions", ignore = true)
-    void update(Test test, @MappingTarget TestEntity testEntity);
+    void updateInfra(Test test, @MappingTarget TestEntity testEntity);
 }

@@ -10,7 +10,7 @@ public class TestAttempt {
     private String studentEmail;
     private LocalDateTime testAttemptDate;
     private double testAttemptScore;
-    private boolean isFullyScored;
+    private boolean fullyScored;
 
     private Test test;
     private List<StudentResponse> studentResponses;

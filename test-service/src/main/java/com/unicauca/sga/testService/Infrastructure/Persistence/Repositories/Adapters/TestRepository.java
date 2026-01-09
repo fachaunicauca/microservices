@@ -23,7 +23,7 @@ public class TestRepository implements ITestRepository {
     private final TestJpaRepository testJpaRepository;
     private final TestMapper testMapper;
 
-    private Test toModel(TestEntity test) {
+    /*private Test toModel(TestEntity test) {
         if (test == null) return null;
         return testMapper.toModel(test, new CycleAvoidingMappingContext());
     }
@@ -31,40 +31,40 @@ public class TestRepository implements ITestRepository {
     private TestEntity toInfra(Test test) {
         if (test == null) return null;
         return testMapper.toInfra(test, new CycleAvoidingMappingContext());
-    }
+    }*/
 
     @Override
     public Page<Test> getAllTests(Pageable pageable) {
-        return testJpaRepository.findByTestIdNot(1, pageable).map(this::toModel);
+        return testJpaRepository.findByTestIdNot(1, pageable).map(testMapper::toModel);
     }
 
     @Override
     public Page<Test> getTeacherTests(String teacherEmail, Pageable pageable) {
-        return testJpaRepository.findByTeacherEmail(teacherEmail, pageable).map(this::toModel);
+        return testJpaRepository.findByTeacherEmail(teacherEmail, pageable).map(testMapper::toModel);
     }
 
     @Override
     public Page<Test> getAllActiveTests(Pageable pageable) {
-        return testJpaRepository.findByTestStateAndTestIdNot(TestState.ACTIVE, 1,pageable).map(this::toModel);
+        return testJpaRepository.findByTestStateAndTestIdNot(TestState.ACTIVE, 1,pageable).map(testMapper::toModel);
     }
 
     @Override
     public Test getTestById(int id) {
-        return toModel(testJpaRepository.findById(id).get());
+        return testMapper.toModel(testJpaRepository.findById(id).get());
     }
 
     @Override
     public Test save(Test test) {
         try {
             if (test.getTestId() == null) {
-                return toModel(testJpaRepository.save(toInfra(test)));
+                return testMapper.toModel(testJpaRepository.save(testMapper.toInfra(test)));
             }
 
             TestEntity testEntity = testJpaRepository.getReferenceById(test.getTestId());
 
-            testMapper.update(test, testEntity);
+            testMapper.updateInfra(test, testEntity);
 
-            return toModel(testJpaRepository.save(testEntity));
+            return testMapper.toModel(testJpaRepository.save(testEntity));
 
         } catch (DataIntegrityViolationException ex) {
             throw new AlreadyExistsException("El título de la evaluación ya está en uso.");

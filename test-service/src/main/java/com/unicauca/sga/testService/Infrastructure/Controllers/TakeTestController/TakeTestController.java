@@ -1,7 +1,9 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.TakeTestService;
+import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Response.TakeTestDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Response.TestInfoDTOResponse;
+import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.Mappers.TakeTestDTOResponseMapper;
 import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.Mappers.TestInfoDTOResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,10 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,6 +23,7 @@ public class TakeTestController {
 
     private final TakeTestService takeTestService;
     private final TestInfoDTOResponseMapper testInfoDTOResponseMapper;
+    private final TakeTestDTOResponseMapper takeTestDTOResponseMapper;
 
     @Operation(
             summary = "Obtener evaluaciones especificas activas",
@@ -55,5 +55,22 @@ public class TakeTestController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT')")
     public TestInfoDTOResponse getGeneralTest() {
         return testInfoDTOResponseMapper.toDTO(takeTestService.getGeneralTest());
+    }
+
+    @Operation(
+            summary = "Empezar intento de evaluacion",
+            description = "Metodo para obtener la lista de preguntas de una evaluación e iniciar un intento",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Evaluacion y preguntas obtenidas con exito."),
+                    @ApiResponse(responseCode = "403", description = "El estudiante no tiene permitido presentar la evaluacion"),
+                    @ApiResponse(responseCode = "404", description = "No se encontró la evaluacion que se quiere presentar."),
+                    @ApiResponse(responseCode = "409", description = "La evaluacion se encuentra inactiva.")
+            }
+    )
+    @GetMapping("/{testId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT')")
+    public TakeTestDTOResponse startTestAttempt(@PathVariable int testId, @RequestParam("studentEmail") String studentEmail){
+        return takeTestDTOResponseMapper.toDTO(takeTestService.startTestAttempt(studentEmail, testId));
     }
 }
