@@ -15,6 +15,14 @@ public class StudentTestConfig {
 
     private Test test;
 
+    public void incrementAttemptsUsed(){
+        this.attemptsUsed++;
+    }
+
+    public boolean hasRemainingAttempts() {
+        return attemptsUsed < attemptLimit;
+    }
+
     public boolean isSameSemester() {
         if (lastAttemptAt == null) return false;
 

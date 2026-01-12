@@ -5,9 +5,12 @@ import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingC
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentTestConfigEntity;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {TestMapper.class})
 public interface StudentTestConfigMapper {
-    StudentTestConfig toModel(StudentTestConfigEntity studentTestConfig, @Context CycleAvoidingMappingContext context);
-    StudentTestConfigEntity toInfra(StudentTestConfig studentTestConfig, @Context CycleAvoidingMappingContext context);
+    @Mapping(target = "test", ignore = true)
+    StudentTestConfig toModel(StudentTestConfigEntity studentTestConfig);
+
+    StudentTestConfigEntity toInfra(StudentTestConfig studentTestConfig);
 }

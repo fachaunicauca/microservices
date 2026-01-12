@@ -22,15 +22,18 @@ public class TestAttemptEntity {
     private LocalDateTime testAttemptDate;
 
     @Column(nullable = false)
-    private double testAttemptScore;
+    private Integer testAttemptNumberOfQuestions;
 
     @Column(nullable = false)
-    private boolean fullyScored;
+    private Double testAttemptScore;
+
+    @Column(nullable = false)
+    private Boolean fullyScored;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId",nullable = false)
     private TestEntity test;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "testAttempt", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentResponseEntity> studentResponses;
 }

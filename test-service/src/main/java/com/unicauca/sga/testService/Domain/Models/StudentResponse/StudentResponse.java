@@ -1,6 +1,7 @@
-package com.unicauca.sga.testService.Domain.Models;
+package com.unicauca.sga.testService.Domain.Models.StudentResponse;
 
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
+import com.unicauca.sga.testService.Domain.Models.TestAttempt;
 import lombok.Data;
 
 @Data

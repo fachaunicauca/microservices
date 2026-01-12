@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
-import com.unicauca.sga.testService.Domain.Models.StudentResponse;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentResponseRepository;
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentResponseMapper;
@@ -18,19 +18,9 @@ public class StudentResponseRepository implements IStudentResponseRepository {
     private final StudentResponseJpaRepository studentResponseJpaRepository;
     private final StudentResponseMapper studentResponseMapper;
 
-    private StudentResponse toModel(StudentResponseEntity studentResponse){
-        if(studentResponse==null) return null;
-        return studentResponseMapper.toModel(studentResponse, new CycleAvoidingMappingContext());
-    }
-
-    private StudentResponseEntity toInfra(StudentResponse studentResponse){
-        if(studentResponse==null) return null;
-        return studentResponseMapper.toInfra(studentResponse, new CycleAvoidingMappingContext());
-    }
-
     @Override
     public void save(StudentResponse studentResponse) {
-        studentResponseJpaRepository.save(toInfra(studentResponse));
+        studentResponseJpaRepository.save(studentResponseMapper.toInfra(studentResponse));
     }
 
     @Override
@@ -40,11 +30,11 @@ public class StudentResponseRepository implements IStudentResponseRepository {
 
     @Override
     public List<StudentResponse> getAllQuestionResponses(long questionId) {
-        return studentResponseJpaRepository.findByQuestion_QuestionId(questionId).stream().map(this::toModel).toList();
+        return studentResponseJpaRepository.findByQuestion_QuestionId(questionId).stream().map(studentResponseMapper::toModel).toList();
     }
 
     @Override
     public List<StudentResponse> getAllTestAttemptResponses(long testAttempt) {
-        return studentResponseJpaRepository.findByTestAttempt_TestAttemptId(testAttempt).stream().map(this::toModel).toList();
+        return studentResponseJpaRepository.findByTestAttempt_TestAttemptId(testAttempt).stream().map(studentResponseMapper::toModel).toList();
     }
 }

@@ -1,16 +1,17 @@
 package com.unicauca.sga.testService.Aplication.Strategy.Question.Impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicauca.sga.testService.Domain.Exceptions.InvalidQuestionStructureException;
 import com.unicauca.sga.testService.Domain.Models.Question.AnswerTypes.ChoiceAnswer;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStructures.MultipleChoiceStructure;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
-import com.unicauca.sga.testService.Domain.Models.StudentResponse;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.ResponseTypes.ChoiceResponse;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,15 @@ public class MultipleChoiceStrategy implements QuestionStrategy {
     }
 
     @Override
+    public boolean requiresManualGrade() {return false;}
+
+    @Override
     public int grade(Question question, StudentResponse studentResponse) {
         try {
-            Set<Long> studentChoicesIds = mapper.readValue(studentResponse.getResponse(), new TypeReference<>() {});
+            ChoiceResponse choiceResponse = mapper.readValue(studentResponse.getResponse(), ChoiceResponse.class);
             MultipleChoiceStructure structure = mapper.readValue(question.getQuestionStructure(), MultipleChoiceStructure.class);
+
+            Set<Long> studentChoicesIds = new HashSet<>(choiceResponse.getSelectedAnswerIds());
 
             if (studentChoicesIds.size() != structure.getCorrectAnswerCount()) {
                 return 0;
@@ -50,6 +56,7 @@ public class MultipleChoiceStrategy implements QuestionStrategy {
             return studentChoicesIds.equals(correctChoices) ? 1 : 0;
 
         } catch (Exception ex) {
+            System.out.println("Ocurrió un error al calificar una pregunta (Id: "+ question.getQuestionId() + ") de opción multiple:" + ex.getMessage());
             return 0;
         }
     }
@@ -93,8 +100,7 @@ public class MultipleChoiceStrategy implements QuestionStrategy {
     @Override
     public String cleanStructure(String questionStructure) {
         try {
-            MultipleChoiceStructure structure =
-                    mapper.readValue(questionStructure, MultipleChoiceStructure.class);
+            MultipleChoiceStructure structure = mapper.readValue(questionStructure, MultipleChoiceStructure.class);
 
             // El estudiante NO puede ver cuáles respuestas son correctas
             if (structure.getAnswers() != null) {

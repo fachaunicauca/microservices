@@ -1,13 +1,16 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Mappers;
 
-import com.unicauca.sga.testService.Domain.Models.StudentResponse;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentResponseEntity;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {QuestionMapper.class})
 public interface StudentResponseMapper {
-    StudentResponse toModel(StudentResponseEntity studentResponse, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
-    StudentResponseEntity toInfra(StudentResponse studentResponse, @Context CycleAvoidingMappingContext cycleAvoidingMappingContext);
+    @Mapping(target = "testAttempt", ignore = true)
+    StudentResponse toModel(StudentResponseEntity studentResponse);
+    @Mapping(target = "testAttempt", ignore = true)
+    StudentResponseEntity toInfra(StudentResponse studentResponse);
 }

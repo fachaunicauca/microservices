@@ -60,6 +60,7 @@ public class TestRepository implements ITestRepository {
                 return testMapper.toModel(testJpaRepository.save(testMapper.toInfra(test)));
             }
 
+            // Se debe obtener la referencia y luego actualizar para que no se pierdan las preguntas
             TestEntity testEntity = testJpaRepository.getReferenceById(test.getTestId());
 
             testMapper.updateInfra(test, testEntity);

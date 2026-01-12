@@ -7,19 +7,21 @@ import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 import com.unicauca.sga.testService.Domain.Models.Test;
+import com.unicauca.sga.testService.Domain.Models.TestAttempt;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestAttemptRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
-import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Response.TakeTestDTOResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -110,7 +112,7 @@ public class TakeTestService {
             }
 
             // Verificar si tiene intentos disponibles
-            if (config.getAttemptsUsed() >= config.getAttemptLimit()) {
+            if (!config.hasRemainingAttempts()) {
                 throw new ForbiddenOperationException("El estudiante no tiene intentos disponibles para esta evaluación");
             }
         }
@@ -129,11 +131,78 @@ public class TakeTestService {
         return studentTest;
     }
 
+    @Transactional
+    public TestAttempt saveStudentTestAttempt(TestAttempt testAttempt){
+
+        int testId = testAttempt.getTest().getTestId();
+        String studentEmail = testAttempt.getStudentEmail();
+
+        // Verificar que el test siga existiendo
+        if(!testRepository.isPresent(testId)){
+            throw new NotFoundException("La evaluación ya no existe");
+        }
+
+        Test test  = testRepository.getTestById(testId);
+
+        // Verificar que el studentTestConfig exista
+        if(!studentTestConfigRepository.isPresent(studentEmail, testId)){
+            throw new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo");
+        }
+
+        StudentTestConfig config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
+
+        // Calificar las respuestas del estudiante
+        testAttempt.setFullyScored(true);
+        long totalPoints = gradeStudentResponses(testAttempt);
+        double score =(double) totalPoints / testAttempt.getTestAttemptNumberOfQuestions();
+        testAttempt.setTestAttemptScore(score);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        // Actualizar la configuración del estudiante y guardarlo
+        config.incrementAttemptsUsed();
+        config.setLastAttemptAt(now);
+        config.setFinalScore(score);
+        config.setTest(test);
+        studentTestConfigRepository.save(config);
+
+        // Guardar el intento
+        testAttempt.setTestAttemptDate(now);
+        testAttempt.setTest(test);
+        testAttemptRepository.save(testAttempt);
+        return testAttempt;
+    }
+
     private List<Question> cleanQuestionStructures(List<Question> questions){
         questions.forEach(question -> {
             QuestionStrategy strategy = questionStrategyRegistry.get(question.getQuestionType());
             question.setQuestionStructure(strategy.cleanStructure(question.getQuestionStructure()));
         });
         return questions;
+    }
+
+    private long gradeStudentResponses(TestAttempt testAttempt) {
+        long totalPoints = 0;
+        boolean requiresManualGrading = false;
+
+        for (StudentResponse response : testAttempt.getStudentResponses()) {
+            Long questionId = response.getQuestion().getQuestionId();
+
+            if(!questionRepository.isPresent(questionId)){
+                throw new NotFoundException("No se encontró la pregunta con id " + questionId + " al calificar la evaluación");
+            }
+
+            Question question = questionRepository.getById(questionId);
+            QuestionStrategy strategy = questionStrategyRegistry.get(question.getQuestionType());
+
+            if (strategy.requiresManualGrade()) {
+                requiresManualGrading = true;
+            } else {
+                totalPoints += strategy.grade(question, response);
+            }
+        }
+
+        testAttempt.setFullyScored(!requiresManualGrading);
+        return totalPoints;
     }
 }

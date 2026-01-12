@@ -3,11 +3,19 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Mappers;
 import com.unicauca.sga.testService.Domain.Models.TestAttempt;
 import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestAttemptEntity;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = {TestMapper.class, StudentResponseMapper.class})
 public interface TestAttemptMapper {
-    TestAttempt toModel(TestAttemptEntity testAttempt, @Context CycleAvoidingMappingContext context);
-    TestAttemptEntity toInfra(TestAttempt testAttempt, @Context CycleAvoidingMappingContext context);
+    @Mapping(target = "studentResponses", ignore = true)
+    TestAttempt toModel(TestAttemptEntity testAttempt);
+
+    TestAttemptEntity toInfra(TestAttempt testAttempt);
+
+    @AfterMapping
+    default void linkStudentResponses(@MappingTarget TestAttemptEntity entity) {
+        if (entity.getStudentResponses() != null) {
+            entity.getStudentResponses().forEach(response -> response.setTestAttempt(entity));
+        }
+    }
 }

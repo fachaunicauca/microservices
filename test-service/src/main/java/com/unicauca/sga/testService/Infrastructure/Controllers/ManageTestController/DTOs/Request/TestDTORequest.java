@@ -30,7 +30,7 @@ public class TestDTORequest {
     @Min(value = 4, message = "La cantidad de preguntas que deben responder los estudiantes debe ser superior a 3.")
     private Integer testNumberOfQuestions;
 
-    @NotNull(message = "Debe especificar la cantidad limite de intentos (0 sin limite de intentos).")
+    @NotNull(message = "Debe especificar la cantidad limite de intentos.")
     @PositiveOrZero(message = "La cantidad limite de intentos no puede ser negativa.")
     private Integer testAttemptLimit;
 

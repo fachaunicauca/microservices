@@ -1,9 +1,11 @@
 package com.unicauca.sga.testService.Domain.Models.Question;
 
-import com.unicauca.sga.testService.Domain.Models.StudentResponse;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 
 public interface QuestionStrategy {
     String getSupportedType();
+
+    boolean requiresManualGrade();
 
     int grade(Question question, StudentResponse studentResponse);
 

@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Domain.Repositories;
 
-import com.unicauca.sga.testService.Domain.Models.StudentResponse;
+import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 
 import java.util.List;
 

@@ -16,24 +16,14 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
     private final StudentTestConfigJpaRepository studentTestConfigJpaRepository;
     private final StudentTestConfigMapper studentTestConfigMapper;
 
-    private StudentTestConfig toModel(StudentTestConfigEntity studentTestConfig) {
-        if (studentTestConfig == null) return null;
-        return studentTestConfigMapper.toModel(studentTestConfig, new CycleAvoidingMappingContext());
-    };
-
-    private StudentTestConfigEntity toInfra(StudentTestConfig studentTestConfig) {
-        if (studentTestConfig == null) return null;
-        return studentTestConfigMapper.toInfra(studentTestConfig, new CycleAvoidingMappingContext());
-    }
-
     @Override
     public void save(StudentTestConfig studentTestConfig) {
-        studentTestConfigJpaRepository.save(toInfra(studentTestConfig));
+        studentTestConfigJpaRepository.save(studentTestConfigMapper.toInfra(studentTestConfig));
     }
 
     @Override
     public StudentTestConfig getStudentTestConfig(String studentEmail, int testId) {
-        return toModel(studentTestConfigJpaRepository.findByStudentEmailAndTest_TestId(studentEmail, testId));
+        return studentTestConfigMapper.toModel(studentTestConfigJpaRepository.findByStudentEmailAndTest_TestId(studentEmail, testId));
     }
 
     @Override

@@ -16,24 +16,14 @@ public class TestAttemptRepository implements ITestAttemptRepository {
     private final TestAttemptJpaRepository testAttemptJpaRepository;
     private final TestAttemptMapper testAttemptMapper;
 
-    private TestAttempt toModel(TestAttemptEntity testAttempt) {
-        if (testAttempt == null) return null;
-        return testAttemptMapper.toModel(testAttempt, new CycleAvoidingMappingContext());
-    }
-
-    private TestAttemptEntity toInfra(TestAttempt testAttempt) {
-        if (testAttempt == null) return null;
-        return testAttemptMapper.toInfra(testAttempt, new CycleAvoidingMappingContext());
-    }
-
     @Override
     public TestAttempt getTestAttemptById(long id) {
-        return toModel(testAttemptJpaRepository.findById(id).get());
+        return testAttemptMapper.toModel(testAttemptJpaRepository.findById(id).get());
     }
 
     @Override
     public void save(TestAttempt testAttempt) {
-        testAttemptJpaRepository.save(toInfra(testAttempt));
+        testAttemptJpaRepository.save(testAttemptMapper.toInfra(testAttempt));
     }
 
     @Override
