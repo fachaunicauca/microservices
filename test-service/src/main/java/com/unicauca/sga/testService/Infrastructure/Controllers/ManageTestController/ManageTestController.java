@@ -3,8 +3,7 @@ package com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestContro
 import com.unicauca.sga.testService.Aplication.UseCases.ManageTestService;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Request.TestDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Response.TestDTOResponse;
-import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.Mappers.TestDTORequestMapper;
-import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.Mappers.TestDTOResponseMapper;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.Mappers.TestDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,8 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name="Controlador Gestion de Evaluaciones",description="Funcionalidades necesarias para la gestion de las evaluaciones.")
 public class ManageTestController {
     private final ManageTestService manageTestService;
-    private final TestDTOResponseMapper testDTOResponseMapper;
-    private final TestDTORequestMapper testDTORequestMapper;
+    private final TestDTOMapper testDTOMapper;
 
     @Operation(
             summary = "Obtener evaluación sin preguntas",
@@ -40,7 +38,7 @@ public class ManageTestController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public TestDTOResponse getTestById(@PathVariable int id){
-        return testDTOResponseMapper.toDTO(manageTestService.getTestById(id));
+        return testDTOMapper.toDTO(manageTestService.getTestById(id));
     }
 
     @Operation(
@@ -73,9 +71,7 @@ public class ManageTestController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public TestDTOResponse saveTest(@RequestBody @Valid TestDTORequest testDTORequest){
-        System.out.println("Test recibido: " + testDTORequest.toString());
-        System.out.println("Test mapeado: " + testDTORequestMapper.toModel(testDTORequest));
-        return testDTOResponseMapper.toDTO(manageTestService.saveTest(testDTORequestMapper.toModel(testDTORequest)));
+        return testDTOMapper.toDTO(manageTestService.saveTest(testDTOMapper.toModel(testDTORequest)));
     }
 
     @Operation(
@@ -101,12 +97,12 @@ public class ManageTestController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            return manageTestService.getAllTests(pageable).map(testDTOResponseMapper::toDTO);
+            return manageTestService.getAllTests(pageable).map(testDTOMapper::toDTO);
         }
 
         Jwt jwt = (Jwt) auth.getPrincipal();
         String email = jwt.getClaimAsString("email");
 
-        return manageTestService.getAllTeacherTests(email, pageable).map(testDTOResponseMapper::toDTO);
+        return manageTestService.getAllTeacherTests(email, pageable).map(testDTOMapper::toDTO);
     }
 }

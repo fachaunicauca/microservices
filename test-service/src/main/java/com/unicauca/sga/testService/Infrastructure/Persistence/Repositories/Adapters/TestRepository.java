@@ -4,7 +4,6 @@ import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
-import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestEntity;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor

@@ -2,7 +2,6 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 
 import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentResponseRepository;
-import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentResponseMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.StudentResponseJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentResponseEntity;

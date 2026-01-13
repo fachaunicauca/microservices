@@ -1,4 +1,4 @@
-INSERT INTO test (
+INSERT INTO test.test (
     teacherEmail,
     testTitle,
     testDescription,
@@ -18,7 +18,7 @@ INSERT INTO test (
              true
          );
 
-INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
+INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
     ( '¿Cuál es la primera acción que debe tomar un estudiante al ingresar a un laboratorio de química?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
     '{"answers":[{"id":1,"text":"Encender el mechero Bunsen.","correct":false},{"id":2,"text":"Leer las normas de seguridad del laboratorio.","correct":true},{"id":3,"text":"Comenzar a mezclar reactivos.","correct":false},{"id":4,"text":"Tomar asiento sin hacer nada.","correct":false}],"correctAnswerCount":1}'),
 
@@ -49,7 +49,7 @@ INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, que
     ( '¿Qué debe hacer un estudiante antes de comenzar a trabajar con reactivos químicos?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
 '{"answers":[{"id":1,"text":"Oler el reactivo directamente.","correct":false},{"id":2,"text":"Probar el reactivo para identificarlo.","correct":false},{"id":3,"text":"Mezclar los reactivos al azar.","correct":false},{"id":4,"text":"Leer las etiquetas y fichas de seguridad de los reactivos.","correct":true}],"correctAnswerCount":1}');
 
-INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
+INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
     ('¿Cómo se debe manejar un frasco de ácido en el laboratorio?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
     '{"answers":[{"id":1,"text":"Sin protección y usando una sola mano.","correct":false},{"id":2,"text":"Con guantes y gafas de seguridad, y transportarlo con ambas manos.","correct":true},{"id":3,"text":"Apoyándolo sobre el borde de la mesa.","correct":false},{"id":4,"text":"Sacudiéndolo antes de abrirlo.","correct":false}],"correctAnswerCount":1}'),
 
@@ -95,7 +95,7 @@ INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, que
     ('¿Qué debe hacer un estudiante al finalizar una práctica de laboratorio?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
 '{"answers":[{"id":1,"text":"Salir inmediatamente sin limpiar.","correct":false},{"id":2,"text":"Limpiar el material, ordenar el puesto y lavarse las manos.","correct":true},{"id":3,"text":"Dejar los reactivos abiertos para el siguiente grupo.","correct":false},{"id":4,"text":"Tirar todo a la basura común.","correct":false}],"correctAnswerCount":1}');
 
-INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
+INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
    ('¿Cómo se debe actuar ante la presencia de un gas desconocido en el laboratorio?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
     '{"answers":[{"id":1,"text":"Inhalar profundamente para identificarlo.","correct":false},{"id":2,"text":"Evacuar el área y ventilar el laboratorio.","correct":true},{"id":3,"text":"Ignorar el olor si no es muy fuerte.","correct":false},{"id":4,"text":"Cerrar todas las ventanas.","correct":false}],"correctAnswerCount":1}'),
 
@@ -141,7 +141,7 @@ INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, que
    ('¿Qué se debe hacer antes de usar un equipo eléctrico en el laboratorio?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
     '{"answers":[{"id":1,"text":"Conectarlo directamente sin revisar.","correct":false},{"id":2,"text":"Verificar que los cables no estén pelados y que el área esté seca.","correct":true},{"id":3,"text":"Limpiarlo con un paño húmedo mientras está encendido.","correct":false},{"id":4,"text":"Usarlo solo si es estrictamente necesario.","correct":false}],"correctAnswerCount":1}');
 
-INSERT INTO question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
+INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
    ( '¿Qué se debe hacer si se detecta una fuga de gas en el laboratorio?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
     '{"answers":[{"id":1,"text":"Abrir todas las ventanas y cerrar la llave de paso principal.","correct":true},{"id":2,"text":"Encender un mechero para ver dónde está la fuga.","correct":false},{"id":3,"text":"Seguir trabajando con cuidado.","correct":false},{"id":4,"text":"Cerrar las puertas y ventanas para que el gas no salga.","correct":false}],"correctAnswerCount":1}'),
 

@@ -2,7 +2,6 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 
 import com.unicauca.sga.testService.Domain.Models.TestAttempt;
 import com.unicauca.sga.testService.Domain.Repositories.ITestAttemptRepository;
-import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestAttemptMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestAttemptJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestAttemptEntity;

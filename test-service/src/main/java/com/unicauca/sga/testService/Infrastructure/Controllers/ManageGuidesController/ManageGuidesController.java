@@ -1,27 +1,31 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageGuidesService;
+import com.unicauca.sga.testService.Domain.Models.TestGuide;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.DTOs.Response.TestGuideDTOResponse;
-import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.DTOs.Response.TestGuideListDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.DTOs.Request.TestGuideDTORequest;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageGuidesController.Mappers.TestGuideDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/guides")
 @Tag(name="Controlador Gestion de Guias",description="Funcionalidades necesarias para la gestion de las guias de capacitación.")
 public class ManageGuidesController {
-    private final ManageGuidesService manageGuidesService;
 
-    public ManageGuidesController(ManageGuidesService manageGuidesService) {
-        this.manageGuidesService = manageGuidesService;
-    }
+    private final ManageGuidesService manageGuidesService;
+    private final TestGuideDTOMapper testGuideDTOMapper;
+
 
     @Operation(summary = "Obtener guias de capacitación.",
                 description = "Obtiene todas las guias de capacitación registradas en el sistema.",
@@ -32,7 +36,7 @@ public class ManageGuidesController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT','ROLE_TEACHER','ROLE_LABORATORY_WORKER')")
-    public TestGuideListDTOResponse getGuides() {
+    public List<TestGuide> getGuides() {
         return manageGuidesService.getAllTestGuides();
     }
 
@@ -46,7 +50,7 @@ public class ManageGuidesController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public TestGuideDTOResponse saveGuide(@Valid @ModelAttribute TestGuideDTORequest testGuideDTORequest) {
-        return manageGuidesService.saveTestGuide(testGuideDTORequest);
+        return testGuideDTOMapper.toDTO(manageGuidesService.saveTestGuide(testGuideDTOMapper.toModel(testGuideDTORequest)));
     }
 
     @Operation(summary = "Eliminar guias",

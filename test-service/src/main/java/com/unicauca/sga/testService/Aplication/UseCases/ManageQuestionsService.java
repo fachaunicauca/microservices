@@ -53,18 +53,18 @@ public class ManageQuestionsService {
         }
 
         Question question = questionRepository.getById(questionId);
-        Test test = testRepository.getTestById(question.getTest().getTestId()); // Si existe la pregunta existe el test
+        Test test = question.getTest(); // Si existe la pregunta existe el test
 
         long totalQuestions = questionRepository.getTestTotalQuestions(test.getTestId());
 
+        questionRepository.deleteById(questionId);
+
         // Validar que al eliminar la pregunta el test siga teniendo suficientes preguntas para estar activo
         // Si no las tiene desactivar el test
-        if(!test.hasEnoughQuestions(totalQuestions - 1) && test.getTestState() == TestState.ACTIVE) {
+        if(!test.hasEnoughQuestions(totalQuestions - 1) && test.isActive()) {
             test.setTestState(TestState.INACTIVE);
             testRepository.save(test);
         }
-
-        questionRepository.deleteById(questionId);
     }
 
 

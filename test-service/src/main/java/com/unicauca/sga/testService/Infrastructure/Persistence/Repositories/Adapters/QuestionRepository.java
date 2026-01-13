@@ -2,7 +2,6 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
-import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.QuestionMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.QuestionJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionEntity;
@@ -21,19 +20,9 @@ public class QuestionRepository implements IQuestionRepository {
     private final QuestionJpaRepository questionJpaRepository;
     private final QuestionMapper questionMapper;
 
-    private Question toModel(QuestionEntity question){
-        if(question == null) return null;
-        return questionMapper.toModel(question, new CycleAvoidingMappingContext());
-    }
-
-    private QuestionEntity toInfra(Question question){
-        if(question == null) return null;
-        return questionMapper.toInfra(question, new CycleAvoidingMappingContext());
-    }
-
     @Override
     public Question save(Question question) {
-        return toModel(questionJpaRepository.save(toInfra(question)));
+        return questionMapper.toModel(questionJpaRepository.save(questionMapper.toInfra(question)));
     }
 
     @Override
@@ -48,7 +37,7 @@ public class QuestionRepository implements IQuestionRepository {
 
     @Override
     public Question getById(long id) {
-        return toModel(questionJpaRepository.findById(id).get());
+        return questionMapper.toModel(questionJpaRepository.findById(id).get());
     }
 
     @Override
@@ -61,12 +50,12 @@ public class QuestionRepository implements IQuestionRepository {
         List<QuestionEntity> entities = questionJpaRepository.findAllById(selectedIds);
         Collections.shuffle(entities);
 
-        return entities.stream().map(this::toModel).toList();
+        return entities.stream().map(questionMapper::toModel).toList();
     }
 
     @Override
     public Page<Question> getTestQuestionsPaged(int id, Pageable pageable) {
-        return questionJpaRepository.findByTest_TestId(id, pageable).map(this::toModel);
+        return questionJpaRepository.findByTest_TestIdOrderByQuestionId(id, pageable).map(questionMapper::toModel);
     }
 
     @Override

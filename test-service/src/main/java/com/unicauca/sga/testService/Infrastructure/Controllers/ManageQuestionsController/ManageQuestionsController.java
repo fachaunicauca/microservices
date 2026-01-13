@@ -3,8 +3,7 @@ package com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsC
 import com.unicauca.sga.testService.Aplication.UseCases.ManageQuestionsService;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request.QuestionDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Response.QuestionDTOResponse;
-import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.Mappers.QuestionDTORequestMapper;
-import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.Mappers.QuestionDTOResponseMapper;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.Mappers.QuestionDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class ManageQuestionsController {
 
     private final ManageQuestionsService manageQuestionsService;
-    private final QuestionDTOResponseMapper questionDTOResponseMapper;
-    private final QuestionDTORequestMapper  questionDTORequestMapper;
+    private final QuestionDTOMapper questionDTOMapper;
 
     @Operation(
             summary = "Obtener preguntas evaluación por paginas",
@@ -38,7 +36,7 @@ public class ManageQuestionsController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public Page<QuestionDTOResponse> getTestQuestionsPaged(@RequestParam("testId") int testId, Pageable pageable){
-        return manageQuestionsService.getTestQuestionsPaged(testId, pageable).map(questionDTOResponseMapper::toDTO);
+        return manageQuestionsService.getTestQuestionsPaged(testId, pageable).map(questionDTOMapper::toDTO);
     }
 
     @Operation(
@@ -55,7 +53,7 @@ public class ManageQuestionsController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public QuestionDTOResponse saveTestQuestion(@RequestBody @Valid QuestionDTORequest questionDTORequest){
         System.out.println("Question"  +  questionDTORequest.toString());
-        return questionDTOResponseMapper.toDTO(manageQuestionsService.saveQuestion(questionDTORequestMapper.toModel(questionDTORequest)));
+        return questionDTOMapper.toDTO(manageQuestionsService.saveQuestion(questionDTOMapper.toModel(questionDTORequest)));
     }
 
     @Operation(

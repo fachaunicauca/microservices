@@ -2,7 +2,6 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
-import com.unicauca.sga.testService.Infrastructure.Context.CycleAvoidingMappingContext;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentTestConfigMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.StudentTestConfigJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentTestConfigEntity;
