@@ -4,9 +4,10 @@ import com.unicauca.sga.testService.Domain.Models.TestAttempt;
 import com.unicauca.sga.testService.Domain.Repositories.ITestAttemptRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestAttemptMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestAttemptJpaRepository;
-import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestAttemptEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,8 +17,8 @@ public class TestAttemptRepository implements ITestAttemptRepository {
     private final TestAttemptMapper testAttemptMapper;
 
     @Override
-    public TestAttempt getTestAttemptById(long id) {
-        return testAttemptMapper.toModel(testAttemptJpaRepository.findById(id).get());
+    public Optional<TestAttempt> getTestAttemptById(long id) {
+        return testAttemptJpaRepository.findById(id).map(testAttemptMapper::toModel);
     }
 
     @Override
@@ -28,10 +29,5 @@ public class TestAttemptRepository implements ITestAttemptRepository {
     @Override
     public void deleteById(long id) {
         testAttemptJpaRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean isPresent(long id) {
-        return testAttemptJpaRepository.existsById(id);
     }
 }

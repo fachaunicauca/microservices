@@ -10,4 +10,6 @@ public interface QuestionMapper {
     Question toModel(QuestionEntity questionEntity);
     @Mapping(target = "test.questions", ignore = true)
     QuestionEntity toInfra(Question question);
+    @Mapping(target = "test", ignore = true)
+    Question toModelWithoutTest(QuestionEntity questionEntity);
 }

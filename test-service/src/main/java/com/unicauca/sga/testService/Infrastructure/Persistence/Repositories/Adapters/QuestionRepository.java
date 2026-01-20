@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,14 +31,10 @@ public class QuestionRepository implements IQuestionRepository {
         questionJpaRepository.deleteById(id);
     }
 
-    @Override
-    public boolean isPresent(long id) {
-        return questionJpaRepository.existsById(id);
-    }
 
     @Override
-    public Question getById(long id) {
-        return questionMapper.toModel(questionJpaRepository.findById(id).get());
+    public Optional<Question> getById(long id) {
+        return questionJpaRepository.findById(id).map(questionMapper::toModel);
     }
 
     @Override
@@ -50,12 +47,12 @@ public class QuestionRepository implements IQuestionRepository {
         List<QuestionEntity> entities = questionJpaRepository.findAllById(selectedIds);
         Collections.shuffle(entities);
 
-        return entities.stream().map(questionMapper::toModel).toList();
+        return entities.stream().map(questionMapper::toModelWithoutTest).toList();
     }
 
     @Override
     public Page<Question> getTestQuestionsPaged(int id, Pageable pageable) {
-        return questionJpaRepository.findByTest_TestIdOrderByQuestionId(id, pageable).map(questionMapper::toModel);
+        return questionJpaRepository.findByTest_TestIdOrderByQuestionId(id, pageable).map(questionMapper::toModelWithoutTest);
     }
 
     @Override

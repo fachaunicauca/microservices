@@ -23,11 +23,6 @@ public class StudentResponseRepository implements IStudentResponseRepository {
     }
 
     @Override
-    public boolean isPresent(long id) {
-        return studentResponseJpaRepository.existsById(id);
-    }
-
-    @Override
     public List<StudentResponse> getAllQuestionResponses(long questionId) {
         return studentResponseJpaRepository.findByQuestion_QuestionId(questionId).stream().map(studentResponseMapper::toModel).toList();
     }

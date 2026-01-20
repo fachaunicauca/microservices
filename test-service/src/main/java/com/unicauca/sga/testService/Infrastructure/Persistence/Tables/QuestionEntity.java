@@ -18,6 +18,8 @@ public class QuestionEntity {
 
     private String questionTitle;
 
+    private String questionImageId;
+
     private String questionImageUrl;
 
     @Column(nullable = false)

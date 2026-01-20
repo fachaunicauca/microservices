@@ -4,8 +4,10 @@ package com.unicauca.sga.testService.Domain.Repositories;
 import com.unicauca.sga.testService.Domain.Models.TestGuide;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ITestGuidesRepository {
+    Optional<TestGuide> getTestGuide(String id);
     List<TestGuide> getAllTestsGuides();
     List<TestGuide> getTeacherTestsGuides(String teacherEmail);
     TestGuide save(TestGuide testGuide);

@@ -7,6 +7,7 @@ public class QuestionDTOResponse {
     private long questionId;
     private String questionText;
     private String questionTitle;
+    private String questionImageId;
     private String questionImageUrl;
     private String questionType;
     private String questionStructure;

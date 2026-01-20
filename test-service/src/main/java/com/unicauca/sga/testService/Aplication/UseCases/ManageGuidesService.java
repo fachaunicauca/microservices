@@ -1,9 +1,9 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
-import com.unicauca.sga.testService.Aplication.Services.CloudinaryService;
 import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.TestGuide;
+import com.unicauca.sga.testService.Domain.Repositories.IFilesRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,34 +19,23 @@ import java.util.List;
 public class ManageGuidesService {
 
     private final ITestGuidesRepository testGuidesRepository;
-    private final CloudinaryService cloudinaryService;
-
-    private boolean testConnection(){
-        if (!cloudinaryService.testConnection()){
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "El servicio de almacenamiento de archivos no se encuentra disponible");
-        }
-        return true;
-    }
+    private final IFilesRepository filesRepository;
 
     @Transactional
     public TestGuide saveTestGuide(TestGuide testGuide) {
+        String formattedId = testGuide.getTestGuideId().replace(" ", "_");
 
-        if(testGuidesRepository.isPresent(testGuide.getTestGuideId())){
+        if(testGuidesRepository.isPresent(formattedId)){
             throw new AlreadyExistsException("La guia con nombre "+ testGuide.getTestGuideId() +" ya existe");
         }
 
         String url = "";
-
-        if(testConnection()){
-            try {
-                url = cloudinaryService.uploadFile(testGuide.getTestGuideArchive(), testGuide.getTestGuideId());
-            } catch (IOException e){
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Ocurrió un error al guardar el archivo");
-            }
+        if(filesRepository.testConnection()){
+            url = filesRepository.uploadFile(testGuide.getTestGuideArchive(), formattedId);
         }
 
         TestGuide newTestGuide = new TestGuide();
-        newTestGuide.setTestGuideId(testGuide.getTestGuideId());
+        newTestGuide.setTestGuideId(formattedId);
         newTestGuide.setTestGuideUrl(url);
 
         return testGuidesRepository.save(newTestGuide);
@@ -65,18 +54,12 @@ public class ManageGuidesService {
 
     @Transactional
     public boolean deleteTestGuide(String testGuideId) {
+        TestGuide testGuide = testGuidesRepository.getTestGuide(testGuideId).orElseThrow(() ->
+                new NotFoundException("No se encontró la guia que se quiere eliminar.")
+        );
 
-        if(testGuidesRepository.isPresent(testGuideId)){
-            testGuidesRepository.deleteById(testGuideId);
-        }
+        testGuidesRepository.deleteById(testGuideId);
 
-        String formattedId = testGuideId.replace(" ", "_");
-        String msg = cloudinaryService.deleteFile(formattedId);
-
-        if(!msg.equals("ok")){
-            throw new NotFoundException("Ocurrió un error al eliminar el archivo de Cloudinary: " + msg);
-        }
-
-        return true;
+        return filesRepository.deleteFile(testGuide.getTestGuideId());
     }
 }

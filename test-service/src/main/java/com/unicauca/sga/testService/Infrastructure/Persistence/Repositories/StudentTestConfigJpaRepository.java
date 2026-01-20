@@ -4,9 +4,11 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentTes
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface StudentTestConfigJpaRepository extends JpaRepository<StudentTestConfigEntity, Long> {
-    StudentTestConfigEntity findByStudentEmailAndTest_TestId(String studentEmail, int testTestId);
+    Optional<StudentTestConfigEntity> findByStudentEmailAndTest_TestId(String studentEmail, int testTestId);
 
     boolean existsByStudentEmailAndTest_TestId(String studentEmail, Integer testTestId);
 }

@@ -42,22 +42,16 @@ public class ManageTestService {
     
     @Transactional(readOnly = true)
     public Test getTestById(int id) {
-        boolean isPresent = testRepository.isPresent(id);
-
-        if (!isPresent){
-            throw new NotFoundException("No se encontró la evaluación con id: " + id);
-        }
-
-        return testRepository.getTestById(id);
+        return testRepository.getTestById(id).orElseThrow(() ->
+                new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo")
+        );
     }
 
     @Transactional
     public Test saveTest(Test test) {
-        // When editing a test and its state is set to active
-        // look if there is enough questions
+        // Al editar un test que está activo, revisar que tenga suficientes preguntas
         if(test.getTestId() != null && test.isActive()){
             long totalQuestions = questionRepository.getTestTotalQuestions(test.getTestId());
-            System.out.println("Total: " + totalQuestions);
             if(!test.hasEnoughQuestions(totalQuestions) ){
                 throw new InsufficientQuestionsException("La evaluación no tiene la suficiente cantidad"+
                                                             " de preguntas para estar activa. (Total actual: "+totalQuestions+")");

@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
+import com.unicauca.sga.testService.Aplication.Services.QuestionImageService;
 import com.unicauca.sga.testService.Aplication.Strategy.Question.QuestionStrategyRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Exceptions.NoQuestionsException;
@@ -7,6 +8,7 @@ import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
 import com.unicauca.sga.testService.Domain.Models.Test;
+import com.unicauca.sga.testService.Domain.Repositories.IFilesRepository;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +22,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManageQuestionsService {
 
     private final IQuestionRepository questionRepository;
+    private final QuestionImageService questionImageService;
     private final QuestionStrategyRegistry questionStrategyRegistry;
     private final ITestRepository testRepository;
+    private final IFilesRepository filesRepository;
 
     @Transactional(readOnly = true)
     public Page<Question> getTestQuestionsPaged(int testid, Pageable pageable) {
-        if(questionRepository.getTestTotalQuestions(testid) <= 0){
+        Page<Question> page = questionRepository.getTestQuestionsPaged(testid, pageable);
+
+        if (page.isEmpty()) {
             throw new NoQuestionsException("La evaluación no tiene preguntas almacenadas.");
         }
 
-        return questionRepository.getTestQuestionsPaged(testid, pageable);
+        return page;
     }
 
     @Transactional
@@ -37,7 +43,9 @@ public class ManageQuestionsService {
         if(!testRepository.isPresent(question.getTest().getTestId())){
             throw new NotFoundException("No se encontró la evaluación a la que se quiere asignar la pregunta.");
         }
-        System.out.println(question);
+
+        questionImageService.syncQuestionImage(question);
+
         QuestionStrategy questionStrategy = questionStrategyRegistry.get(question.getQuestionType());
         String validatedQuestionStructure = questionStrategy.validateStructure(question.getQuestionStructure());
 
@@ -48,16 +56,19 @@ public class ManageQuestionsService {
 
     @Transactional
     public void deleteQuestionById(long questionId) {
-        if(!questionRepository.isPresent(questionId)) {
-            throw new NotFoundException("No se encontró la pregunta con id: " + questionId);
-        }
 
-        Question question = questionRepository.getById(questionId);
+        Question question = questionRepository.getById(questionId).orElseThrow(() ->
+                new NotFoundException("No se encontró la pregunta con id: " + questionId)
+        );
+
         Test test = question.getTest(); // Si existe la pregunta existe el test
 
         long totalQuestions = questionRepository.getTestTotalQuestions(test.getTestId());
 
         questionRepository.deleteById(questionId);
+
+        // Si la pregunta tenia una imagen eliminarla del repositorio de archivos
+        questionImageService.cleanupQuestionImage(question);
 
         // Validar que al eliminar la pregunta el test siga teniendo suficientes preguntas para estar activo
         // Si no las tiene desactivar el test

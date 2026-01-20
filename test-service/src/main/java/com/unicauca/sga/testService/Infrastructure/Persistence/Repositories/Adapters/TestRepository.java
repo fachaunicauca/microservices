@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -20,16 +22,6 @@ public class TestRepository implements ITestRepository {
 
     private final TestJpaRepository testJpaRepository;
     private final TestMapper testMapper;
-
-    /*private Test toModel(TestEntity test) {
-        if (test == null) return null;
-        return testMapper.toModel(test, new CycleAvoidingMappingContext());
-    }
-
-    private TestEntity toInfra(Test test) {
-        if (test == null) return null;
-        return testMapper.toInfra(test, new CycleAvoidingMappingContext());
-    }*/
 
     @Override
     public Page<Test> getAllTests(Pageable pageable) {
@@ -47,8 +39,8 @@ public class TestRepository implements ITestRepository {
     }
 
     @Override
-    public Test getTestById(int id) {
-        return testMapper.toModel(testJpaRepository.findById(id).get());
+    public Optional<Test> getTestById(int id) {
+        return testJpaRepository.findById(id).map(testMapper::toModel);
     }
 
     @Override
@@ -79,5 +71,4 @@ public class TestRepository implements ITestRepository {
     public boolean isPresent(int id) {
         return testJpaRepository.existsById(id);
     }
-
 }

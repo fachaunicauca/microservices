@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,11 +49,10 @@ public class ManageQuestionsController {
                     @ApiResponse(responseCode = "404", description = "No se encontro el algoritmo de validacion y calificacion de la pregunta.")
             }
     )
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
-    public QuestionDTOResponse saveTestQuestion(@RequestBody @Valid QuestionDTORequest questionDTORequest){
-        System.out.println("Question"  +  questionDTORequest.toString());
+    public QuestionDTOResponse saveTestQuestion(@ModelAttribute @Valid QuestionDTORequest questionDTORequest){
         return questionDTOMapper.toDTO(manageQuestionsService.saveQuestion(questionDTOMapper.toModel(questionDTORequest)));
     }
 

@@ -47,7 +47,7 @@ public class StudentTestConfig {
         String lastSemester = resolveSemester(lastAttemptAt);
         String currentSemester = resolveSemester(LocalDateTime.now());
 
-        return lastSemester.equals(currentSemester) && finalScore > passingScore;
+        return lastSemester.equals(currentSemester) && finalScore >= passingScore;
     }
 
     private String resolveSemester(LocalDateTime date) {

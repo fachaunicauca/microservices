@@ -2,8 +2,9 @@ package com.unicauca.sga.testService.Domain.Repositories;
 
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 
+import java.util.Optional;
+
 public interface IStudentTestConfigRepository {
     void save(StudentTestConfig studentTestConfig);
-    StudentTestConfig getStudentTestConfig(String studentEmail, int testId);
-    boolean isPresent(String studentEmail, int testId);
+    Optional<StudentTestConfig> getStudentTestConfig(String studentEmail, int testId);
 }

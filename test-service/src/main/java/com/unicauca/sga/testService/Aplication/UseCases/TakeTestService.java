@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +39,10 @@ public class TakeTestService {
 
     @Transactional(readOnly = true)
     public Test getGeneralTest(){
-        if(!testRepository.isPresent(1)){
-            throw new NotFoundException("No se encontró la evaluación general");
-        }
 
-        Test generalTest = testRepository.getTestById(1);
+        Test generalTest = testRepository.getTestById(1).orElseThrow(() ->
+                new NotFoundException("No se encontró la evaluación general")
+        );
 
         if(generalTest.getTestState() == TestState.INACTIVE){
             throw new InactiveTestException("La evaluación general se encuentra inactiva");
@@ -65,24 +65,21 @@ public class TakeTestService {
     @Transactional
     public Test startTestAttempt(String studentEmail, int testId) {
 
-        // Verificar que el test exista
-        if (!testRepository.isPresent(testId)) {
-            throw new NotFoundException("No se encontró la evaluación");
-        }
-
-        Test test = testRepository.getTestById(testId);
+        Test test = testRepository.getTestById(testId).orElseThrow(() ->
+                new NotFoundException("No se encontró la evaluación")
+        );
 
         // Verificar que el test esté activo
         if (test.getTestState() == TestState.INACTIVE) {
             throw new InactiveTestException("La evaluación se encuentra inactiva");
         }
 
-        // Obtener o crear la configuración del estudiante para el test
+        Optional<StudentTestConfig> existingConfig = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
+
         StudentTestConfig config;
 
-        // Si no existe la configuración crearla (No hay validaciones)
-        if (!studentTestConfigRepository.isPresent(studentEmail, testId)) {
-
+        if (existingConfig.isEmpty()) {
+            // Si no existía no es necesario realizar validaciones)
             config = new StudentTestConfig();
             config.setStudentEmail(studentEmail);
             config.setTest(test);
@@ -94,11 +91,11 @@ public class TakeTestService {
             studentTestConfigRepository.save(config);
 
         } else {
-            // Si existe la configuración obtenerla y verificar si el estudiante puede presentar la evaluación
-            config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
+            // Si existe es necesario realizar validaciones
+            config = existingConfig.get();
             config.setTest(test);
 
-            // Si el test es periódico y cambió el semestre reiniciar los intentos
+            // Si el test es periódico y cambió el semestre, reiniciar intentos
             if (test.isPeriodic() && !config.isSameSemester()) {
                 config.setAttemptsUsed(0);
                 config.setFinalScore(null);
@@ -106,14 +103,18 @@ public class TakeTestService {
                 studentTestConfigRepository.save(config);
             }
 
-            // Verificar si ya ha aprobado el test
+            // Verificar si ya aprobó
             if (config.hasAlreadyPassed(passingScore)) {
-                throw new ForbiddenOperationException("El estudiante ya aprobó esta evaluación");
+                throw new ForbiddenOperationException(
+                        "El estudiante ya aprobó esta evaluación"
+                );
             }
 
-            // Verificar si tiene intentos disponibles
+            // Verificar intentos disponibles
             if (!config.hasRemainingAttempts()) {
-                throw new ForbiddenOperationException("El estudiante no tiene intentos disponibles para esta evaluación");
+                throw new ForbiddenOperationException(
+                        "El estudiante no tiene intentos disponibles para esta evaluación"
+                );
             }
         }
 
@@ -137,19 +138,14 @@ public class TakeTestService {
         int testId = testAttempt.getTest().getTestId();
         String studentEmail = testAttempt.getStudentEmail();
 
-        // Verificar que el test siga existiendo
-        if(!testRepository.isPresent(testId)){
-            throw new NotFoundException("La evaluación ya no existe");
-        }
-
-        Test test  = testRepository.getTestById(testId);
+        Test test  = testRepository.getTestById(testId).orElseThrow( () ->
+                new NotFoundException("La evaluación ya no existe")
+        );
 
         // Verificar que el studentTestConfig exista
-        if(!studentTestConfigRepository.isPresent(studentEmail, testId)){
-            throw new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo");
-        }
-
-        StudentTestConfig config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
+        StudentTestConfig config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId)
+                .orElseThrow(() -> new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo")
+        );
 
         // Calificar las respuestas del estudiante
         testAttempt.setFullyScored(true);
@@ -188,11 +184,10 @@ public class TakeTestService {
         for (StudentResponse response : testAttempt.getStudentResponses()) {
             Long questionId = response.getQuestion().getQuestionId();
 
-            if(!questionRepository.isPresent(questionId)){
-                throw new NotFoundException("No se encontró la pregunta con id " + questionId + " al calificar la evaluación");
-            }
+            Question question = questionRepository.getById(questionId).orElseThrow(() ->
+                    new NotFoundException("No se encontró la pregunta con id " + questionId + " al calificar la evaluación")
+            );
 
-            Question question = questionRepository.getById(questionId);
             QuestionStrategy strategy = questionStrategyRegistry.get(question.getQuestionType());
 
             if (strategy.requiresManualGrade()) {

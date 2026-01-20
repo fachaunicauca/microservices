@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class QuestionDTORequest {
@@ -17,8 +18,11 @@ public class QuestionDTORequest {
     @Size(max = 1000, message = "El titulo de la pregunta puede tener como máximo 1000 caracteres")
     private String questionTitle;
 
-    @Size(max = 1048576, message = "La imagen no puede pesar mas de 1 MB")
-    private byte[] questionImage;
+    private MultipartFile questionImage;
+
+    private String questionImageId;
+
+    private String questionImageUrl;
 
     @NotBlank(message = "Debe especificar el tipo de la pregunta")
     private String questionType;

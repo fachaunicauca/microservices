@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -16,6 +17,11 @@ public class TestGuidesRepository implements ITestGuidesRepository {
 
     private final TestGuidesJpaRepository testGuidesJpaRepository;
     private final TestGuideMapper testGuideMapper;
+
+    @Override
+    public Optional<TestGuide> getTestGuide(String id) {
+        return testGuidesJpaRepository.findById(id).map(testGuideMapper::toModel);
+    }
 
     @Override
     public List<TestGuide> getAllTestsGuides() {
