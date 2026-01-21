@@ -23,7 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -148,7 +152,6 @@ public class TakeTestService {
         );
 
         // Calificar las respuestas del estudiante
-        testAttempt.setFullyScored(true);
         long totalPoints = gradeStudentResponses(testAttempt);
         double score =(double) totalPoints / testAttempt.getTestAttemptNumberOfQuestions();
         testAttempt.setTestAttemptScore(score);
@@ -178,15 +181,30 @@ public class TakeTestService {
     }
 
     private long gradeStudentResponses(TestAttempt testAttempt) {
+        // Obtener todos los questionIds de las respuestas
+        Set<Long> questionIds = testAttempt.getStudentResponses().stream().map(StudentResponse::getQuestionId).collect(Collectors.toSet());
+
+        // Traer todas las preguntas (optimización: una sola consulta)
+        List<Question> questions = questionRepository.getByIds(questionIds);
+
+        // Mapear preguntas por su ID
+        Map<Long, Question> questionMap = questions.stream().collect(Collectors.toMap(Question::getQuestionId, Function.identity()));
+
+        // Validar que todas las preguntas existan
+        if (questionMap.size() != questionIds.size()) {
+            Set<Long> foundIds = questionMap.keySet();
+
+            Set<Long> missingIds = questionIds.stream().filter(id -> !foundIds.contains(id)).collect(Collectors.toSet());
+
+            throw new NotFoundException("No se encontraron las preguntas con id: " + missingIds);
+        }
+
+        // Calificar respuestas
         long totalPoints = 0;
         boolean requiresManualGrading = false;
-
         for (StudentResponse response : testAttempt.getStudentResponses()) {
-            Long questionId = response.getQuestion().getQuestionId();
-
-            Question question = questionRepository.getById(questionId).orElseThrow(() ->
-                    new NotFoundException("No se encontró la pregunta con id " + questionId + " al calificar la evaluación")
-            );
+            Long questionId = response.getQuestionId();
+            Question question = questionMap.get(questionId);
 
             QuestionStrategy strategy = questionStrategyRegistry.get(question.getQuestionType());
 

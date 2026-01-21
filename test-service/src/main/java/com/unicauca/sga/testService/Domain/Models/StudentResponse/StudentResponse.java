@@ -12,5 +12,5 @@ public class StudentResponse {
     private boolean isGraded;
 
     private TestAttempt testAttempt;
-    private Question question;
+    private Long questionId;
 }

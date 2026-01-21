@@ -23,7 +23,6 @@ public class StudentResponseEntity {
     @JoinColumn(name = "testAttemptId", nullable = false)
     private TestAttemptEntity testAttempt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionId",  nullable = false)
-    private QuestionEntity question;
+    @Column(nullable = false)
+    private Long questionId;
 }

@@ -24,7 +24,7 @@ public class StudentResponseRepository implements IStudentResponseRepository {
 
     @Override
     public List<StudentResponse> getAllQuestionResponses(long questionId) {
-        return studentResponseJpaRepository.findByQuestion_QuestionId(questionId).stream().map(studentResponseMapper::toModel).toList();
+        return studentResponseJpaRepository.findByQuestionId(questionId).stream().map(studentResponseMapper::toModel).toList();
     }
 
     @Override

@@ -15,8 +15,5 @@ public interface StudentTestAttemptDTOMapper {
 
     StudentTestAttemptDTOResponse toDTO(TestAttempt testAttempt);
 
-    @Mapping(source = "questionId", target = "question.questionId")
     StudentResponse StudentResponseDTOToModel(StudentResponseDTORequest studentResponseDTORequest);
-
-
 }

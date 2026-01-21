@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -58,5 +59,10 @@ public class QuestionRepository implements IQuestionRepository {
     @Override
     public long getTestTotalQuestions(int testId) {
         return questionJpaRepository.countByTest_TestId(testId);
+    }
+
+    @Override
+    public List<Question> getByIds(Collection<Long> ids) {
+        return questionJpaRepository.findAllById(ids).stream().map(questionMapper::toModelWithoutTest).toList();
     }
 }
