@@ -74,16 +74,17 @@ public class TakeTestService {
         );
 
         // Verificar que el test esté activo
-        if (test.getTestState() == TestState.INACTIVE) {
-            throw new InactiveTestException("La evaluación se encuentra inactiva");
+        if (!test.isActive()) {
+            throw new InactiveTestException("La evaluación no se encuentra activa");
         }
 
+        // Verificar si ya se ha creado una configuración del estudiante y el test
         Optional<StudentTestConfig> existingConfig = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
 
         StudentTestConfig config;
 
         if (existingConfig.isEmpty()) {
-            // Si no existía no es necesario realizar validaciones)
+            // Si no se ha creado no es necesario realizar validaciones
             config = new StudentTestConfig();
             config.setStudentEmail(studentEmail);
             config.setTest(test);
@@ -95,7 +96,7 @@ public class TakeTestService {
             studentTestConfigRepository.save(config);
 
         } else {
-            // Si existe es necesario realizar validaciones
+            // Si se ha creado es necesario realizar validaciones
             config = existingConfig.get();
             config.setTest(test);
 

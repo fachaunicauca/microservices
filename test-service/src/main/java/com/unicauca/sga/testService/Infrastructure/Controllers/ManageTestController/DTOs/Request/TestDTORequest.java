@@ -22,7 +22,7 @@ public class TestDTORequest {
 
     private String testDescription;
 
-    @NotNull(message = "Debe especificar una duración (0 sin limite de tiempo).")
+    @NotNull(message = "Debe especificar una duración.")
     @PositiveOrZero(message = "La duración no puede ser negativa.")
     private Integer testDurationMinutes;
 

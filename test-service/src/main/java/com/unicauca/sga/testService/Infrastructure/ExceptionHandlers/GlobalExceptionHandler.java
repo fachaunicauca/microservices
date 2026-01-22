@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Infrastructure.Controllers;
+package com.unicauca.sga.testService.Infrastructure.ExceptionHandlers;
 
 import com.unicauca.sga.testService.Domain.Exceptions.*;
 import jakarta.validation.ConstraintViolation;
