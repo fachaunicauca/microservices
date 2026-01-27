@@ -152,6 +152,13 @@ public class TakeTestService {
                 .orElseThrow(() -> new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo")
         );
 
+        // Verificar nuevamente si tiene intentos disponibles
+        if (!config.hasRemainingAttempts()) {
+            throw new ForbiddenOperationException(
+                    "El estudiante ya no puede presentar mas intentos en esta evaluación"
+            );
+        }
+
         // Calificar las respuestas del estudiante
         long totalPoints = gradeStudentResponses(testAttempt);
         double score =(double) totalPoints / testAttempt.getTestAttemptNumberOfQuestions();

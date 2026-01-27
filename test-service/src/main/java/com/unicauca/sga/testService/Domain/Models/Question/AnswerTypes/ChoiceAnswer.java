@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ChoiceAnswer{
-    private long id;
+    private Long id;
     private String text;
-    private boolean correct;
+    private Boolean correct;
 }

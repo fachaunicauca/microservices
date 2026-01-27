@@ -12,6 +12,7 @@ import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentRespons
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,13 +44,13 @@ public class MultipleChoiceStrategy implements QuestionStrategy {
             if (structure.getCorrectAnswerCount() == 1) {
                 Long studentChoice = studentChoicesIds.iterator().next();
                 return structure.getAnswers().stream()
-                        .anyMatch(choice -> choice.isCorrect() && choice.getId() ==  studentChoice)
+                        .anyMatch(choice -> choice.getCorrect() && Objects.equals(choice.getId(), studentChoice))
                         ? 1 : 0;
             }
 
             Set<Long> correctChoices = structure.getAnswers()
                     .stream()
-                    .filter(ChoiceAnswer::isCorrect)
+                    .filter(ChoiceAnswer::getCorrect)
                     .map(ChoiceAnswer::getId)
                     .collect(Collectors.toSet());
 
@@ -70,15 +71,28 @@ public class MultipleChoiceStrategy implements QuestionStrategy {
                 throw new InvalidQuestionStructureException("Una pregunta de opción múltiple debe tener al menos 2 opciones.");
             }
 
-            boolean hasEmptyAnswer = structure.getAnswers().stream()
-                    .anyMatch(answer -> answer.getText() == null || answer.getText().trim().isEmpty());
+            boolean hasInvalidAnswer = structure.getAnswers().stream()
+                    .anyMatch(answer ->
+                            answer.getId() == null ||
+                            answer.getText() == null ||
+                            answer.getText().trim().isEmpty() ||
+                            answer.getCorrect() == null
+                    );
 
-            if (hasEmptyAnswer) {
-                throw new InvalidQuestionStructureException("Todas las opciones de respuesta deben tener texto.");
+            if (hasInvalidAnswer) {
+                throw new InvalidQuestionStructureException("Cada opción debe tener identificador id, texto y si es correcta.");
+            }
+
+            Set<Long> ids = structure.getAnswers().stream()
+                    .map(ChoiceAnswer::getId)
+                    .collect(Collectors.toSet());
+
+            if (ids.size() != structure.getAnswers().size()) {
+                throw new InvalidQuestionStructureException("Los identificadores (id) de las opciones deben ser únicos.");
             }
 
             long correctCount = structure.getAnswers().stream()
-                    .filter(ChoiceAnswer::isCorrect)
+                    .filter(answer -> Boolean.TRUE.equals(answer.getCorrect()))
                     .count();
 
             if (correctCount == 0) {

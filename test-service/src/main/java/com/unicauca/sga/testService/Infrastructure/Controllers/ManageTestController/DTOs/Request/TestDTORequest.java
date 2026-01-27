@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TestDTORequest {
+    @Positive(message = "El id debe ser positivo.")
     private Integer testId;
 
     @NotNull(message = "La evaluación debe estar asociada a un docente.")
