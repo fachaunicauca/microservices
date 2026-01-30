@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Aplication.Strategy.Question.Impl;
+package com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,7 @@ import com.unicauca.sga.testService.Domain.Exceptions.InvalidQuestionStructureEx
 import com.unicauca.sga.testService.Domain.Models.Question.AnswerTypes.ChoiceAnswer;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Question.QuestionStructures.MultipleChoiceStructure;
-import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
 import com.unicauca.sga.testService.Domain.Models.StudentResponse.ResponseTypes.ChoiceResponse;
 import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class MultipleChoiceStrategy implements QuestionStrategy {
+public class MultipleChoiceStructureHandler implements QuestionStructureHandler {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

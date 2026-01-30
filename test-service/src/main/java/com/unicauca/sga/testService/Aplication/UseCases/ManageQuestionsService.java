@@ -1,14 +1,13 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Services.QuestionImageService;
-import com.unicauca.sga.testService.Aplication.Strategy.Question.QuestionStrategyRegistry;
+import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Exceptions.NoQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
-import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
 import com.unicauca.sga.testService.Domain.Models.Test;
-import com.unicauca.sga.testService.Domain.Repositories.IFilesRepository;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class ManageQuestionsService {
 
     private final IQuestionRepository questionRepository;
     private final QuestionImageService questionImageService;
-    private final QuestionStrategyRegistry questionStrategyRegistry;
+    private final QuestionStructureHandlerRegistry questionStructureHandlerRegistry;
     private final ITestRepository testRepository;
 
     @Transactional(readOnly = true)
@@ -45,8 +44,8 @@ public class ManageQuestionsService {
 
         questionImageService.syncQuestionImage(question);
 
-        QuestionStrategy questionStrategy = questionStrategyRegistry.get(question.getQuestionType());
-        String validatedQuestionStructure = questionStrategy.validateStructure(question.getQuestionStructure());
+        QuestionStructureHandler questionStructureHandler = questionStructureHandlerRegistry.get(question.getQuestionType());
+        String validatedQuestionStructure = questionStructureHandler.validateStructure(question.getQuestionStructure());
 
         question.setQuestionStructure(validatedQuestionStructure);
 

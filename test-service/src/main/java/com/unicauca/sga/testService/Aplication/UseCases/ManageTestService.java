@@ -1,8 +1,8 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
-import com.unicauca.sga.testService.Domain.Exceptions.ForbiddenOperationException;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
+import com.unicauca.sga.testService.Domain.Exceptions.ProtectedTestException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
@@ -79,7 +79,7 @@ public class ManageTestService {
     @Transactional
     public void deleteTestById(int id) {
         if(id == 1){
-            throw new ForbiddenOperationException("No se puede eliminar la evaluación general.");
+            throw new ProtectedTestException("No se puede eliminar la evaluación general.");
         }
 
         boolean isPresent = testRepository.isPresent(id);

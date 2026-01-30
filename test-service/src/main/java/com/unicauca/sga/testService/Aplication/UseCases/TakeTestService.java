@@ -1,12 +1,13 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
-import com.unicauca.sga.testService.Aplication.Strategy.Question.QuestionStrategyRegistry;
+import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
-import com.unicauca.sga.testService.Domain.Exceptions.ForbiddenOperationException;
+import com.unicauca.sga.testService.Domain.Enums.AttemptNotAllowedCode;
+import com.unicauca.sga.testService.Domain.Exceptions.AttemptNotAllowedException;
 import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
-import com.unicauca.sga.testService.Domain.Models.Question.QuestionStrategy;
+import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
 import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 import com.unicauca.sga.testService.Domain.Models.Test;
@@ -37,7 +38,7 @@ public class TakeTestService {
     private final IQuestionRepository questionRepository;
     private final ITestAttemptRepository testAttemptRepository;
     private final IStudentTestConfigRepository studentTestConfigRepository;
-    private final QuestionStrategyRegistry questionStrategyRegistry;
+    private final QuestionStructureHandlerRegistry questionStructureHandlerRegistry;
 
     private final double passingScore = 0.6;
 
@@ -110,12 +111,14 @@ public class TakeTestService {
 
             // Verificar si ya aprobó
             if (config.hasAlreadyPassed(passingScore)) {
-                throw new ForbiddenOperationException("El estudiante ya aprobó esta evaluación");
+                throw new AttemptNotAllowedException(AttemptNotAllowedCode.ALREADY_PASSED,
+                                                    "El estudiante ya aprobó esta evaluación");
             }
 
             // Verificar intentos disponibles
             if (!config.hasRemainingAttempts()) {
-                throw new ForbiddenOperationException("El estudiante no tiene intentos disponibles para esta evaluación");
+                throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS ,
+                                                    "El estudiante no tiene intentos disponibles para esta evaluación");
             }
         }
 
@@ -145,12 +148,14 @@ public class TakeTestService {
 
         // Verificar que el studentTestConfig exista
         StudentTestConfig config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId).orElseThrow(() ->
-                new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo")
+                new AttemptNotAllowedException(AttemptNotAllowedCode.ATTEMPT_NOT_STARTED ,
+                                                "Debe iniciar un intento antes de poder guardarlo")
         );
 
         // Verificar nuevamente si tiene intentos disponibles
         if (!config.hasRemainingAttempts()) {
-            throw new ForbiddenOperationException("El estudiante ya no puede presentar mas intentos en esta evaluación");
+            throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS ,
+                    "El estudiante ya no puede presentar mas intentos en esta evaluación");
         }
 
         // Calificar las respuestas del estudiante
@@ -176,7 +181,7 @@ public class TakeTestService {
 
     private List<Question> cleanQuestionStructures(List<Question> questions){
         questions.forEach(question -> {
-            QuestionStrategy strategy = questionStrategyRegistry.get(question.getQuestionType());
+            QuestionStructureHandler strategy = questionStructureHandlerRegistry.get(question.getQuestionType());
             question.setQuestionStructure(strategy.cleanStructure(question.getQuestionStructure()));
         });
         return questions;
@@ -208,7 +213,7 @@ public class TakeTestService {
             Long questionId = response.getQuestionId();
             Question question = questionMap.get(questionId);
 
-            QuestionStrategy strategy = questionStrategyRegistry.get(question.getQuestionType());
+            QuestionStructureHandler strategy = questionStructureHandlerRegistry.get(question.getQuestionType());
 
             if (strategy.requiresManualGrade()) {
                 requiresManualGrading = true;
