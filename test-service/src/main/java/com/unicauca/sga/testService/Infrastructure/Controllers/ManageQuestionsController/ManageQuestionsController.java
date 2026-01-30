@@ -1,6 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageQuestionsService;
+import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request.QuestionDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Response.QuestionDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.Mappers.QuestionDTOMapper;
@@ -15,6 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -53,7 +57,17 @@ public class ManageQuestionsController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public QuestionDTOResponse saveTestQuestion(@ModelAttribute @Valid QuestionDTORequest questionDTORequest){
-        return questionDTOMapper.toDTO(manageQuestionsService.saveQuestion(questionDTOMapper.toModel(questionDTORequest)));
+        Question question = questionDTOMapper.toModel(questionDTORequest);
+
+        try {
+            if (questionDTORequest.getQuestionImage() != null && !questionDTORequest.getQuestionImage().isEmpty()) {
+                question.setQuestionImage(questionDTORequest.getQuestionImage().getBytes());
+            }
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error al leer el archivo de imagen");
+        }
+
+        return questionDTOMapper.toDTO(manageQuestionsService.saveQuestion(question));
     }
 
     @Operation(

@@ -20,7 +20,7 @@ public class QuestionImageService {
         }
 
         // Caso 1: se recibió una imagen, subirla al almacenamiento de archivos y, en dado caso, eliminar la anterior
-        MultipartFile image = question.getQuestionImage();
+        byte[] image = question.getQuestionImage();
 
         String oldImageId = null;
 

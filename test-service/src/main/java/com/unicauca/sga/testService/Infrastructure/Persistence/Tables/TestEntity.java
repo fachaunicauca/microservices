@@ -16,9 +16,10 @@ public class TestEntity {
     @Column(nullable = false)
     private String teacherEmail;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 1000)
     private String testTitle;
 
+    @Column(length = 5000)
     private String testDescription;
 
     @Column(nullable = false)

@@ -19,8 +19,10 @@ public class TestDTORequest {
 
     @NotNull(message = "El titulo no puede ser nulo.")
     @NotBlank(message = "El titulo no puede estar vacío.")
+    @Size(max = 1000, message = "El titulo de la pregunta puede tener como máximo 1000 caracteres")
     private String testTitle;
 
+    @Size(max = 5000, message = "El texto de la pregunta puede tener como máximo 5000 caracteres")
     private String testDescription;
 
     @NotNull(message = "Debe especificar una duración.")

@@ -13,9 +13,10 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 5000)
     private String questionText;
 
+    @Column(length = 1000)
     private String questionTitle;
 
     private String questionImageId;

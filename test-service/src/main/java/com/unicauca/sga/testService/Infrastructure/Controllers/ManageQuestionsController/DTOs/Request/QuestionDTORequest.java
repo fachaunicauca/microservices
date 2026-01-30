@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request;
 
+import com.unicauca.sga.testService.Infrastructure.Controllers.Validations.MaxFileSize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,6 +19,7 @@ public class QuestionDTORequest {
     @Size(max = 1000, message = "El titulo de la pregunta puede tener como máximo 1000 caracteres")
     private String questionTitle;
 
+    @MaxFileSize(value = 2*1024*1024, message = "La imagen no puede superar los 2 MB")
     private MultipartFile questionImage;
 
     private String questionImageId;

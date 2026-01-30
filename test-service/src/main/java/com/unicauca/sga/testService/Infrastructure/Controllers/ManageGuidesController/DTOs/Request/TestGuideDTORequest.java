@@ -10,5 +10,6 @@ public class TestGuideDTORequest {
     @NotBlank(message = "Debe especificar el identificador de la guia")
     private String testGuideId;
     @NotNull(message = "Debe seleccionar un archivo a subir")
+    //FALTA EL MAXFILESIZE
     private MultipartFile testGuideArchive;
 }

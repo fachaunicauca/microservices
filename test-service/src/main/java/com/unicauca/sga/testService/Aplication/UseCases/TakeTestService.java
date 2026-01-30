@@ -110,16 +110,12 @@ public class TakeTestService {
 
             // Verificar si ya aprobó
             if (config.hasAlreadyPassed(passingScore)) {
-                throw new ForbiddenOperationException(
-                        "El estudiante ya aprobó esta evaluación"
-                );
+                throw new ForbiddenOperationException("El estudiante ya aprobó esta evaluación");
             }
 
             // Verificar intentos disponibles
             if (!config.hasRemainingAttempts()) {
-                throw new ForbiddenOperationException(
-                        "El estudiante no tiene intentos disponibles para esta evaluación"
-                );
+                throw new ForbiddenOperationException("El estudiante no tiene intentos disponibles para esta evaluación");
             }
         }
 
@@ -148,15 +144,13 @@ public class TakeTestService {
         );
 
         // Verificar que el studentTestConfig exista
-        StudentTestConfig config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId)
-                .orElseThrow(() -> new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo")
+        StudentTestConfig config = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId).orElseThrow(() ->
+                new ForbiddenOperationException("Debe iniciar un intento antes de poder guardarlo")
         );
 
         // Verificar nuevamente si tiene intentos disponibles
         if (!config.hasRemainingAttempts()) {
-            throw new ForbiddenOperationException(
-                    "El estudiante ya no puede presentar mas intentos en esta evaluación"
-            );
+            throw new ForbiddenOperationException("El estudiante ya no puede presentar mas intentos en esta evaluación");
         }
 
         // Calificar las respuestas del estudiante

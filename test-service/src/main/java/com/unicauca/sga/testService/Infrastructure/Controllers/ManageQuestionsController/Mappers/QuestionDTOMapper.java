@@ -10,5 +10,6 @@ import org.mapstruct.Mapping;
 public interface QuestionDTOMapper {
     QuestionDTOResponse toDTO(Question question);
     @Mapping(source = "testId", target = "test.testId")
+    @Mapping(target = "questionImage", ignore = true)
     Question toModel(QuestionDTORequest dto);
 }

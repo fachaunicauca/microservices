@@ -7,10 +7,8 @@ import com.unicauca.sga.testService.Domain.Repositories.IFilesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.Map;
 
 @Repository
@@ -18,6 +16,7 @@ import java.util.Map;
 public class FilesRepository implements IFilesRepository {
 
     private final Cloudinary cloudinary;
+    private final String folder = "test-service/";
 
     @Override
     public boolean testConnection() {
@@ -33,19 +32,19 @@ public class FilesRepository implements IFilesRepository {
     }
 
     @Override
-    public String uploadFile(MultipartFile file, String fileId) {
+    public String uploadFile(byte[] file, String fileId) {
         Map<?, ?> result;
         try {
             result = cloudinary.uploader().upload(
-                    file.getBytes(),
+                    file,
                     ObjectUtils.asMap(
                             "resource_type", "auto",
-                            "folder", "test-service",
+                            "folder", folder,
                             "overwrite", true,
                             "public_id", fileId
                     )
             );
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Ocurrió un error al subir el archivo al repositorio de almacenamiento."
@@ -56,17 +55,13 @@ public class FilesRepository implements IFilesRepository {
 
     public boolean deleteFile(String fileId) {
         try {
-            Map<?, ?> result = cloudinary.uploader().destroy(fileId, ObjectUtils.asMap(
-                    "resource_type", "raw",
-                    "folder", "test-service"
-            ));
+            Map<?, ?> result = cloudinary.uploader().destroy(folder + fileId, ObjectUtils.asMap());
             String deleteResult = (String) result.get("result");
-
             return deleteResult.equals("ok");
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Ocurrió un error al eliminar el archivo al repositorio de almacenamiento."
+                    "Ocurrió un error al eliminar el archivo del repositorio de almacenamiento."
             );
         }
     }

@@ -14,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -50,7 +52,15 @@ public class ManageGuidesController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public TestGuideDTOResponse saveGuide(@Valid @ModelAttribute TestGuideDTORequest testGuideDTORequest) {
-        return testGuideDTOMapper.toDTO(manageGuidesService.saveTestGuide(testGuideDTOMapper.toModel(testGuideDTORequest)));
+        TestGuide testGuide = testGuideDTOMapper.toModel(testGuideDTORequest);
+
+        try{
+            testGuide.setTestGuideArchive(testGuideDTORequest.getTestGuideArchive().getBytes());
+        }catch(IOException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error al leer el archivo de imagen");
+        }
+
+        return testGuideDTOMapper.toDTO(manageGuidesService.saveTestGuide(testGuide));
     }
 
     @Operation(summary = "Eliminar guias",

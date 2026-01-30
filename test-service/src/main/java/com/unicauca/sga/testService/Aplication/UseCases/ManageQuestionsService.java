@@ -25,7 +25,6 @@ public class ManageQuestionsService {
     private final QuestionImageService questionImageService;
     private final QuestionStrategyRegistry questionStrategyRegistry;
     private final ITestRepository testRepository;
-    private final IFilesRepository filesRepository;
 
     @Transactional(readOnly = true)
     public Page<Question> getTestQuestionsPaged(int testid, Pageable pageable) {
