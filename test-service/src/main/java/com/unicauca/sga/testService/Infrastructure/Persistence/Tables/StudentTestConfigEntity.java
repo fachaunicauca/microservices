@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Tables;
 
+import com.unicauca.sga.testService.Domain.Enums.AttemptRequestStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,6 +26,9 @@ public class StudentTestConfigEntity {
     private LocalDateTime lastAttemptAt;
 
     private Double finalScore;
+
+    @Column(nullable = false)
+    private String attemptRequestStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "testId", nullable = false)

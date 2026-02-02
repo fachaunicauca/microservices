@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Domain.Models;
 
+import com.unicauca.sga.testService.Domain.Enums.AttemptRequestStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,8 +13,13 @@ public class StudentTestConfig {
     private int attemptsUsed;
     private LocalDateTime lastAttemptAt;
     private Double finalScore;
+    private AttemptRequestStatus attemptRequestStatus = AttemptRequestStatus.NOT_REQUESTED;
 
     private Test test;
+
+    public int getRemainingAttempts(){
+        return  attemptLimit - attemptsUsed;
+    }
 
     public void incrementAttemptsUsed(){
         this.attemptsUsed++;

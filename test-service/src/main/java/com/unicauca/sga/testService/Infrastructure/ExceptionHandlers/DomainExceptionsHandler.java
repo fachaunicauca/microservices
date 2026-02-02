@@ -49,4 +49,9 @@ public class DomainExceptionsHandler {
     public ResponseEntity<String> handleInactiveTestException(InactiveTestException ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(HasRemainingAttemptsException.class)
+    public ResponseEntity<String> handleHasRemainingAttemptsException(HasRemainingAttemptsException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
