@@ -3,7 +3,6 @@ package com.unicauca.sga.testService.Aplication.UseCases;
 import com.unicauca.sga.testService.Aplication.Services.QuestionImageService;
 import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
-import com.unicauca.sga.testService.Domain.Exceptions.NoQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
@@ -11,8 +10,6 @@ import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +23,14 @@ public class ManageQuestionsService {
     private final ITestRepository testRepository;
 
     @Transactional(readOnly = true)
-    public Page<Question> getTestQuestionsPaged(int testid, Pageable pageable) {
-        Page<Question> page = questionRepository.getTestQuestionsPaged(testid, pageable);
+    public Iterable<Question> getTestQuestionsPaged(int testId, int page, int size) {
+        Iterable<Question> questionsPaged = questionRepository.getTestQuestionsPaged(testId, page, size);
 
-        if (page.isEmpty()) {
-            throw new NoQuestionsException("La evaluación no tiene preguntas almacenadas.");
+        if (!questionsPaged.iterator().hasNext()) {
+            throw new NotFoundException("La evaluación no tiene preguntas almacenadas.");
         }
 
-        return page;
+        return questionsPaged;
     }
 
     @Transactional

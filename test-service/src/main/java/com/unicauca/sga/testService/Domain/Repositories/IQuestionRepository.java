@@ -1,8 +1,6 @@
 package com.unicauca.sga.testService.Domain.Repositories;
 
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +11,7 @@ public interface IQuestionRepository {
     void deleteById(long id);
     Optional<Question> getById(long id);
     List<Question> getRandomAndLimitedTestQuestions(int testId, int numberOfQuestions);
-    Page<Question> getTestQuestionsPaged(int id, Pageable pageable);
+    Iterable<Question> getTestQuestionsPaged(int id, int page, int size);
     long getTestTotalQuestions(int testId);
     List<Question> getByIds(Collection<Long> ids);
 }

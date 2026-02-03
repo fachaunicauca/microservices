@@ -7,12 +7,8 @@ import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,33 +17,33 @@ public class ManageStudentTestConfigsService {
     private final ITestRepository testRepository;
 
     @Transactional(readOnly = true)
-    public Page<StudentTestConfig> getPriorityStudentTestConfigsPaged(int testId, Pageable pageable){
+    public Iterable<StudentTestConfig> getPriorityStudentTestConfigsPaged(int testId, int page, int size){
         if (!testRepository.isPresent(testId)){
             throw new NotFoundException("La evaluación con id "+ testId+ " ya no existe");
         }
 
-        Page<StudentTestConfig> page = studentTestConfigRepository.getConfigsWithPendingAttemptRequest(testId, pageable);
+        Iterable<StudentTestConfig> pagedConfigs = studentTestConfigRepository.getConfigsWithPendingAttemptRequest(testId, page, size);
 
-        if(page.isEmpty()){
+        if(!pagedConfigs.iterator().hasNext()){
             throw new NotFoundException("Ningún estudiante ha solicitado restablecer sus intentos");
         }
 
-        return page;
+        return pagedConfigs;
     }
 
     @Transactional(readOnly = true)
-    public Page<StudentTestConfig> getStudentTestConfigsPaged(int testId, Pageable pageable){
+    public Iterable<StudentTestConfig> getStudentTestConfigsPaged(int testId, int page, int size){
         if (!testRepository.isPresent(testId)){
             throw new NotFoundException("La evaluación con id "+ testId+ " ya no existe");
         }
 
-        Page<StudentTestConfig> page = studentTestConfigRepository.getConfigsWithoutAttemptRequest(testId, pageable);
+        Iterable<StudentTestConfig> pagedConfigs = studentTestConfigRepository.getConfigsWithoutAttemptRequest(testId, page, size);
 
-        if(page.isEmpty()){
+        if(!pagedConfigs.iterator().hasNext()){
             throw new NotFoundException("Ningún estudiante ha iniciado esta evaluación");
         }
 
-        return page;
+        return pagedConfigs;
     }
 
     @Transactional

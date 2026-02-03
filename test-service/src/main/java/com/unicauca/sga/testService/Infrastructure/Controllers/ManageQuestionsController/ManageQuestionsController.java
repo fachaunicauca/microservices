@@ -40,8 +40,12 @@ public class ManageQuestionsController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
-    public Page<QuestionDTOResponse> getTestQuestionsPaged(@RequestParam("testId") int testId, Pageable pageable){
-        return manageQuestionsService.getTestQuestionsPaged(testId, pageable).map(questionDTOMapper::toDTO);
+    public Page<QuestionDTOResponse> getTestQuestionsPaged(@RequestParam("testId") int testId,
+                                                           Pageable pageable){
+        return ((Page<Question>) manageQuestionsService.getTestQuestionsPaged(testId,
+                                                                            pageable.getPageNumber(),
+                                                                            pageable.getPageSize())
+        ).map(questionDTOMapper::toDTO);
     }
 
     @Operation(

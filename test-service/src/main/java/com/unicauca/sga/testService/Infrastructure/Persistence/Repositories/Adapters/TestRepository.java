@@ -10,6 +10,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestEntity
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -24,18 +25,18 @@ public class TestRepository implements ITestRepository {
     private final TestMapper testMapper;
 
     @Override
-    public Page<Test> getAllTests(Pageable pageable) {
-        return testJpaRepository.findByTestIdNot(1, pageable).map(testMapper::toModel);
+    public Page<Test> getAllTests(int page, int size) {
+        return testJpaRepository.findByTestIdNot(1, PageRequest.of(page,size)).map(testMapper::toModel);
     }
 
     @Override
-    public Page<Test> getTeacherTests(String teacherEmail, Pageable pageable) {
-        return testJpaRepository.findByTeacherEmail(teacherEmail, pageable).map(testMapper::toModel);
+    public Page<Test> getTeacherTests(String teacherEmail, int page, int size) {
+        return testJpaRepository.findByTeacherEmail(teacherEmail, PageRequest.of(page,size)).map(testMapper::toModel);
     }
 
     @Override
-    public Page<Test> getAllActiveTests(Pageable pageable) {
-        return testJpaRepository.findByTestStateAndTestIdNot(TestState.ACTIVE, 1,pageable).map(testMapper::toModel);
+    public Page<Test> getAllActiveTests(int page, int size) {
+        return testJpaRepository.findByTestStateAndTestIdNot(TestState.ACTIVE, 1,PageRequest.of(page,size)).map(testMapper::toModel);
     }
 
     @Override

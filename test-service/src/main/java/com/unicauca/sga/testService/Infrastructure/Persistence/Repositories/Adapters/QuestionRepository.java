@@ -7,7 +7,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ques
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.QuestionEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -52,8 +52,8 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public Page<Question> getTestQuestionsPaged(int id, Pageable pageable) {
-        return questionJpaRepository.findByTest_TestIdOrderByQuestionId(id, pageable).map(questionMapper::toModelWithoutTest);
+    public Page<Question> getTestQuestionsPaged(int id, int page, int size) {
+        return questionJpaRepository.findByTest_TestIdOrderByQuestionId(id, PageRequest.of(page, size)).map(questionMapper::toModelWithoutTest);
     }
 
     @Override

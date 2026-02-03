@@ -10,11 +10,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class DomainExceptionsHandler {
-    @ExceptionHandler(NoQuestionsException.class)
-    public ResponseEntity<String> handleNoQuestionsException(NoQuestionsException ex){
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ex.getMessage());
-    }
-
     @ExceptionHandler(InsufficientQuestionsException.class)
     public ResponseEntity<String> handleInsufficientQuestionsException(InsufficientQuestionsException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());

@@ -17,8 +17,6 @@ import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigReposi
 import com.unicauca.sga.testService.Domain.Repositories.ITestAttemptRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,10 +55,10 @@ public class TakeTestService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Test> getAllActiveTests(Pageable pageable){
-        Page<Test> activeTests = testRepository.getAllActiveTests(pageable);
+    public Iterable<Test> getAllActiveTests(int page, int size){
+        Iterable<Test> activeTests = testRepository.getAllActiveTests(page, size);
 
-        if(activeTests.getTotalElements() == 0){
+        if(!activeTests.iterator().hasNext()){
             throw new NotFoundException("No se encontraron evaluaciones especificas activas");
         }
 

@@ -1,6 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageTestService;
+import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Request.TestDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.DTOs.Response.TestDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageTestController.Mappers.TestDTOMapper;
@@ -97,12 +98,17 @@ public class ManageTestController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            return manageTestService.getAllTests(pageable).map(testDTOMapper::toDTO);
+            return ((Page<Test>) manageTestService.getAllTests(pageable.getPageNumber(),
+                                                                pageable.getPageSize())
+            ).map(testDTOMapper::toDTO);
         }
 
         Jwt jwt = (Jwt) auth.getPrincipal();
         String email = jwt.getClaimAsString("email");
 
-        return manageTestService.getAllTeacherTests(email, pageable).map(testDTOMapper::toDTO);
+        return ((Page<Test>) manageTestService.getAllTeacherTests(email,
+                                                                    pageable.getPageNumber(),
+                                                                    pageable.getPageSize())
+        ).map(testDTOMapper::toDTO);
     }
 }

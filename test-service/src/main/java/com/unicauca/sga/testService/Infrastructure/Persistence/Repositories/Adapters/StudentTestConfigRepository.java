@@ -7,7 +7,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentTe
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.StudentTestConfigJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -30,20 +30,20 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
     }
 
     @Override
-    public Page<StudentTestConfig> getConfigsWithPendingAttemptRequest(int testId, Pageable pageable) {
+    public Page<StudentTestConfig> getConfigsWithPendingAttemptRequest(int testId, int page, int size) {
         return studentTestConfigJpaRepository.findByAttemptRequestStatusAndTest_TestId(
                 AttemptRequestStatus.REQUESTED.name(),
                 testId,
-                pageable
+                PageRequest.of(page, size)
                 ).map(studentTestConfigMapper::toModel);
     }
 
     @Override
-    public Page<StudentTestConfig> getConfigsWithoutAttemptRequest(int testId, Pageable pageable) {
+    public Page<StudentTestConfig> getConfigsWithoutAttemptRequest(int testId, int page, int size) {
         return studentTestConfigJpaRepository.findByAttemptRequestStatusNotAndTest_TestId(
                 AttemptRequestStatus.REQUESTED.name(),
                 testId,
-                pageable
+                PageRequest.of(page, size)
         ).map(studentTestConfigMapper::toModel);
     }
 

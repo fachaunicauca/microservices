@@ -1,6 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageStudentTestConfigController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageStudentTestConfigsService;
+import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageStudentTestConfigController.DTOs.Response.StudentTestConfigDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageStudentTestConfigController.Mappers.StudentTestConfigDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +34,10 @@ public class ManageStudentTestConfigController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public Page<StudentTestConfigDTOResponse> getAllPriorityStudentTestConfigsPaged (@PathVariable int testId, Pageable pageable){
-        return manageStudentTestConfigsService.getPriorityStudentTestConfigsPaged(testId, pageable).map(studentTestConfigDTOMapper::toDTO);
+        return ((Page<StudentTestConfig>) manageStudentTestConfigsService.getPriorityStudentTestConfigsPaged(testId,
+                                                                                                            pageable.getPageNumber(),
+                                                                                                            pageable.getPageSize())
+        ).map(studentTestConfigDTOMapper::toDTO);
     }
 
     @Operation(summary = "Obtener configuraciones de evaluacion no prioritarias",
@@ -45,7 +49,10 @@ public class ManageStudentTestConfigController {
     )
     @GetMapping("/{testId}")
     public Page<StudentTestConfigDTOResponse> getAllNonPriorityStudentTestConfigsPaged (@PathVariable int testId, Pageable pageable){
-        return manageStudentTestConfigsService.getStudentTestConfigsPaged(testId, pageable).map(studentTestConfigDTOMapper::toDTO);
+        return ((Page<StudentTestConfig>) manageStudentTestConfigsService.getStudentTestConfigsPaged(testId,
+                                                                                                    pageable.getPageNumber(),
+                                                                                                    pageable.getPageSize())
+        ).map(studentTestConfigDTOMapper::toDTO);
     }
 
 }

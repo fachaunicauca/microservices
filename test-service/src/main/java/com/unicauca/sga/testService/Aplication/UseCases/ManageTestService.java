@@ -19,10 +19,10 @@ public class ManageTestService {
     private final IQuestionRepository questionRepository;
 
     @Transactional(readOnly = true)
-    public Page<Test> getAllTests(Pageable pageable) {
-        Page<Test> testList = testRepository.getAllTests(pageable);
+    public Iterable<Test> getAllTests(int page, int size) {
+        Iterable<Test> testList = testRepository.getAllTests(page, size);
 
-        if (testList.isEmpty() || testList.getTotalElements() == 0) {
+        if (!testList.iterator().hasNext()) {
             throw new NotFoundException("No hay evaluaciones especificas almacenadas");
         }
 
@@ -30,10 +30,10 @@ public class ManageTestService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Test> getAllTeacherTests(String teacherEmail, Pageable pageable) {
-        Page<Test> testList = testRepository.getTeacherTests(teacherEmail, pageable);
+    public Iterable<Test> getAllTeacherTests(String teacherEmail, int page, int size) {
+        Iterable<Test> testList = testRepository.getTeacherTests(teacherEmail, page, size);
 
-        if (testList.isEmpty() || testList.getTotalElements() == 0) {
+        if (!testList.iterator().hasNext()) {
             throw new NotFoundException("No ha creado ninguna evaluación.");
         }
 

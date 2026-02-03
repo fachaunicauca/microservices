@@ -1,6 +1,7 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.TakeTestService;
+import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Request.StudentTestAttemptDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Response.StudentTestAttemptDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.TakeTestController.DTOs.Response.TakeTestDTOResponse;
@@ -42,7 +43,9 @@ public class TakeTestController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT')")
     public Page<TestInfoDTOResponse> getActiveTests(Pageable pageable) {
-        return takeTestService.getAllActiveTests(pageable).map(testInfoDTOResponseMapper::toDTO);
+        return ((Page<Test>) takeTestService.getAllActiveTests(pageable.getPageNumber(),
+                                                                pageable.getPageSize())
+        ).map(testInfoDTOResponseMapper::toDTO);
     }
 
 
