@@ -62,6 +62,7 @@
 		<module>discovery-service</module>
 		<module>educator-service</module>
 		<module>auth-service</module>
+		<module>course-service</module>
 	</modules>
 
 	<dependencies>
