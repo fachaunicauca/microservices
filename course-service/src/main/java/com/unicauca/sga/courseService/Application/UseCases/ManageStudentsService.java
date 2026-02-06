@@ -1,8 +1,8 @@
 package com.unicauca.sga.courseService.Application.UseCases;
 
-import com.unicauca.sga.courseService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.courseService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.courseService.Domain.Models.Student;
+import com.unicauca.sga.courseService.Domain.Repositories.IStudentEnrollmentRepository;
 import com.unicauca.sga.courseService.Domain.Repositories.IStudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManageStudentsService {
 
     private final IStudentRepository studentRepository;
+    private final IStudentEnrollmentRepository studentEnrollmentRepository;
 
     @Transactional(readOnly = true)
     public Iterable<Student> getAllStudentsPaged(int page, int size) {
@@ -45,8 +46,10 @@ public class ManageStudentsService {
             throw new NotFoundException("No se encontró el estudiante que se quiere eliminar (Id: "+id+")");
         }
 
-        studentRepository.deleteById(id);
+        // Eliminar las matrículas que tenga el estudiante
+        studentEnrollmentRepository.deleteByStudentId(id);
 
+        studentRepository.deleteById(id);
         // ¿Eliminar el historial de intentos del estudiante?
     }
 }

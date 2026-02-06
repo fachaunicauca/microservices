@@ -57,4 +57,14 @@ public class StudentEnrollmentRepository implements IStudentEnrollmentRepository
     public void deleteById(long id) {
         studentEnrollmentJPARepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByCourseId(int courseId) {
+        studentEnrollmentJPARepository.deleteByCourse_CourseId(courseId);
+    }
+
+    @Override
+    public void deleteByStudentId(long studentId) {
+        studentEnrollmentJPARepository.deleteByStudent_StudentId(studentId);
+    }
 }

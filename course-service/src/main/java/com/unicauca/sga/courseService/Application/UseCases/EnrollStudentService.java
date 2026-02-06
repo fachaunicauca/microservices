@@ -55,13 +55,22 @@ public class EnrollStudentService {
 
     @Transactional
     public void unenrollStudent(long studentId, int courseId){
-        studentEnrollmentRepository.getStudentEnrollment(studentId, courseId).ifPresent(
-                enrollment -> studentEnrollmentRepository.deleteById(enrollment.getStudentEnrollmentId())
+        StudentEnrollment enrollment = studentEnrollmentRepository.getStudentEnrollment(studentId, courseId).orElseThrow(
+                () -> new NotFoundException("El estudiante no esta registrado en el curso")
         );
+
+        studentEnrollmentRepository.deleteById(enrollment.getStudentEnrollmentId());
     }
 
-    @Transactional
-    public boolean isStudentInCourse(long studentId, int courseId){
-        return studentEnrollmentRepository.isStudentInCourse(studentId, courseId);
+    @Transactional(readOnly = true)
+    public boolean isStudentInCourse(String studentEmail, int courseId){
+        return studentRepository.getStudentByEmail(studentEmail)
+                .map(student ->
+                        studentEnrollmentRepository.isStudentInCourse(
+                                student.getStudentId(),
+                                courseId
+                        )
+                )
+                .orElse(false);
     }
 }

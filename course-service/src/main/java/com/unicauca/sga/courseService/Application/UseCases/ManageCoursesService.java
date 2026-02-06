@@ -3,6 +3,7 @@ package com.unicauca.sga.courseService.Application.UseCases;
 import com.unicauca.sga.courseService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.courseService.Domain.Models.Course;
 import com.unicauca.sga.courseService.Domain.Repositories.ICourseRepository;
+import com.unicauca.sga.courseService.Domain.Repositories.IStudentEnrollmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManageCoursesService {
 
     private final ICourseRepository courseRepository;
+    private final IStudentEnrollmentRepository studentEnrollmentRepository;
 
     @Transactional(readOnly = true)
     public Iterable<Course> getAllCoursesPaged(int page, int size) {
@@ -62,9 +64,11 @@ public class ManageCoursesService {
             throw new NotFoundException("No se encontró el curso que se quiere eliminar (Id: "+id+")");
         }
 
-        courseRepository.deleteById(id);
+        // Eliminar las matrículas de los estudiantes
+        studentEnrollmentRepository.deleteByCourseId(id);
 
-        // Al eliminar un curso deberian eliminarse sus evaluaciones???
+        courseRepository.deleteById(id);
+        // ¿Al eliminar un curso deberían eliminarse sus evaluaciones???
     }
 
 

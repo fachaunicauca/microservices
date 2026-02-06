@@ -11,4 +11,6 @@ public interface IStudentEnrollmentRepository {
     StudentEnrollment saveStudentEnrollment(StudentEnrollment studentEnrollment);
     boolean isStudentInCourse(long studentId, int courseId);
     void deleteById(long id);
+    void deleteByCourseId(int courseId);
+    void deleteByStudentId(long studentId);
 }

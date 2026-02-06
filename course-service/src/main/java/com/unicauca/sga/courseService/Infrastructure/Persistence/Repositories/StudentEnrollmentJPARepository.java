@@ -1,7 +1,5 @@
 package com.unicauca.sga.courseService.Infrastructure.Persistence.Repositories;
 
-import com.unicauca.sga.courseService.Domain.Models.Student;
-import com.unicauca.sga.courseService.Domain.Models.StudentEnrollment;
 import com.unicauca.sga.courseService.Infrastructure.Persistence.Tables.StudentEnrollmentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +15,8 @@ public interface StudentEnrollmentJPARepository extends JpaRepository<StudentEnr
     Optional<StudentEnrollmentEntity> findByStudent_StudentIdAndCourse_CourseId(Long studentStudentId, Integer courseCourseId);
 
     boolean existsByStudent_StudentIdAndCourse_CourseId(Long studentStudentId, Integer courseCourseId);
+
+    void deleteByCourse_CourseId(Integer courseCourseId);
+
+    void deleteByStudent_StudentId(Long studentStudentId);
 }

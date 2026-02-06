@@ -17,6 +17,6 @@ public class StudentEntity {
     @Column(nullable = false, length = 1000)
     private String studentLastName;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 1000, unique = true)
     private String studentEmail;
 }
