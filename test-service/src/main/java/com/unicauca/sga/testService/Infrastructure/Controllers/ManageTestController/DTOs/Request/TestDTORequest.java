@@ -44,4 +44,7 @@ public class TestDTORequest {
     @NotNull(message = "Debe especificar si la evaluación se realizara semestralmente.")
     @JsonProperty("isPeriodic")
     private Boolean periodic;
+
+    @NotNull(message = "Debe indicar el curso al que pertenece la evaluación.")
+    private Integer courseId;
 }

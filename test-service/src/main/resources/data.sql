@@ -6,7 +6,8 @@ INSERT INTO test.test (
     testNumberOfQuestions,
     testAttemptLimit,
     testState,
-    isPeriodic
+    isPeriodic,
+    courseId
 ) VALUES (
              'admin@unicauca.edu.co',
              'Evaluación General',
@@ -15,7 +16,8 @@ INSERT INTO test.test (
              20,
              3,
              1,
-             true
+             true,
+             0
          );
 
 INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES

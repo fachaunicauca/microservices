@@ -18,6 +18,7 @@ public class Test {
     private byte testState;
     private boolean periodic;
 
+    private Integer courseId;
     private List<Question> questions;
 
     public boolean hasEnoughQuestions(long totalQuestions){
@@ -26,5 +27,16 @@ public class Test {
 
     public boolean isActive(){
         return testState == TestState.ACTIVE;
+    }
+
+    public Test toStudentView(List<Question> questions){
+        Test studentTest = new Test();
+        studentTest.setTestId(this.getTestId());
+        studentTest.setTestTitle(this.getTestTitle());
+        studentTest.setTestDurationMinutes(this.getTestDurationMinutes());
+        studentTest.setTestNumberOfQuestions(this.getTestNumberOfQuestions());
+        studentTest.setQuestions(questions);
+
+        return studentTest;
     }
 }

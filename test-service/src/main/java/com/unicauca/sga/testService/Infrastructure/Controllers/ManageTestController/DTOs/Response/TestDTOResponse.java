@@ -19,4 +19,5 @@ public class TestDTOResponse {
     private byte testState;
     @JsonProperty("isPeriodic")
     private boolean periodic;
+    private int courseId;
 }

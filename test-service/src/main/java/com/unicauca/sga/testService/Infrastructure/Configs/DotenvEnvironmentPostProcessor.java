@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Infrastructure.Config;
+package com.unicauca.sga.testService.Infrastructure.Configs;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.LoggerFactory;

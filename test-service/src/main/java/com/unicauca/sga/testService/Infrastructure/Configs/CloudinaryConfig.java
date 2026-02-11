@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Infrastructure.Config;
+package com.unicauca.sga.testService.Infrastructure.Configs;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Value;

@@ -37,6 +37,9 @@ public class TestEntity {
     @Column(nullable = false, name = "isperiodic")
     private boolean periodic;
 
+    @Column(nullable = false)
+    private int courseId;
+
     @OneToMany(mappedBy = "test", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionEntity> questions;
 }

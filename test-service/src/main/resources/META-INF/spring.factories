@@ -1,1 +1,1 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.unicauca.sga.testService.Infrastructure.Config.DotenvEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.unicauca.sga.testService.Infrastructure.Configs.DotenvEnvironmentPostProcessor

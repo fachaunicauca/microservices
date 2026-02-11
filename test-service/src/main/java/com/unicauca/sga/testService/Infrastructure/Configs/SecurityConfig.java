@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Infrastructure.Config;
+package com.unicauca.sga.testService.Infrastructure.Configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

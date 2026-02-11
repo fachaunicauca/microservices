@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
+import com.unicauca.sga.testService.Aplication.Services.ICourseService;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Exceptions.ProtectedTestException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManageTestService {
     private final ITestRepository testRepository;
     private final IQuestionRepository questionRepository;
+    private final ICourseService courseService;
 
     @Transactional(readOnly = true)
     public Iterable<Test> getAllTests(int page, int size) {
@@ -71,6 +73,13 @@ public class ManageTestService {
                 throw new InsufficientQuestionsException("La evaluación no tiene la suficiente cantidad"+
                         " de preguntas para estar activa. (Total actual: "+totalQuestions+")");
             }
+        }
+
+        // Verificar que el curso exista
+        // Si el courseId es 0, no verificar si existe
+        Integer courseId = test.getCourseId();
+        if(courseId != 0 && !courseService.courseExistsById(courseId)) {
+            throw new NotFoundException("No se encontró el curso con ID: "+courseId);
         }
 
         return testRepository.save(test);

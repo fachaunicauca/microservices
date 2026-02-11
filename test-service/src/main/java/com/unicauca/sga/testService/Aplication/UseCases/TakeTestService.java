@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
+import com.unicauca.sga.testService.Aplication.Services.ICourseService;
 import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Enums.AttemptNotAllowedCode;
@@ -37,6 +38,7 @@ public class TakeTestService {
     private final ITestAttemptRepository testAttemptRepository;
     private final IStudentTestConfigRepository studentTestConfigRepository;
     private final QuestionStructureHandlerRegistry questionStructureHandlerRegistry;
+    private final ICourseService courseService;
 
     private final double passingScore = 0.6;
 
@@ -77,6 +79,13 @@ public class TakeTestService {
             throw new InactiveTestException("La evaluación no se encuentra activa");
         }
 
+        // Verificar que el estudiante este asignado al curso al que pertenece el test
+        // Si la evaluación está marcada con el courseId = 0 cualquier estudiante puede presentarla
+        if(test.getCourseId() != 0 && !courseService.isStudentInCourse(studentEmail, test.getCourseId())){
+            throw new AttemptNotAllowedException(AttemptNotAllowedCode.STUDENT_NOT_ENROLLED,
+                                                    "No estas inscrito en el curso al que pertenece esta evaluación");
+        }
+
         // Verificar si ya se ha creado una configuración del estudiante y el test
         Optional<StudentTestConfig> existingConfig = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId);
 
@@ -89,8 +98,6 @@ public class TakeTestService {
             config.setTest(test);
             config.setAttemptLimit(test.getTestAttemptLimit());
             config.setAttemptsUsed(0);
-            config.setFinalScore(null);
-            config.setLastAttemptAt(null);
 
             studentTestConfigRepository.save(config);
 
@@ -103,20 +110,19 @@ public class TakeTestService {
             if (test.isPeriodic() && !config.isSameSemester()) {
                 config.setAttemptsUsed(0);
                 config.setFinalScore(null);
-                config.setLastAttemptAt(null);
                 studentTestConfigRepository.save(config);
             }
 
             // Verificar si ya aprobó
             if (config.hasAlreadyPassed(passingScore)) {
                 throw new AttemptNotAllowedException(AttemptNotAllowedCode.ALREADY_PASSED,
-                                                    "El estudiante ya aprobó esta evaluación");
+                                                    "Ya has aprobado esta evaluación");
             }
 
             // Verificar intentos disponibles
             if (!config.hasRemainingAttempts()) {
                 throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS ,
-                                                    "El estudiante no tiene intentos disponibles para esta evaluación");
+                                                    "No tienes intentos disponibles para esta evaluación");
             }
         }
 
@@ -124,14 +130,15 @@ public class TakeTestService {
         List<Question> testQuestions = questionRepository.getRandomAndLimitedTestQuestions(testId, test.getTestNumberOfQuestions());
 
         // Construir Test con los campos necesarios para presentar la evaluación
+        /*
         Test studentTest = new Test();
         studentTest.setTestId(test.getTestId());
         studentTest.setTestTitle(test.getTestTitle());
         studentTest.setTestDurationMinutes(test.getTestDurationMinutes());
         studentTest.setTestNumberOfQuestions(test.getTestNumberOfQuestions());
-        studentTest.setQuestions(cleanQuestionStructures(testQuestions));
+        studentTest.setQuestions();*/
 
-        return studentTest;
+        return test.toStudentView(cleanQuestionStructures(testQuestions));
     }
 
     @Transactional
@@ -153,7 +160,7 @@ public class TakeTestService {
         // Verificar nuevamente si tiene intentos disponibles
         if (!config.hasRemainingAttempts()) {
             throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS ,
-                    "El estudiante ya no puede presentar mas intentos en esta evaluación");
+                    "Te has quedado sin intentos en esta evaluación");
         }
 
         // Calificar las respuestas del estudiante
@@ -186,6 +193,11 @@ public class TakeTestService {
     }
 
     private long gradeStudentResponses(TestAttempt testAttempt) {
+        // Si la lista de respuestas es nula o esta vacía devolver 0
+        if(testAttempt.getStudentResponses() == null || testAttempt.getStudentResponses().isEmpty()){
+            return 0;
+        }
+
         // Obtener todos los questionIds de las respuestas
         Set<Long> questionIds = testAttempt.getStudentResponses().stream().map(StudentResponse::getQuestionId).collect(Collectors.toSet());
 
