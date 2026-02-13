@@ -8,7 +8,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {TestMapper.class})
 public interface StudentTestConfigMapper {
-    @Mapping(target = "test", ignore = true)
     StudentTestConfig toModel(StudentTestConfigEntity studentTestConfig);
 
     StudentTestConfigEntity toInfra(StudentTestConfig studentTestConfig);

@@ -38,13 +38,4 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
                 ).map(studentTestConfigMapper::toModel);
     }
 
-    @Override
-    public Page<StudentTestConfig> getConfigsWithoutAttemptRequest(int testId, int page, int size) {
-        return studentTestConfigJpaRepository.findByAttemptRequestStatusNotAndTest_TestId(
-                AttemptRequestStatus.REQUESTED.name(),
-                testId,
-                PageRequest.of(page, size)
-        ).map(studentTestConfigMapper::toModel);
-    }
-
 }

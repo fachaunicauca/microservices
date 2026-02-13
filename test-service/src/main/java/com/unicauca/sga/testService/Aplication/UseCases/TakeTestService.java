@@ -69,7 +69,6 @@ public class TakeTestService {
 
     @Transactional
     public Test startTestAttempt(String studentEmail, int testId) {
-
         Test test = testRepository.getTestById(testId).orElseThrow(() ->
                 new NotFoundException("No se encontró la evaluación")
         );
@@ -93,18 +92,12 @@ public class TakeTestService {
 
         if (existingConfig.isEmpty()) {
             // Si no se ha creado no es necesario realizar validaciones
-            config = new StudentTestConfig();
-            config.setStudentEmail(studentEmail);
-            config.setTest(test);
-            config.setAttemptLimit(test.getTestAttemptLimit());
-            config.setAttemptsUsed(0);
-
+            config = new StudentTestConfig(studentEmail, test);
             studentTestConfigRepository.save(config);
 
         } else {
             // Si se ha creado es necesario realizar validaciones
             config = existingConfig.get();
-            config.setTest(test);
 
             // Si el test es periódico y cambió el semestre, reiniciar intentos
             if (test.isPeriodic() && !config.isSameSemester()) {
@@ -129,15 +122,7 @@ public class TakeTestService {
         // Si el test está activo significa que tiene la suficiente cantidad de preguntas
         List<Question> testQuestions = questionRepository.getRandomAndLimitedTestQuestions(testId, test.getTestNumberOfQuestions());
 
-        // Construir Test con los campos necesarios para presentar la evaluación
-        /*
-        Test studentTest = new Test();
-        studentTest.setTestId(test.getTestId());
-        studentTest.setTestTitle(test.getTestTitle());
-        studentTest.setTestDurationMinutes(test.getTestDurationMinutes());
-        studentTest.setTestNumberOfQuestions(test.getTestNumberOfQuestions());
-        studentTest.setQuestions();*/
-
+        // Construir Test solo con los campos necesarios para presentar la evaluación
         return test.toStudentView(cleanQuestionStructures(testQuestions));
     }
 

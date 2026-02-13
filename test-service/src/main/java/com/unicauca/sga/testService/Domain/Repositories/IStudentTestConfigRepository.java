@@ -9,5 +9,4 @@ public interface IStudentTestConfigRepository {
     Optional<StudentTestConfig> getStudentTestConfig(String studentEmail, int testId);
 
     Iterable<StudentTestConfig> getConfigsWithPendingAttemptRequest(int testId, int page, int size);
-    Iterable<StudentTestConfig> getConfigsWithoutAttemptRequest(int testId, int page, int size);
 }

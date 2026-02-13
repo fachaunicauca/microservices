@@ -18,7 +18,7 @@ public class StudentTestConfigEntity {
     private String studentEmail;
 
     @Column(nullable = false)
-    private int attemptLimit;
+    private int totalAttemptsUsed;
 
     @Column(nullable = false)
     private int attemptsUsed;

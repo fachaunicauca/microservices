@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ManageStudentTestConfigsService {
+public class ManageAttemptRequestsService {
     private final IStudentTestConfigRepository studentTestConfigRepository;
     private final ITestRepository testRepository;
 
     @Transactional(readOnly = true)
-    public Iterable<StudentTestConfig> getPriorityStudentTestConfigsPaged(int testId, int page, int size){
+    public Iterable<StudentTestConfig> getPendingAttemptRequestPaged(int testId, int page, int size){
         if (!testRepository.isPresent(testId)){
             throw new NotFoundException("La evaluación con id "+ testId+ " ya no existe");
         }
@@ -26,21 +26,6 @@ public class ManageStudentTestConfigsService {
 
         if(!pagedConfigs.iterator().hasNext()){
             throw new NotFoundException("Ningún estudiante ha solicitado restablecer sus intentos");
-        }
-
-        return pagedConfigs;
-    }
-
-    @Transactional(readOnly = true)
-    public Iterable<StudentTestConfig> getStudentTestConfigsPaged(int testId, int page, int size){
-        if (!testRepository.isPresent(testId)){
-            throw new NotFoundException("La evaluación con id "+ testId+ " ya no existe");
-        }
-
-        Iterable<StudentTestConfig> pagedConfigs = studentTestConfigRepository.getConfigsWithoutAttemptRequest(testId, page, size);
-
-        if(!pagedConfigs.iterator().hasNext()){
-            throw new NotFoundException("Ningún estudiante ha iniciado esta evaluación");
         }
 
         return pagedConfigs;
@@ -61,8 +46,23 @@ public class ManageStudentTestConfigsService {
                     " intento disponible"));
         }
 
-        // Marcar como solicitada la configuracion para que sea priotaria
+        // Marcar como solicitada
         studentTestConfig.setAttemptRequestStatus(AttemptRequestStatus.REQUESTED);
+
+        studentTestConfigRepository.save(studentTestConfig);
+    }
+
+    @Transactional
+    public void resetAttempts(String studentEmail, int testId){
+        StudentTestConfig studentTestConfig = studentTestConfigRepository.getStudentTestConfig(studentEmail, testId).orElseThrow(
+                () -> new NotFoundException("La configuración del estudiante en esta evaluación ya no existe")
+        );
+
+        // Desmarcar solicitud
+        studentTestConfig.setAttemptRequestStatus(AttemptRequestStatus.NOT_REQUESTED);
+
+        // Restablecer intentos
+        studentTestConfig.setAttemptsUsed(0);
 
         studentTestConfigRepository.save(studentTestConfig);
     }
