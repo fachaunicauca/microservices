@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
-import com.unicauca.sga.testService.Aplication.Services.ICourseService;
+import com.unicauca.sga.testService.Domain.Services.ICourseService;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Exceptions.ProtectedTestException;
@@ -8,8 +8,6 @@ import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

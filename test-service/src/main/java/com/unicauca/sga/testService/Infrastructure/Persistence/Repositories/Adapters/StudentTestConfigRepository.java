@@ -2,14 +2,18 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 
 import com.unicauca.sga.testService.Domain.Enums.AttemptRequestStatus;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
+import com.unicauca.sga.testService.Domain.Models.StudentTestResult;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentTestConfigMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.StudentTestConfigJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -36,6 +40,20 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
                 testId,
                 PageRequest.of(page, size)
                 ).map(studentTestConfigMapper::toModel);
+    }
+
+    @Override
+    public List<StudentTestConfig> getAllByTestIdAndStudentEmailIn(int testId, Collection<String> emails) {
+        return studentTestConfigJpaRepository.findAllByTest_TestIdAndStudentEmailIn(testId, emails)
+                .stream().map(studentTestConfigMapper::toModelWithoutTest).toList();
+    }
+
+    @Override
+    public Page<StudentTestResult> getAllResultsByTestId(int testId, int page, int size) {
+        return studentTestConfigJpaRepository.findAllByTest_TestId(
+                testId,
+                PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "studentTestConfigId"))
+        ).map(studentTestConfigMapper::toStudentResultModel);
     }
 
 }

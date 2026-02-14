@@ -8,7 +8,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "studentTestConfig")
+@Table(name = "studentTestConfig",
+        indexes = {
+                @Index(name = "idx_test_student", columnList = "testId, studentEmail")
+        }
+)
 public class StudentTestConfigEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

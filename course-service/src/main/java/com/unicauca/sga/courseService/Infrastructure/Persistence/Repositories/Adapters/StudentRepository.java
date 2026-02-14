@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,6 +34,11 @@ public class StudentRepository implements IStudentRepository {
                                                             size,
                                                             Sort.by(Sort.Direction.DESC, "studentId"))
         ).map(studentMapper::toModel);
+    }
+
+    @Override
+    public List<Student> getAllStudentsByEmails(List<String> emails) {
+        return studentJPARepository.findAllByStudentEmailIn(emails).stream().map(studentMapper::toModel).toList();
     }
 
     @Override

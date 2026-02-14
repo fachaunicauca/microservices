@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/students")
@@ -71,5 +73,19 @@ public class ManageStudentsController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public void deleteStudentById(@PathVariable long id) {
         manageStudentsService.deleteStudentById(id);
+    }
+
+    @Operation(
+            summary = "Obtener información estudiantes",
+            description = "Método para obtener la información de los estudiantes según sus correos (Para el microservicio de evaluaciones)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Informaciones obtenidas exitosamente")
+            }
+    )
+    @PostMapping("/byEmails")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    public List<StudentDTOResponse> getStudentsByEmails(@RequestBody List<String> emails) {
+        return manageStudentsService.getStudentsByEmails(emails).stream().map(studentDTOMapper::toDTO).toList();
     }
 }

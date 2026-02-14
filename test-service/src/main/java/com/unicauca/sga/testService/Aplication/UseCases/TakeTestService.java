@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
-import com.unicauca.sga.testService.Aplication.Services.ICourseService;
+import com.unicauca.sga.testService.Domain.Services.ICourseService;
 import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestState;
 import com.unicauca.sga.testService.Domain.Enums.AttemptNotAllowedCode;

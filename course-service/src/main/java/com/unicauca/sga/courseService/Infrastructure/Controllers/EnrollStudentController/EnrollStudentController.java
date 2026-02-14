@@ -26,7 +26,7 @@ public class EnrollStudentController {
 
     @Operation(
             summary = "Obtener estudiantes de un curso por id",
-            description = "Método para obtener los estudiantes matriculados en un curso según el id",
+            description = "Método para obtener los estudiantes matriculados en un curso según el id (Utilizado por el microservicio de evaluaciones)",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Estudiantes obtenidos con éxito"),
                     @ApiResponse(responseCode = "404", description = "El curso no existe o no tiene estudiantes registrados")
