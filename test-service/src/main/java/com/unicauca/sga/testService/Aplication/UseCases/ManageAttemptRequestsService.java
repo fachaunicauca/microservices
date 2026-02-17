@@ -40,7 +40,8 @@ public class ManageAttemptRequestsService {
         // Verificar si tiene intentos disponibles
         if(studentTestConfig.hasRemainingAttempts()){
             throw new HasRemainingAttemptsException(
-                    "No puede solicitar mas intentos porque aún tiene "+ (
+                    "No puede solicitar mas intentos porque aún tiene "+
+                    studentTestConfig.getRemainingAttempts() + (
                     studentTestConfig.getRemainingAttempts() > 1 ?
                     " intentos disponibles":
                     " intento disponible"));

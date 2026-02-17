@@ -13,4 +13,5 @@ public interface IStudentTestConfigRepository {
     Iterable<StudentTestConfig> getConfigsWithPendingAttemptRequest(int testId, int page, int size);
     List<StudentTestConfig> getAllByTestIdAndStudentEmailIn(int testId, Collection<String> emails);
     Iterable<StudentTestResult> getAllResultsByTestId(int testId, int page, int size);
+    void deleteAllByTestId(int testId);
 }

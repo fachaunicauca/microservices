@@ -4,6 +4,8 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.StudentTes
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -19,4 +21,8 @@ public interface StudentTestConfigJpaRepository extends JpaRepository<StudentTes
     List<StudentTestConfigEntity> findAllByTest_TestIdAndStudentEmailIn(Integer testTestId, Collection<String> studentEmails);
 
     Page<StudentTestConfigEntity> findAllByTest_TestId(Integer testTestId, Pageable pageable);
+
+    @Modifying
+    @Query("DELETE FROM StudentTestConfigEntity s WHERE s.test.testId = :testId")
+    void deleteByTestId(Integer testId);
 }

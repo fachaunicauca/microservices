@@ -30,9 +30,8 @@ public class TestAttemptEntity {
     @Column(nullable = false)
     private Boolean fullyScored;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "testId",nullable = false)
-    private TestEntity test;
+    @Column(nullable = false)
+    private Integer testId;
 
     @OneToMany(mappedBy = "testAttempt", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudentResponseEntity> studentResponses;

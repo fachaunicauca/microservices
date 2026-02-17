@@ -129,7 +129,7 @@ public class TakeTestService {
     @Transactional
     public TestAttempt saveStudentTestAttempt(TestAttempt testAttempt){
 
-        int testId = testAttempt.getTest().getTestId();
+        int testId = testAttempt.getTestId();
         String studentEmail = testAttempt.getStudentEmail();
 
         Test test  = testRepository.getTestById(testId).orElseThrow( () ->
@@ -164,7 +164,7 @@ public class TakeTestService {
 
         // Guardar el intento
         testAttempt.setTestAttemptDate(now);
-        testAttempt.setTest(test);
+        testAttempt.setTestId(test.getTestId());
         testAttemptRepository.save(testAttempt);
         return testAttempt;
     }

@@ -56,4 +56,9 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
         ).map(studentTestConfigMapper::toStudentResultModel);
     }
 
+    @Override
+    public void deleteAllByTestId(int testId) {
+        studentTestConfigJpaRepository.deleteByTestId(testId);
+    }
+
 }

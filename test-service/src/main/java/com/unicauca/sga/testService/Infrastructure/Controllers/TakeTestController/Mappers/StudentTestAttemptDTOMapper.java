@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface StudentTestAttemptDTOMapper {
-    @Mapping(source = "testId", target = "test.testId")
     TestAttempt toModel(StudentTestAttemptDTORequest studentTestAttemptDTORequest);
 
     StudentTestAttemptDTOResponse toDTO(TestAttempt testAttempt);

@@ -26,7 +26,7 @@ public class TestDTORequest {
     private String testDescription;
 
     @NotNull(message = "Debe especificar una duración.")
-    @PositiveOrZero(message = "La duración no puede ser negativa.")
+    @Positive(message = "La duración no puede ser negativa o cero.")
     private Integer testDurationMinutes;
 
     @NotNull(message = "Debe especificar la cantidad de preguntas que deben responder los estudiantes.")

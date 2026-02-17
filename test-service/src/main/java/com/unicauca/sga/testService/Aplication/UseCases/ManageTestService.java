@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
+import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Domain.Services.ICourseService;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
@@ -17,6 +18,7 @@ public class ManageTestService {
     private final ITestRepository testRepository;
     private final IQuestionRepository questionRepository;
     private final ICourseService courseService;
+    private final IStudentTestConfigRepository studentTestConfigRepository;
 
     @Transactional(readOnly = true)
     public Iterable<Test> getAllTests(int page, int size) {
@@ -94,6 +96,9 @@ public class ManageTestService {
         if (!isPresent){
             throw new NotFoundException("No se encontró la evaluación con id: " + id);
         }
+
+        // Eliminar los studentTestConfig
+        studentTestConfigRepository.deleteAllByTestId(id);
 
         testRepository.deleteById(id);
     }

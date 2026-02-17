@@ -14,6 +14,6 @@ public class TestAttempt {
     private Double testAttemptScore;
     private Boolean fullyScored;
 
-    private Test test;
+    private Integer testId;
     private List<StudentResponse> studentResponses;
 }
