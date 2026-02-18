@@ -2,7 +2,7 @@ package com.unicauca.sga.testService.Infrastructure.Clients.CourseServiceClient;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unicauca.sga.testService.Domain.Models.StudentTestResult;
+import com.unicauca.sga.testService.Domain.Models.TestResults.StudentTestResult;
 import com.unicauca.sga.testService.Domain.Services.ICourseService;
 import com.unicauca.sga.testService.Infrastructure.Clients.CourseServiceClient.DTOs.CourseStudentDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Clients.CourseServiceClient.Mappers.CourseStudentDTOMapper;
@@ -91,6 +91,23 @@ public class CourseServiceClient implements ICourseService {
 
         } catch (HttpClientErrorException.NotFound ex) {
             return Page.empty();
+        }
+    }
+
+    @Override
+    public List<String> getCourseStudentsEmails(int courseId) {
+        try {
+            List<String> response = restClient.get()
+                    .uri("http://course-service/courses/enrollment/studentsEmails?courseId={courseId}",
+                            courseId
+                    )
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<>() {});
+
+            return response != null ? response : List.of();
+
+        } catch (HttpClientErrorException ex) {
+            return List.of();
         }
     }
 }

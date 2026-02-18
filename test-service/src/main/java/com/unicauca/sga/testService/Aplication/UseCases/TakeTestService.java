@@ -2,7 +2,7 @@ package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Domain.Services.ICourseService;
 import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
-import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Enums.AttemptNotAllowedCode;
 import com.unicauca.sga.testService.Domain.Exceptions.AttemptNotAllowedException;
 import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
@@ -40,8 +40,6 @@ public class TakeTestService {
     private final QuestionStructureHandlerRegistry questionStructureHandlerRegistry;
     private final ICourseService courseService;
 
-    private final double passingScore = 0.6;
-
     @Transactional(readOnly = true)
     public Test getGeneralTest(){
 
@@ -49,7 +47,7 @@ public class TakeTestService {
                 new NotFoundException("No se encontró la evaluación general")
         );
 
-        if(generalTest.getTestState() == TestState.INACTIVE){
+        if(generalTest.getTestState() == TestConstants.INACTIVE){
             throw new InactiveTestException("La evaluación general se encuentra inactiva");
         }
 
@@ -107,7 +105,7 @@ public class TakeTestService {
             }
 
             // Verificar si ya aprobó
-            if (config.hasAlreadyPassed(passingScore)) {
+            if (config.hasAlreadyPassed(TestConstants.PASSING_SCORE)) {
                 throw new AttemptNotAllowedException(AttemptNotAllowedCode.ALREADY_PASSED,
                                                     "Ya has aprobado esta evaluación");
             }

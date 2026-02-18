@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/courses/enrollment")
@@ -88,6 +90,20 @@ public class EnrollStudentController {
     public boolean studentInCourse(@RequestParam("studentEmail") String studentEmail,
                                    @RequestParam("courseId") int courseId){
         return enrollStudentService.isStudentInCourse(studentEmail,courseId);
+    }
+
+    @Operation(
+            summary = "Obtener correos estudiantes curso",
+            description = "Metodo para obtener todos los correos de los estudiantes matriculados en un curso (Para el microservicio de evaluaciones)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Correos obtenidos con exito")
+            }
+    )
+    @GetMapping("/studentsEmails")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    public List<String> getCourseTotalStudents(@RequestParam("courseId") int courseId){
+        return enrollStudentService.getCourseStudentsEmails(courseId);
     }
 
 }

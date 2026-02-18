@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,6 +34,11 @@ public class StudentEnrollmentRepository implements IStudentEnrollmentRepository
         return enrollments.map(enrollment ->
                 studentMapper.toModel(enrollment.getStudent())
         );
+    }
+
+    @Override
+    public List<String> getCourseStudentsEmails(int courseId) {
+        return studentEnrollmentJPARepository.getCourseStudentsEmails(courseId);
     }
 
     @Override

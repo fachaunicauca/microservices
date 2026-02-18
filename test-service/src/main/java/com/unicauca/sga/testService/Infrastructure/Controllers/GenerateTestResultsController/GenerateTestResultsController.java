@@ -1,9 +1,10 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.GenerateTestResultsController;
 
 import com.unicauca.sga.testService.Aplication.UseCases.GenerateTestResultsService;
-import com.unicauca.sga.testService.Domain.Models.StudentTestResult;
+import com.unicauca.sga.testService.Domain.Models.TestResults.StudentTestResult;
 import com.unicauca.sga.testService.Infrastructure.Controllers.GenerateTestResultsController.DTOs.StudentsResultsDTOResponse;
-import com.unicauca.sga.testService.Infrastructure.Controllers.GenerateTestResultsController.Mappers.StudentsResultsDTOMapper;
+import com.unicauca.sga.testService.Infrastructure.Controllers.GenerateTestResultsController.DTOs.TestStatsDTOResponse;
+import com.unicauca.sga.testService.Infrastructure.Controllers.GenerateTestResultsController.Mappers.TestResultsDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Controlador Generador de Resultados de Evaluaciones")
 public class GenerateTestResultsController {
     private final GenerateTestResultsService generateTestResultsService;
-    private final StudentsResultsDTOMapper studentsResultsDTOMapper;
+    private final TestResultsDTOMapper testResultsDTOMapper;
 
     @Operation(
             summary = "Obtener resultados evaluación",
@@ -37,6 +38,21 @@ public class GenerateTestResultsController {
         return ((Page<StudentTestResult>) generateTestResultsService.getTestResultsPaged(testId,
                                                                 pageable.getPageNumber(),
                                                                 pageable.getPageSize())
-        ).map(studentsResultsDTOMapper::toDTO);
+        ).map(testResultsDTOMapper::studentResultstoDTO);
+    }
+
+    @Operation(
+            summary = "Obtener estadisticas evaluacion",
+            description = "Metodo para obtener las estadisticas de los resultados de los estudiantes en una evaluacion",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Estadisticas obtenidas con exito"),
+                    @ApiResponse(responseCode = "404", description = "No se encontro la evaluacion")
+            }
+    )
+    @GetMapping("/{testId}/stats")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    public TestStatsDTOResponse getTestStats(@PathVariable int testId){
+        return testResultsDTOMapper.testStatsToDTO(generateTestResultsService.getTestStats(testId));
     }
 }

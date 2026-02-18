@@ -2,7 +2,7 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 
 import com.unicauca.sga.testService.Domain.Enums.AttemptRequestStatus;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
-import com.unicauca.sga.testService.Domain.Models.StudentTestResult;
+import com.unicauca.sga.testService.Domain.Models.TestResults.StudentTestResult;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.StudentTestConfigMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.StudentTestConfigJpaRepository;
@@ -59,6 +59,16 @@ public class StudentTestConfigRepository implements IStudentTestConfigRepository
     @Override
     public void deleteAllByTestId(int testId) {
         studentTestConfigJpaRepository.deleteByTestId(testId);
+    }
+
+    @Override
+    public List<Double> getTestScoresByEmails(int testId, Collection<String> emails) {
+        return studentTestConfigJpaRepository.getScoresByTestIdAndStudentsEmails(testId, emails);
+    }
+
+    @Override
+    public List<Double> getTestScoresByTestId(int testId) {
+        return studentTestConfigJpaRepository.getScoresByTestId(testId);
     }
 
 }

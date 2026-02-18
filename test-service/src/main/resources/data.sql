@@ -9,16 +9,16 @@ INSERT INTO test.test (
     isPeriodic,
     courseId
 ) VALUES (
-             'admin@unicauca.edu.co',
-             'Evaluación General',
-             'Evaluación destinada a medir los conocimientos básicos sobre normas de seguridad que deben poseer los estudiantes antes de ingresar a los laboratorios.',
-             10,
-             20,
-             3,
-             1,
-             true,
-             0
-         );
+     'admin@unicauca.edu.co',
+     'Evaluación General',
+     'Evaluación destinada a medir los conocimientos básicos sobre normas de seguridad que deben poseer los estudiantes antes de ingresar a los laboratorios.',
+     10,
+     20,
+     3,
+     1,
+     true,
+     0
+ );
 
 INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
     ( '¿Cuál es la primera acción que debe tomar un estudiante al ingresar a un laboratorio de química?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
@@ -173,3 +173,139 @@ INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId
 
    ('¿Qué debe hacer si encuentra un material de vidrio con un borde astillado?', NULL, NULL, 1, 'MULTIPLE_CHOICE',
     '{"answers":[{"id":1,"text":"Utilizarlo con mucho cuidado.","correct":false},{"id":2,"text":"No utilizarlo y entregarlo al responsable para su descarte o reparación.","correct":true},{"id":3,"text":"Limar el borde con una lija.","correct":false},{"id":4,"text":"Ignorarlo si el daño es pequeño.","correct":false}],"correctAnswerCount":1}');
+
+INSERT INTO test.test (
+    teacherEmail,
+    testTitle,
+    testDescription,
+    testDurationMinutes,
+    testNumberOfQuestions,
+    testAttemptLimit,
+    testState,
+    isPeriodic,
+    courseId
+) VALUES (
+     'docente@unicauca.edu.co',
+     'Evaluación Específica Ejemplo - Seguridad en Laboratorio de Química',
+     'Evaluación específica para estudiantes matriculados en el curso de laboratorio de química, enfocada en protocolos avanzados de seguridad.',
+     15,
+     10,
+     2,
+     1,
+     false,
+     0
+);
+
+INSERT INTO test.question (questionText, questionTitle, questionImageUrl, testId, questionType, questionStructure) VALUES
+   ('¿Qué documento contiene información detallada sobre los riesgos de un reactivo químico?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"La lista de asistencia.","correct":false},{"id":2,"text":"La ficha de datos de seguridad (FDS).","correct":true},{"id":3,"text":"El manual del estudiante.","correct":false},{"id":4,"text":"El reglamento interno.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué elemento de protección es obligatorio al manipular ácidos concentrados?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Guantes y gafas de seguridad.","correct":true},{"id":2,"text":"Sombrero.","correct":false},{"id":3,"text":"Reloj metálico.","correct":false},{"id":4,"text":"Zapatos abiertos.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué debe verificarse antes de usar una campana de extracción?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Que esté apagada.","correct":false},{"id":2,"text":"Que el sistema de ventilación esté funcionando correctamente.","correct":true},{"id":3,"text":"Que las ventanas estén abiertas.","correct":false},{"id":4,"text":"Que no haya nadie cerca.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Cuál es el procedimiento correcto para diluir un ácido?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Agregar agua al ácido.","correct":false},{"id":2,"text":"Mezclar ambos rápidamente.","correct":false},{"id":3,"text":"Agregar el ácido al agua lentamente.","correct":true},{"id":4,"text":"Calentar el ácido antes.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué se debe hacer si se rompe un termómetro de mercurio?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Recogerlo con la mano.","correct":false},{"id":2,"text":"Ignorarlo.","correct":false},{"id":3,"text":"Reportarlo inmediatamente y seguir el protocolo de residuos peligrosos.","correct":true},{"id":4,"text":"Barrerlo hacia el desagüe.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué significa el pictograma de una llama en un reactivo?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Es inflamable.","correct":true},{"id":2,"text":"Es tóxico.","correct":false},{"id":3,"text":"Es corrosivo.","correct":false},{"id":4,"text":"Es radiactivo.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué acción es correcta ante una fuga de gas en el laboratorio?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Encender el extractor inmediatamente.","correct":false},{"id":2,"text":"Encender una llama para verificar.","correct":false},{"id":3,"text":"Cerrar la válvula principal y evacuar si es necesario.","correct":true},{"id":4,"text":"Ignorar el olor.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué equipo se utiliza para neutralizar pequeños derrames de ácidos?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Arena o material absorbente neutralizante.","correct":true},{"id":2,"text":"Agua caliente.","correct":false},{"id":3,"text":"Papel común.","correct":false},{"id":4,"text":"Aire comprimido.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Por qué no se deben usar lentes de contacto en el laboratorio?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Porque reducen la visión.","correct":false},{"id":2,"text":"Porque pueden atrapar sustancias químicas contra el ojo.","correct":true},{"id":3,"text":"Porque son incómodos.","correct":false},{"id":4,"text":"Porque lo prohíbe el reglamento general sin razón.","correct":false}],"correctAnswerCount":1}'),
+
+   ('¿Qué debe hacerse al finalizar una práctica de laboratorio?', NULL, NULL, 2, 'MULTIPLE_CHOICE',
+    '{"answers":[{"id":1,"text":"Salir inmediatamente.","correct":false},{"id":2,"text":"Guardar reactivos sin etiquetar.","correct":false},{"id":3,"text":"Apagar equipos, limpiar el área y lavarse las manos.","correct":true},{"id":4,"text":"Dejar el material para el siguiente grupo.","correct":false}],"correctAnswerCount":1}');
+
+INSERT INTO test.studentTestConfig (
+    studentEmail,
+    totalAttemptsUsed,
+    attemptsUsed,
+    lastAttemptAt,
+    finalScore,
+    attemptRequestStatus,
+    testId
+) VALUES
+      (
+          'jtuquerrez@unicauca.edu.co',
+          1,
+          1,
+          NOW(),
+          1,
+          'NOT_REQUESTED',
+          2
+      ),
+      (
+          'cmperdomo@unicauca.edu.co',
+          2,
+          2,
+          NOW(),
+          0.8,
+          'NOT_REQUESTED',
+          2
+      ),
+      (
+          'crquinayas@unicauca.edu.co',
+          2,
+          2,
+          NOW(),
+          0.5,
+          'NOT_REQUESTED',
+          2
+      );
+
+INSERT INTO test.studentTestConfig (
+    studentEmail,
+    totalAttemptsUsed,
+    attemptsUsed,
+    lastAttemptAt,
+    finalScore,
+    attemptRequestStatus,
+    testId
+) VALUES
+
+-- 4 (aprobado primer intento)
+('estudiante4@unicauca.edu.co', 2, 1, NOW(), 0.9, 'NOT_REQUESTED', 2),
+
+-- 5 (aprobado segundo intento)
+('estudiante5@unicauca.edu.co', 2, 2, NOW(), 0.7, 'NOT_REQUESTED', 2),
+
+-- 6 (reprobó y agotó intentos)
+('estudiante6@unicauca.edu.co', 2, 2, NOW(), 0.4, 'REQUESTED', 2),
+
+-- 7 (perfecto primer intento)
+('estudiante7@unicauca.edu.co', 2, 1, NOW(), 1.0, 'NOT_REQUESTED', 2),
+
+-- 8 (aprobado segundo intento)
+('estudiante8@unicauca.edu.co', 2, 2, NOW(), 0.8, 'NOT_REQUESTED', 2),
+
+-- 9 (reprobó y agotó intentos)
+('estudiante9@unicauca.edu.co', 2, 2, NOW(), 0.5, 'REQUESTED', 2),
+
+-- 10 (aprobado primer intento)
+('estudiante10@unicauca.edu.co', 2, 1, NOW(), 0.95, 'NOT_REQUESTED', 2),
+
+-- 11 (reprobó y agotó intentos)
+('estudiante11@unicauca.edu.co', 2, 2, NOW(), 0.3, 'REQUESTED', 2),
+
+-- 12 (aprobado primer intento)
+('estudiante12@unicauca.edu.co', 2, 1, NOW(), 0.85, 'NOT_REQUESTED', 2),
+
+-- 13 (aprobado segundo intento)
+('estudiante13@unicauca.edu.co', 2, 2, NOW(), 0.65, 'NOT_REQUESTED', 2),
+
+-- 14 (reprobó y agotó intentos)
+('estudiante14@unicauca.edu.co', 2, 2, NOW(), 0.2, 'REQUESTED', 2),
+
+-- 15 (aprobado primer intento)
+('estudiante15@unicauca.edu.co', 2, 1, NOW(), 0.98, 'NOT_REQUESTED', 2);

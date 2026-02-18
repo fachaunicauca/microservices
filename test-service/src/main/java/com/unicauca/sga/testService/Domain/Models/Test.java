@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Domain.Models;
 
-import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import lombok.Data;
 
@@ -26,7 +26,7 @@ public class Test {
     }
 
     public boolean isActive(){
-        return testState == TestState.ACTIVE;
+        return testState == TestConstants.ACTIVE;
     }
 
     public Test toStudentView(List<Question> questions){

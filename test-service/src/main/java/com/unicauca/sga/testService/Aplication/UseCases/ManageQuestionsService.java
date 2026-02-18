@@ -2,7 +2,7 @@ package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Services.QuestionImageService;
 import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
-import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
@@ -68,7 +68,7 @@ public class ManageQuestionsService {
         // Validar que al eliminar la pregunta el test siga teniendo suficientes preguntas para estar activo
         // Si no las tiene desactivar el test
         if(!test.hasEnoughQuestions(totalQuestions - 1) && test.isActive()) {
-            test.setTestState(TestState.INACTIVE);
+            test.setTestState(TestConstants.INACTIVE);
             testRepository.save(test);
         }
     }

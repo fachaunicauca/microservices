@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Adapters;
 
-import com.unicauca.sga.testService.Domain.Constants.TestState;
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -36,7 +35,7 @@ public class TestRepository implements ITestRepository {
 
     @Override
     public Page<Test> getAllActiveTests(int page, int size) {
-        return testJpaRepository.findByTestStateAndTestIdNot(TestState.ACTIVE, 1,PageRequest.of(page,size)).map(testMapper::toModel);
+        return testJpaRepository.findByTestStateAndTestIdNot(TestConstants.ACTIVE, 1,PageRequest.of(page,size)).map(testMapper::toModel);
     }
 
     @Override

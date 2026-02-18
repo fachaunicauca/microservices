@@ -1,6 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Clients.CourseServiceClient.Mappers;
 
-import com.unicauca.sga.testService.Domain.Models.StudentTestResult;
+import com.unicauca.sga.testService.Domain.Models.TestResults.StudentTestResult;
 import com.unicauca.sga.testService.Infrastructure.Clients.CourseServiceClient.DTOs.CourseStudentDTOResponse;
 import org.mapstruct.Mapper;
 

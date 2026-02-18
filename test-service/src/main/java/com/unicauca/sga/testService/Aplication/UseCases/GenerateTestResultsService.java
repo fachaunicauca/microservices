@@ -1,9 +1,11 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
-import com.unicauca.sga.testService.Domain.Models.StudentTestResult;
+import com.unicauca.sga.testService.Domain.Models.TestResults.StudentTestResult;
 import com.unicauca.sga.testService.Domain.Models.Test;
+import com.unicauca.sga.testService.Domain.Models.TestResults.TestStats;
 import com.unicauca.sga.testService.Domain.Repositories.IStudentTestConfigRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import com.unicauca.sga.testService.Domain.Services.ICourseService;
@@ -28,7 +30,7 @@ public class GenerateTestResultsService {
                 () -> new NotFoundException("La evaluación ya no existe")
         );
 
-        // Si la evaluación pertenece a un curso (courseId !=0),
+        // Si la evaluación pertenece a un curso (courseId!=0),
         // obtener los resultados para los estudiantes de ese curso
         if(courseId != 0){
             return getTestResultsForCoursePaged(testId, courseId, page, size);
@@ -36,6 +38,63 @@ public class GenerateTestResultsService {
         // Si cualquier estudiante puede presentar la evaluación (courseId == 0)
         // obtener los resultados de todos los estudiantes
         return getTestResultsForGlobalPaged(testId, page, size);
+    }
+
+    @Transactional(readOnly = true)
+    public TestStats getTestStats(int testId) {
+        int courseId = testRepository.getTestById(testId).map(Test::getCourseId).orElseThrow(
+                () -> new NotFoundException("La evaluación ya no existe")
+        );
+
+        TestStats stats = new TestStats();
+        List<Double> scores;
+        Integer totalNotTaken;
+
+        // Obtener todos los puntajes
+        // Si no tiene un curso asignado, obtener todos los studentTestConfig con totalAttemptsUsed > 0
+        // No hay evaluaciones "No Presentadas"
+        if (courseId == 0) {
+            scores = studentTestConfigRepository.getTestScoresByTestId(testId);
+            totalNotTaken = null;
+        }
+        // Si tiene un curso asignado, obtener los studentTestConfig según los emails de los estudiantes matriculados
+        // Y con totalAttemptsUsed > 0
+        else {
+            List<String> emails = courseService.getCourseStudentsEmails(courseId);
+            scores = studentTestConfigRepository.getTestScoresByEmails(testId, emails);
+            // Total no presentadas
+            totalNotTaken = emails.size() - scores.size();
+        }
+
+        // Total presentadas
+        int totalTaken = scores.size();
+        // Total aprobadas
+        int totalPassed = (int) scores.stream()
+                .filter(s -> s >= TestConstants.PASSING_SCORE)
+                .count();
+        // Total reprobadas
+        int totalFailed = totalTaken - totalPassed;
+        // Promedio
+        double average = scores.stream()
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+        // Varianza
+        double variance = scores.stream()
+                .mapToDouble(s -> Math.pow(s - average, 2))
+                .average()
+                .orElse(0.0);
+        // Desviación estándar
+        double standardDeviation = Math.sqrt(variance);
+
+        stats.setTotalTaken(totalTaken);
+        stats.setTotalPassed(totalPassed);
+        stats.setTotalFailed(totalFailed);
+        stats.setTotalNotTaken(totalNotTaken);
+        stats.setAverageScore(average);
+        stats.setStandardDeviation(standardDeviation);
+
+        return stats;
     }
 
     private Iterable<StudentTestResult> getTestResultsForCoursePaged(int testId, int courseId, int page, int size) {

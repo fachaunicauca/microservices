@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -25,4 +26,19 @@ public interface StudentTestConfigJpaRepository extends JpaRepository<StudentTes
     @Modifying
     @Query("DELETE FROM StudentTestConfigEntity s WHERE s.test.testId = :testId")
     void deleteByTestId(Integer testId);
+
+    @Query("SELECT s.finalScore " +
+            "FROM StudentTestConfigEntity s " +
+            "WHERE s.studentEmail IN :emails " +
+            "AND s.totalAttemptsUsed > 0 " +
+            "AND s.test.testId = :testId " +
+            "AND s.finalScore IS NOT NULL")
+    List<Double> getScoresByTestIdAndStudentsEmails(@Param("testId") int testId, @Param("emails") Collection<String> emails);
+
+    @Query("SELECT s.finalScore " +
+            "FROM StudentTestConfigEntity s " +
+            "WHERE s.totalAttemptsUsed > 0 " +
+            "AND s.test.testId = :testId " +
+            "AND s.finalScore IS NOT NULL")
+    List<Double> getScoresByTestId(@Param("testId") int testId);
 }

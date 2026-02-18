@@ -1,4 +1,4 @@
-package com.unicauca.sga.testService.Domain.Models;
+package com.unicauca.sga.testService.Domain.Models.TestResults;
 
 import lombok.Data;
 
