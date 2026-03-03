@@ -1,14 +1,14 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Aplication.Services.QuestionImageService;
-import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
+import com.unicauca.sga.testService.Aplication.Services.QuestionStructureValidatorRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
-import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
+import com.unicauca.sga.testService.Domain.Services.QuestionStructureValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public class ManageQuestionsService {
 
     private final IQuestionRepository questionRepository;
     private final QuestionImageService questionImageService;
-    private final QuestionStructureHandlerRegistry questionStructureHandlerRegistry;
+    private final QuestionStructureValidatorRegistry questionStructureValidatorRegistry;
     private final ITestRepository testRepository;
 
     @Transactional(readOnly = true)
@@ -41,7 +41,7 @@ public class ManageQuestionsService {
 
         questionImageService.syncQuestionImage(question);
 
-        QuestionStructureHandler questionStructureHandler = questionStructureHandlerRegistry.get(question.getQuestionType());
+        QuestionStructureValidator questionStructureHandler = questionStructureValidatorRegistry.get(question.getQuestionType());
         String validatedQuestionStructure = questionStructureHandler.validateStructure(question.getQuestionStructure());
 
         question.setQuestionStructure(validatedQuestionStructure);

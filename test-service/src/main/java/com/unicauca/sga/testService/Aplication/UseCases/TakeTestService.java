@@ -1,14 +1,14 @@
 package com.unicauca.sga.testService.Aplication.UseCases;
 
 import com.unicauca.sga.testService.Domain.Services.ICourseService;
-import com.unicauca.sga.testService.Aplication.Services.QuestionStructureHandlerRegistry;
+import com.unicauca.sga.testService.Aplication.Services.QuestionStructureGraderRegistry;
 import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Enums.AttemptNotAllowedCode;
 import com.unicauca.sga.testService.Domain.Exceptions.AttemptNotAllowedException;
 import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
-import com.unicauca.sga.testService.Domain.Services.QuestionStructureHandler;
+import com.unicauca.sga.testService.Domain.Services.QuestionStructureGrader;
 import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
 import com.unicauca.sga.testService.Domain.Models.Test;
@@ -37,7 +37,7 @@ public class TakeTestService {
     private final IQuestionRepository questionRepository;
     private final ITestAttemptRepository testAttemptRepository;
     private final IStudentTestConfigRepository studentTestConfigRepository;
-    private final QuestionStructureHandlerRegistry questionStructureHandlerRegistry;
+    private final QuestionStructureGraderRegistry questionStructureGraderRegistry;
     private final ICourseService courseService;
 
     @Transactional(readOnly = true)
@@ -169,7 +169,7 @@ public class TakeTestService {
 
     private List<Question> cleanQuestionStructures(List<Question> questions){
         questions.forEach(question -> {
-            QuestionStructureHandler strategy = questionStructureHandlerRegistry.get(question.getQuestionType());
+            QuestionStructureGrader strategy = questionStructureGraderRegistry.get(question.getQuestionType());
             question.setQuestionStructure(strategy.cleanStructure(question.getQuestionStructure()));
         });
         return questions;
@@ -206,7 +206,7 @@ public class TakeTestService {
             Long questionId = response.getQuestionId();
             Question question = questionMap.get(questionId);
 
-            QuestionStructureHandler strategy = questionStructureHandlerRegistry.get(question.getQuestionType());
+            QuestionStructureGrader strategy = questionStructureGraderRegistry.get(question.getQuestionType());
 
             if (strategy.requiresManualGrade()) {
                 requiresManualGrading = true;
