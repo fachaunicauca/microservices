@@ -238,11 +238,11 @@ INSERT INTO test.studentTestConfig (
 ) VALUES
       (
           'jtuquerrez@unicauca.edu.co',
-          1,
-          1,
+          2,
+          2,
           NOW(),
-          1,
-          'NOT_REQUESTED',
+          0.5,
+          'REQUESTED',
           2
       ),
       (
@@ -250,8 +250,8 @@ INSERT INTO test.studentTestConfig (
           2,
           2,
           NOW(),
-          0.8,
-          'NOT_REQUESTED',
+          0.4,
+          'REQUESTED',
           2
       ),
       (
@@ -259,7 +259,7 @@ INSERT INTO test.studentTestConfig (
           2,
           2,
           NOW(),
-          0.5,
+          1,
           'NOT_REQUESTED',
           2
       );
@@ -281,7 +281,7 @@ INSERT INTO test.studentTestConfig (
 ('estudiante5@unicauca.edu.co', 2, 2, NOW(), 0.7, 'NOT_REQUESTED', 2),
 
 -- 6 (reprobó y agotó intentos)
-('estudiante6@unicauca.edu.co', 2, 2, NOW(), 0.4, 'REQUESTED', 2),
+('estudiante6@unicauca.edu.co', 2, 2, NOW(), 0.4, 'NOT_REQUESTED', 2),
 
 -- 7 (perfecto primer intento)
 ('estudiante7@unicauca.edu.co', 2, 1, NOW(), 1.0, 'NOT_REQUESTED', 2),
@@ -290,13 +290,13 @@ INSERT INTO test.studentTestConfig (
 ('estudiante8@unicauca.edu.co', 2, 2, NOW(), 0.8, 'NOT_REQUESTED', 2),
 
 -- 9 (reprobó y agotó intentos)
-('estudiante9@unicauca.edu.co', 2, 2, NOW(), 0.5, 'REQUESTED', 2),
+('estudiante9@unicauca.edu.co', 2, 2, NOW(), 0.5, 'NOT_REQUESTED', 2),
 
 -- 10 (aprobado primer intento)
 ('estudiante10@unicauca.edu.co', 2, 1, NOW(), 0.95, 'NOT_REQUESTED', 2),
 
 -- 11 (reprobó y agotó intentos)
-('estudiante11@unicauca.edu.co', 2, 2, NOW(), 0.3, 'REQUESTED', 2),
+('estudiante11@unicauca.edu.co', 2, 2, NOW(), 0.3, 'NOT_REQUESTED', 2),
 
 -- 12 (aprobado primer intento)
 ('estudiante12@unicauca.edu.co', 2, 1, NOW(), 0.85, 'NOT_REQUESTED', 2),
@@ -305,7 +305,7 @@ INSERT INTO test.studentTestConfig (
 ('estudiante13@unicauca.edu.co', 2, 2, NOW(), 0.65, 'NOT_REQUESTED', 2),
 
 -- 14 (reprobó y agotó intentos)
-('estudiante14@unicauca.edu.co', 2, 2, NOW(), 0.2, 'REQUESTED', 2),
+('estudiante14@unicauca.edu.co', 2, 2, NOW(), 0.2, 'NOT_REQUESTED', 2),
 
 -- 15 (aprobado primer intento)
 ('estudiante15@unicauca.edu.co', 2, 1, NOW(), 0.98, 'NOT_REQUESTED', 2);

@@ -7,5 +7,5 @@ public class CourseDTOResponse {
     private Integer courseId;
     private String courseName;
     private String teacherEmail;
-    private String courseDescription;
+    private String courseGroup;
 }

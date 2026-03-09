@@ -15,6 +15,7 @@ public class CourseDTORequest {
     @NotBlank(message = "Debe indicar el correo del docente que dicta el curso")
     private String teacherEmail;
 
-    @Size(max = 5000, message = "La descripción del curso puede tener como máximo 5000 caracteres")
-    private String courseDescription;
+    @NotBlank(message = "Debe indicar el grupo del curso")
+    @Size(max = 10, message = "El grupo puede tener como máximo 10 caracteres")
+    private String courseGroup;
 }

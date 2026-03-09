@@ -1,19 +1,19 @@
 INSERT INTO course.course (
     courseName,
     teacherEmail,
-    courseDescription
+    courseGroup
 ) VALUES (
     'Curso Reactivos Quimicos',
     'admin@unicauca.edu.co',
-'Curso de reactivos quimicos'
+'A'
 ), (
     'Curso Sustancias Inflamables',
     'carlosr@unicauca.edu.co',
-    'Curso de sustancias inflamables'
+    'B'
 ), (
     'Curso Manejo de Elementos',
     'admin@unicauca.edu.co',
-    'Curso de manejo de elementos de laboratorio'
+    'A'
 );
 
 INSERT INTO course.student (

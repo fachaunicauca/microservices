@@ -17,6 +17,5 @@ public class CourseEntity {
     @Column(nullable = false)
     private String teacherEmail;
 
-    @Column(length = 5000)
-    private String courseDescription;
+    private String courseGroup;
 }
