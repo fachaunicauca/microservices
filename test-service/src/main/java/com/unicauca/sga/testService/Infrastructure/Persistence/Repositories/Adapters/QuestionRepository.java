@@ -53,7 +53,7 @@ public class QuestionRepository implements IQuestionRepository {
 
     @Override
     public Page<Question> getTestQuestionsPaged(int id, int page, int size) {
-        return questionJpaRepository.findByTest_TestIdOrderByQuestionId(id, PageRequest.of(page, size)).map(questionMapper::toModelWithoutTest);
+        return questionJpaRepository.findByTest_TestIdOrderByQuestionIdDesc(id, PageRequest.of(page, size)).map(questionMapper::toModelWithoutTest);
     }
 
     @Override

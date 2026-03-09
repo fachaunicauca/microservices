@@ -21,22 +21,22 @@ public class ManageTestService {
     private final IStudentTestConfigRepository studentTestConfigRepository;
 
     @Transactional(readOnly = true)
-    public Iterable<Test> getAllTests(int page, int size) {
-        Iterable<Test> testList = testRepository.getAllTests(page, size);
+    public Iterable<Test> getAllTests(String filterKey, String filterValue, int page, int size) {
+        Iterable<Test> testList = testRepository.getAllTestsFiltered(filterKey, filterValue, page, size);
 
         if (!testList.iterator().hasNext()) {
-            throw new NotFoundException("No hay evaluaciones especificas almacenadas");
+            throw new NotFoundException("No se encontraron evaluaciones");
         }
 
         return testList;
     }
 
     @Transactional(readOnly = true)
-    public Iterable<Test> getAllTeacherTests(String teacherEmail, int page, int size) {
-        Iterable<Test> testList = testRepository.getTeacherTests(teacherEmail, page, size);
+    public Iterable<Test> getAllTeacherTests(String filterKey, String filterValue, String teacherEmail, int page, int size) {
+        Iterable<Test> testList = testRepository.getTeacherTestsFiltered(filterKey, filterValue, teacherEmail, page, size);
 
         if (!testList.iterator().hasNext()) {
-            throw new NotFoundException("No ha creado ninguna evaluación.");
+            throw new NotFoundException("No se encontraron evaluaciones");
         }
 
         return testList;

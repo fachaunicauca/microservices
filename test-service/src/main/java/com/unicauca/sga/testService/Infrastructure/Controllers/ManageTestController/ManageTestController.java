@@ -54,8 +54,10 @@ public class ManageTestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
-    public Page<TestDTOResponse> getAllTests(Pageable pageable){
-        return this.getTests(pageable);
+    public Page<TestDTOResponse> getAllTests(@RequestParam(required = false) String filterKey,
+                                             @RequestParam(required = false) String filterValue,
+                                             Pageable pageable){
+        return this.getTests(filterKey, filterValue, pageable);
     }
 
     @Operation(
@@ -91,14 +93,16 @@ public class ManageTestController {
         manageTestService.deleteTestById(id);
     }
 
-    private Page<TestDTOResponse> getTests(Pageable pageable){
+    private Page<TestDTOResponse> getTests(String filterKey, String filterValue, Pageable pageable){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            return ((Page<Test>) manageTestService.getAllTests(pageable.getPageNumber(),
+            return ((Page<Test>) manageTestService.getAllTests(filterKey,
+                                                                filterValue,
+                                                                pageable.getPageNumber(),
                                                                 pageable.getPageSize())
             ).map(testDTOMapper::toDTO);
         }
@@ -106,7 +110,9 @@ public class ManageTestController {
         Jwt jwt = (Jwt) auth.getPrincipal();
         String email = jwt.getClaimAsString("email");
 
-        return ((Page<Test>) manageTestService.getAllTeacherTests(email,
+        return ((Page<Test>) manageTestService.getAllTeacherTests(filterKey,
+                                                                    filterValue,
+                                                                    email,
                                                                     pageable.getPageNumber(),
                                                                     pageable.getPageSize())
         ).map(testDTOMapper::toDTO);

@@ -5,12 +5,15 @@ import com.unicauca.sga.testService.Domain.Exceptions.AlreadyExistsException;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestMapper;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Specifications.TestSpecification;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestJpaRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -24,13 +27,28 @@ public class TestRepository implements ITestRepository {
     private final TestMapper testMapper;
 
     @Override
-    public Page<Test> getAllTests(int page, int size) {
-        return testJpaRepository.findByTestIdNot(1, PageRequest.of(page,size)).map(testMapper::toModel);
+    public Page<Test> getAllTestsFiltered(String filterKey, String filterValue, int page, int size) {
+        Specification<TestEntity> spec = Specification
+                .where(TestSpecification.excludeDefault())
+                .and(TestSpecification.withFilter(filterKey,filterValue));
+
+        return testJpaRepository.findAll(spec, PageRequest.of(page,
+                                                            size,
+                                                            Sort.by(Sort.Direction.DESC, "testId"))
+        ).map(testMapper::toModel);
     }
 
     @Override
-    public Page<Test> getTeacherTests(String teacherEmail, int page, int size) {
-        return testJpaRepository.findByTeacherEmail(teacherEmail, PageRequest.of(page,size)).map(testMapper::toModel);
+    public Page<Test> getTeacherTestsFiltered(String filterKey, String filterValue, String teacherEmail, int page, int size) {
+        Specification<TestEntity> spec = Specification
+                .where(TestSpecification.excludeDefault())
+                .and(TestSpecification.byTeacher(teacherEmail))
+                .and(TestSpecification.withFilter(filterKey, filterValue));
+
+        return testJpaRepository.findAll(spec, PageRequest.of(page,
+                                                            size,
+                                                            Sort.by(Sort.Direction.DESC, "testId"))
+        ).map(testMapper::toModel);
     }
 
     @Override
