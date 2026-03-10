@@ -16,8 +16,10 @@ public class ManageCoursesService {
     private final IStudentEnrollmentRepository studentEnrollmentRepository;
 
     @Transactional(readOnly = true)
-    public Iterable<Course> getAllCoursesPaged(int page, int size) {
-        Iterable<Course> paged = courseRepository.getAllCoursesPaged(page, size);
+    public Iterable<Course> getAllCoursesPaged(String filterKey,
+                                               String filterValue,
+                                               int page, int size) {
+        Iterable<Course> paged = courseRepository.getAllCoursesPagedAndFiltered(filterKey, filterValue, page, size);
 
         if(!paged.iterator().hasNext()) {
             throw new NotFoundException("No hay cursos almacenados");
@@ -27,8 +29,11 @@ public class ManageCoursesService {
     }
 
     @Transactional(readOnly = true)
-    public Iterable<Course> getTeacherCoursesPaged(String teacherEmail, int page, int size) {
-        Iterable<Course> paged = courseRepository.getTeacherCoursesPaged(teacherEmail, page, size);
+    public Iterable<Course> getTeacherCoursesPaged(String filterKey,
+                                                   String filterValue,
+                                                   String teacherEmail,
+                                                   int page, int size) {
+        Iterable<Course> paged = courseRepository.getTeacherCoursesPagedAndFiltered(filterKey, filterValue, teacherEmail, page, size);
 
         if(!paged.iterator().hasNext()) {
             throw new NotFoundException("No ha creado ningún curso");

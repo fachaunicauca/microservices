@@ -40,8 +40,10 @@ public class ManageCoursesController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
-    public Page<CourseDTOResponse> getAllCourses(Pageable pageable) {
-        return this.getCourses(pageable);
+    public Page<CourseDTOResponse> getAllCourses(@RequestParam(required = false) String filterKey,
+                                                 @RequestParam(required = false) String filterValue,
+                                                 Pageable pageable) {
+        return this.getCourses(filterKey, filterValue, pageable);
     }
 
     @Operation(
@@ -90,7 +92,7 @@ public class ManageCoursesController {
         manageCoursesService.deleteById(id);
     }
 
-    private Page<CourseDTOResponse> getCourses(Pageable pageable) {
+    private Page<CourseDTOResponse> getCourses(String filterKey, String filterValue, Pageable pageable) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         boolean isAdmin = auth.getAuthorities().stream()
@@ -98,6 +100,8 @@ public class ManageCoursesController {
 
         if (isAdmin) {
             return ((Page<Course>) manageCoursesService.getAllCoursesPaged(
+                    filterKey,
+                    filterValue,
                     pageable.getPageNumber(),
                     pageable.getPageSize())
             ).map(courseDTOMapper::toDTO);
@@ -107,6 +111,8 @@ public class ManageCoursesController {
         String email = jwt.getClaimAsString("email");
 
         return ((Page<Course>) manageCoursesService.getTeacherCoursesPaged(
+                filterKey,
+                filterValue,
                 email,
                 pageable.getPageNumber(),
                 pageable.getPageSize())
