@@ -42,8 +42,12 @@ public class TakeTestController {
     @GetMapping("/tests")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT')")
-    public Page<TestInfoDTOResponse> getActiveTests(Pageable pageable) {
-        return ((Page<Test>) takeTestService.getAllActiveTests(pageable.getPageNumber(),
+    public Page<TestInfoDTOResponse> getActiveTests(@RequestParam(required = false) String filterKey,
+                                                    @RequestParam(required = false) String filterValue,
+                                                    Pageable pageable) {
+        return ((Page<Test>) takeTestService.getAllActiveTests(filterKey,
+                                                                filterValue,
+                                                                pageable.getPageNumber(),
                                                                 pageable.getPageSize())
         ).map(testInfoDTOResponseMapper::toDTO);
     }

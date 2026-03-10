@@ -55,8 +55,10 @@ public class TakeTestService {
     }
 
     @Transactional(readOnly = true)
-    public Iterable<Test> getAllActiveTests(int page, int size){
-        Iterable<Test> activeTests = testRepository.getAllActiveTests(page, size);
+    public Iterable<Test> getAllActiveTests(String filterKey,
+                                            String filterValue,
+                                            int page, int size){
+        Iterable<Test> activeTests = testRepository.getAllActiveTestsFiltered(filterKey, filterValue, page, size);
 
         if(!activeTests.iterator().hasNext()){
             throw new NotFoundException("No se encontraron evaluaciones especificas activas");

@@ -309,3 +309,69 @@ INSERT INTO test.studentTestConfig (
 
 -- 15 (aprobado primer intento)
 ('estudiante15@unicauca.edu.co', 2, 1, NOW(), 0.98, 'NOT_REQUESTED', 2);
+
+INSERT INTO test.test (
+    teacherEmail,
+    testTitle,
+    testDescription,
+    testDurationMinutes,
+    testNumberOfQuestions,
+    testAttemptLimit,
+    testState,
+    isPeriodic,
+    courseId
+) VALUES (
+     'admin@unicauca.edu.co',
+     'Evaluación Específica Ejemplo - Seguridad en Laboratorio de Química 2',
+     'Evaluación específica para estudiantes matriculados en el curso de laboratorio de química, enfocada en protocolos avanzados de seguridad.',
+     15,
+     10,
+     2,
+     1,
+     false,
+     0
+ ),
+ (
+     'admin@unicauca.edu.co',
+     'Evaluación Específica Ejemplo - Seguridad en Laboratorio de Química 3',
+     'Evaluación específica para estudiantes matriculados en el curso de laboratorio de química, enfocada en protocolos avanzados de seguridad.',
+     15,
+     10,
+     2,
+     1,
+     false,
+     0
+ ),(
+     'admin@unicauca.edu.co',
+     'Test Específica Ejemplo - Seguridad en Laboratorio de Química 2',
+     'Evaluación específica para estudiantes matriculados en el curso de laboratorio de química, enfocada en protocolos avanzados de seguridad.',
+     15,
+     10,
+     2,
+     1,
+     false,
+     0
+ ),
+ (
+     'admin@unicauca.edu.co',
+     'Test Específica Ejemplo - Seguridad en Laboratorio de Química 3',
+     'Evaluación específica para estudiantes matriculados en el curso de laboratorio de química, enfocada en protocolos avanzados de seguridad.',
+     15,
+     10,
+     2,
+     1,
+     false,
+     0
+ ),
+ (
+     'docente@unicauca.edu.co',
+     'Test Específica Ejemplo - Seguridad en Laboratorio de Química 4',
+     'Evaluación específica para estudiantes matriculados en el curso de laboratorio de química, enfocada en protocolos avanzados de seguridad.',
+     15,
+     10,
+     2,
+     1,
+     false,
+     0
+ );
+

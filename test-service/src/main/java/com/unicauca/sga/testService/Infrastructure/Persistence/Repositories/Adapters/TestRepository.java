@@ -27,9 +27,11 @@ public class TestRepository implements ITestRepository {
     private final TestMapper testMapper;
 
     @Override
-    public Page<Test> getAllTestsFiltered(String filterKey, String filterValue, int page, int size) {
+    public Page<Test> getAllTestsFiltered(String filterKey,
+                                          String filterValue,
+                                          int page, int size) {
         Specification<TestEntity> spec = Specification
-                .where(TestSpecification.excludeDefault())
+                .where(TestSpecification.excludeGeneral())
                 .and(TestSpecification.withFilter(filterKey,filterValue));
 
         return testJpaRepository.findAll(spec, PageRequest.of(page,
@@ -39,9 +41,12 @@ public class TestRepository implements ITestRepository {
     }
 
     @Override
-    public Page<Test> getTeacherTestsFiltered(String filterKey, String filterValue, String teacherEmail, int page, int size) {
+    public Page<Test> getTeacherTestsFiltered(String filterKey,
+                                              String filterValue,
+                                              String teacherEmail,
+                                              int page, int size) {
         Specification<TestEntity> spec = Specification
-                .where(TestSpecification.excludeDefault())
+                .where(TestSpecification.excludeGeneral())
                 .and(TestSpecification.byTeacher(teacherEmail))
                 .and(TestSpecification.withFilter(filterKey, filterValue));
 
@@ -52,8 +57,18 @@ public class TestRepository implements ITestRepository {
     }
 
     @Override
-    public Page<Test> getAllActiveTests(int page, int size) {
-        return testJpaRepository.findByTestStateAndTestIdNot(TestConstants.ACTIVE, 1,PageRequest.of(page,size)).map(testMapper::toModel);
+    public Page<Test> getAllActiveTestsFiltered(String filterKey,
+                                                String filterValue,
+                                                int page, int size) {
+        Specification<TestEntity> spec = Specification
+                .where(TestSpecification.excludeGeneral())
+                .and(TestSpecification.withFilter(filterKey, filterValue))
+                .and(TestSpecification.isActive());
+
+        return testJpaRepository.findAll(spec, PageRequest.of(page,
+                                                            size,
+                                                            Sort.by(Sort.Direction.DESC, "testId"))
+        ).map(testMapper::toModel);
     }
 
     @Override

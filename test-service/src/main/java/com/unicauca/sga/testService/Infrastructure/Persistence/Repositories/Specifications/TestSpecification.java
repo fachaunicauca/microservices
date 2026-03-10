@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Specifications;
 
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestEntity;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -41,7 +42,7 @@ public class TestSpecification {
         };
     }
 
-    public static Specification<TestEntity> excludeDefault() {
+    public static Specification<TestEntity> excludeGeneral() {
         return (root, query, cb) -> cb.notEqual(root.get("testId"), 1);
     }
 
@@ -50,5 +51,9 @@ public class TestSpecification {
             if (teacherEmail == null || teacherEmail.isBlank()) return null;
             return cb.equal(root.get("teacherEmail"), teacherEmail);
         };
+    }
+
+    public static Specification<TestEntity> isActive() {
+        return (root, query, cb) -> cb.equal(root.get("testState"), TestConstants.ACTIVE);
     }
 }
