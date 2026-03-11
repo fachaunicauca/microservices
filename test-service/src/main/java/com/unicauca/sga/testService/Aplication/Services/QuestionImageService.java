@@ -14,11 +14,6 @@ public class QuestionImageService {
     private final IQuestionRepository questionRepository;
 
     public void syncQuestionImage(Question question){
-        // Si no hay conexión al repositorio de almacenamiento de archivos se rompe el flujo
-        if(!filesRepository.testConnection()){
-            return;
-        }
-
         // Caso 1: se recibió una imagen, subirla al almacenamiento de archivos y, en dado caso, eliminar la anterior
         byte[] image = question.getQuestionImage();
 
@@ -50,10 +45,6 @@ public class QuestionImageService {
 
     public void cleanupQuestionImage(Question question){
         if(question.getQuestionImageId() == null){
-            return;
-        }
-
-        if(!filesRepository.testConnection()){
             return;
         }
 

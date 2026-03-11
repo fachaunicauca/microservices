@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ITestGuidesRepository {
     Optional<TestGuide> getTestGuide(String id);
-    List<TestGuide> getAllTestsGuides();
+    Iterable<TestGuide> getAllTestsGuides(int page, int size);
     List<TestGuide> getTeacherTestsGuides(String teacherEmail);
     TestGuide save(TestGuide testGuide);
     void deleteById(String id);

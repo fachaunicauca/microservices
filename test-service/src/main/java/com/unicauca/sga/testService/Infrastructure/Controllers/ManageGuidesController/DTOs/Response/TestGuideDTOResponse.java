@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class TestGuideDTOResponse {
     private String testGuideId;
     private String testGuideUrl;
+    private String teacherEmail;
 }

@@ -29,23 +29,21 @@ public class ManageGuidesService {
             throw new AlreadyExistsException("La guia con nombre "+ testGuide.getTestGuideId() +" ya existe");
         }
 
-        String url = "";
-        if(filesRepository.testConnection()){
-            url = filesRepository.uploadFile(testGuide.getTestGuideArchive(), formattedId);
-        }
+        String url =  filesRepository.uploadFile(testGuide.getTestGuideArchive(), formattedId);
 
         TestGuide newTestGuide = new TestGuide();
         newTestGuide.setTestGuideId(formattedId);
         newTestGuide.setTestGuideUrl(url);
+        newTestGuide.setTeacherEmail(testGuide.getTeacherEmail());
 
         return testGuidesRepository.save(newTestGuide);
     }
 
     @Transactional(readOnly = true)
-    public List<TestGuide> getAllTestGuides() {
-        List<TestGuide> testGuideList = testGuidesRepository.getAllTestsGuides();
+    public Iterable<TestGuide> getAllTestGuides(int page, int size) {
+        Iterable<TestGuide> testGuideList = testGuidesRepository.getAllTestsGuides(page, size);
 
-        if(testGuideList.isEmpty()){
+        if(!testGuideList.iterator().hasNext()){
             throw new NotFoundException("No se encontró ninguna guia.");
         }
 

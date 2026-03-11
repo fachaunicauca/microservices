@@ -5,6 +5,8 @@ import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestGuideMapper;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestGuidesJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class TestGuidesRepository implements ITestGuidesRepository {
     }
 
     @Override
-    public List<TestGuide> getAllTestsGuides() {
-        return testGuidesJpaRepository.findAll().stream().map(testGuideMapper::toModel).collect(Collectors.toList());
+    public Page<TestGuide> getAllTestsGuides(int page, int size) {
+        return testGuidesJpaRepository.findAll(PageRequest.of(page,size)).map(testGuideMapper::toModel);
     }
 
     @Override

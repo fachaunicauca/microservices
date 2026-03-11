@@ -18,7 +18,6 @@ public class FilesRepository implements IFilesRepository {
     private final Cloudinary cloudinary;
     private final String folder = "test-service/";
 
-    @Override
     public boolean testConnection() {
         try {
             ApiResponse result = cloudinary.api().ping(ObjectUtils.emptyMap());
@@ -35,6 +34,8 @@ public class FilesRepository implements IFilesRepository {
     public String uploadFile(byte[] file, String fileId) {
         Map<?, ?> result;
         try {
+            if(!testConnection()) return "";
+
             result = cloudinary.uploader().upload(
                     file,
                     ObjectUtils.asMap(
@@ -53,8 +54,10 @@ public class FilesRepository implements IFilesRepository {
         return result.get("secure_url").toString();
     }
 
+    @Override
     public boolean deleteFile(String fileId) {
         try {
+            if(!testConnection()) return false;
             Map<?, ?> result = cloudinary.uploader().destroy(folder + fileId, ObjectUtils.asMap());
             String deleteResult = (String) result.get("result");
             return deleteResult.equals("ok");

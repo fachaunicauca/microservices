@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,19 +34,27 @@ public class ManageGuidesController {
                 description = "Obtiene todas las guias de capacitación registradas en el sistema.",
                 responses = {
                     @ApiResponse(responseCode = "200", description = "Guias obtenidas con éxito."),
-                    @ApiResponse(responseCode = "404", description = "No se encontró ninguna guia.")
+                    @ApiResponse(responseCode = "404", description = "No se encontró ninguna guia."),
+                    @ApiResponse(responseCode = "409", description = "El id de la guia ya esta en uso.")
                 })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT','ROLE_TEACHER','ROLE_LABORATORY_WORKER')")
-    public List<TestGuide> getGuides() {
-        return manageGuidesService.getAllTestGuides();
+    public Page<TestGuideDTOResponse> getGuides(@RequestParam(required = false) String filterKey,
+                                                @RequestParam(required = false) String filterValue,
+                                                Pageable pageable) {
+
+        return ((Page<TestGuide>) manageGuidesService.getAllTestGuides(
+                                                        pageable.getPageNumber(),
+                                                        pageable.getPageSize())
+        ).map(testGuideDTOMapper::toDTO);
     }
 
     @Operation(summary = "Subir guias",
             description = "Permite que docentes y administrador suban guias al servicio de cloudinary.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "La guia se guardo exitosamente."),
+                    @ApiResponse(responseCode = "400", description = "Se ha violado alguna(s) de las validaciones."),
                     @ApiResponse(responseCode = "500", description = "Ocurrió un error interno al subir el archivo a cloudinary.")
             })
     @ResponseStatus(HttpStatus.OK)
