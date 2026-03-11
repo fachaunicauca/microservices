@@ -3,15 +3,18 @@ package com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Ada
 import com.unicauca.sga.testService.Domain.Models.TestGuide;
 import com.unicauca.sga.testService.Domain.Repositories.ITestGuidesRepository;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Mappers.TestGuideMapper;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Specifications.TestGuideSpecifications;
 import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.TestGuidesJpaRepository;
+import com.unicauca.sga.testService.Infrastructure.Persistence.Tables.TestGuideEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,13 +29,25 @@ public class TestGuidesRepository implements ITestGuidesRepository {
     }
 
     @Override
-    public Page<TestGuide> getAllTestsGuides(int page, int size) {
-        return testGuidesJpaRepository.findAll(PageRequest.of(page,size)).map(testGuideMapper::toModel);
+    public Page<TestGuide> getAllTestsGuidesFiltered(String filterKey,
+                                                     String filterValue,
+                                                     int page, int size) {
+        Specification<TestGuideEntity> spec = Specification
+                .where(TestGuideSpecifications.withFilter(filterKey, filterValue));
+
+        return testGuidesJpaRepository.findAll(spec, PageRequest.of(page,size)).map(testGuideMapper::toModel);
     }
 
     @Override
-    public List<TestGuide> getTeacherTestsGuides(String teacherEmail) {
-        return testGuidesJpaRepository.findByTeacherEmail(teacherEmail).stream().map(testGuideMapper::toModel).toList();
+    public Page<TestGuide> getTeacherTestsGuidesFiltered(String filterKey,
+                                                         String filterValue,
+                                                         String teacherEmail,
+                                                         int page, int size) {
+        Specification<TestGuideEntity> spec = Specification
+                .where(TestGuideSpecifications.withFilter(filterKey, filterValue))
+                .and(TestGuideSpecifications.byTeacher(teacherEmail));
+
+        return testGuidesJpaRepository.findAll(spec, PageRequest.of(page,size)).map(testGuideMapper::toModel);
     }
 
     @Override

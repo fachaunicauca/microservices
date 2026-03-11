@@ -26,7 +26,7 @@ public class ManageGuidesService {
         String formattedId = testGuide.getTestGuideId().replace(" ", "_");
 
         if(testGuidesRepository.isPresent(formattedId)){
-            throw new AlreadyExistsException("La guia con nombre "+ testGuide.getTestGuideId() +" ya existe");
+            throw new AlreadyExistsException("Ya existe una guía con el nombre '" + testGuide.getTestGuideId() + "'.");
         }
 
         String url =  filesRepository.uploadFile(testGuide.getTestGuideArchive(), formattedId);
@@ -40,11 +40,11 @@ public class ManageGuidesService {
     }
 
     @Transactional(readOnly = true)
-    public Iterable<TestGuide> getAllTestGuides(int page, int size) {
-        Iterable<TestGuide> testGuideList = testGuidesRepository.getAllTestsGuides(page, size);
+    public Iterable<TestGuide> getAllTestGuides(String filterKey, String filterValue, int page, int size) {
+        Iterable<TestGuide> testGuideList = testGuidesRepository.getAllTestsGuidesFiltered(filterKey, filterValue, page, size);
 
         if(!testGuideList.iterator().hasNext()){
-            throw new NotFoundException("No se encontró ninguna guia.");
+            throw new NotFoundException("No se encontraron guias de apoyo");
         }
 
         return testGuideList;

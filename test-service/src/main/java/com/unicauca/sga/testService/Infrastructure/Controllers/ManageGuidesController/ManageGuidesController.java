@@ -34,8 +34,7 @@ public class ManageGuidesController {
                 description = "Obtiene todas las guias de capacitación registradas en el sistema.",
                 responses = {
                     @ApiResponse(responseCode = "200", description = "Guias obtenidas con éxito."),
-                    @ApiResponse(responseCode = "404", description = "No se encontró ninguna guia."),
-                    @ApiResponse(responseCode = "409", description = "El id de la guia ya esta en uso.")
+                    @ApiResponse(responseCode = "404", description = "No se encontró ninguna guia.")
                 })
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -45,6 +44,8 @@ public class ManageGuidesController {
                                                 Pageable pageable) {
 
         return ((Page<TestGuide>) manageGuidesService.getAllTestGuides(
+                                                        filterKey,
+                                                        filterValue,
                                                         pageable.getPageNumber(),
                                                         pageable.getPageSize())
         ).map(testGuideDTOMapper::toDTO);
@@ -55,6 +56,7 @@ public class ManageGuidesController {
             responses = {
                     @ApiResponse(responseCode = "200", description = "La guia se guardo exitosamente."),
                     @ApiResponse(responseCode = "400", description = "Se ha violado alguna(s) de las validaciones."),
+                    @ApiResponse(responseCode = "409", description = "El id de la guia ya esta en uso."),
                     @ApiResponse(responseCode = "500", description = "Ocurrió un error interno al subir el archivo a cloudinary.")
             })
     @ResponseStatus(HttpStatus.OK)

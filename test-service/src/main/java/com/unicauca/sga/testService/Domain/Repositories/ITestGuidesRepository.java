@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface ITestGuidesRepository {
     Optional<TestGuide> getTestGuide(String id);
-    Iterable<TestGuide> getAllTestsGuides(int page, int size);
-    List<TestGuide> getTeacherTestsGuides(String teacherEmail);
+    Iterable<TestGuide> getAllTestsGuidesFiltered(String filterKey, String filterValue, int page, int size);
+    Iterable<TestGuide> getTeacherTestsGuidesFiltered(String filterKey, String filterValue, String teacherEmail, int page, int size);
     TestGuide save(TestGuide testGuide);
     void deleteById(String id);
     boolean isPresent(String id);
