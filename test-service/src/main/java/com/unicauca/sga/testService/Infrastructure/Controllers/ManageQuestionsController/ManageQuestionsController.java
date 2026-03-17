@@ -2,6 +2,7 @@ package com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsC
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageQuestionsService;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
+import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request.ImportQuestionsDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request.QuestionDTORequest;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Response.QuestionDTOResponse;
 import com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.Mappers.QuestionDTOMapper;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
@@ -87,5 +89,25 @@ public class ManageQuestionsController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     public void deleteTestQuestion(@PathVariable long id){
         manageQuestionsService.deleteQuestionById(id);
+    }
+
+    @Operation(
+            summary = "Importar preguntas",
+            description = "Metodo para importar las preguntas de un archivo moodle xml",
+            responses = {
+                @ApiResponse(responseCode = "200", description = "Preguntas importadas exitosamente"),
+                @ApiResponse(responseCode = "400", description = "El formato del archivo es invalido"),
+                @ApiResponse(responseCode = "404", description = "No se encontro la evaluacion")
+            }
+    )
+    @PostMapping(path = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    public void importQuestions(@ModelAttribute @Valid ImportQuestionsDTORequest dto){
+        try {
+            manageQuestionsService.importQuestions(dto.getFile().getInputStream(), dto.getSelectedIndexes(), dto.getTestId());
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ocurrió un error al procesar el archivo importado");
+        }
     }
 }

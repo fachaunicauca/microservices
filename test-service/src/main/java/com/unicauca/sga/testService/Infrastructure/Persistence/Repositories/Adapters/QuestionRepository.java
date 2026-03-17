@@ -28,6 +28,11 @@ public class QuestionRepository implements IQuestionRepository {
     }
 
     @Override
+    public void saveAll(Collection<Question> questions) {
+        questionJpaRepository.saveAll(questions.stream().map(questionMapper::toInfra).toList());
+    }
+
+    @Override
     public void deleteById(long id) {
         questionJpaRepository.deleteById(id);
     }

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface IQuestionRepository {
     Question save(Question question);
+    void saveAll(Collection<Question> questions);
     void deleteById(long id);
     Optional<Question> getById(long id);
     List<Question> getRandomAndLimitedTestQuestions(int testId, int numberOfQuestions);

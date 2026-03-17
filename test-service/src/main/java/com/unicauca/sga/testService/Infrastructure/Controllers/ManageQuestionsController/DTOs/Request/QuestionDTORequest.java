@@ -1,5 +1,6 @@
 package com.unicauca.sga.testService.Infrastructure.Controllers.ManageQuestionsController.DTOs.Request;
 
+import com.unicauca.sga.testService.Infrastructure.Controllers.Validations.AllowedFileTypes;
 import com.unicauca.sga.testService.Infrastructure.Controllers.Validations.MaxFileSize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ public class QuestionDTORequest {
     private String questionTitle;
 
     @MaxFileSize(value = 2*1024*1024, message = "La imagen no puede superar los 2 MB")
+    @AllowedFileTypes(types = {"image/jpeg", "image/png", "image/jpg"}, message = "El archivo debe ser una imagen (JPG, JPEG o PNG)")
     private MultipartFile questionImage;
 
     private String questionImageId;

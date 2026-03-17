@@ -8,10 +8,15 @@ import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
 import com.unicauca.sga.testService.Domain.Repositories.ITestRepository;
+import com.unicauca.sga.testService.Domain.Services.IMoodleQuestionParser;
 import com.unicauca.sga.testService.Domain.Services.QuestionStructureValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,7 @@ public class ManageQuestionsService {
     private final QuestionImageService questionImageService;
     private final QuestionStructureValidatorRegistry questionStructureValidatorRegistry;
     private final ITestRepository testRepository;
+    private final IMoodleQuestionParser moodleQuestionParser;
 
     @Transactional(readOnly = true)
     public Iterable<Question> getTestQuestionsPaged(int testId, int page, int size) {
@@ -73,5 +79,13 @@ public class ManageQuestionsService {
         }
     }
 
+    public void importQuestions (InputStream fileStream, List<Integer> selectedIndexes, int testId){
+        if(!testRepository.isPresent(testId)){
+            throw new NotFoundException("No se encontró la evaluación a la que se quieren agregar las preguntas");
+        }
 
+        List<Question> importedQuestions = moodleQuestionParser.parseMoodleQuestions(fileStream, selectedIndexes, testId);
+
+        questionRepository.saveAll(importedQuestions);
+    }
 }

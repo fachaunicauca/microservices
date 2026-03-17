@@ -68,7 +68,7 @@ public class ManageGuidesController {
         try{
             testGuide.setTestGuideArchive(testGuideDTORequest.getTestGuideArchive().getBytes());
         }catch(IOException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error al leer el archivo de imagen");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error al leer el archivo");
         }
 
         return testGuideDTOMapper.toDTO(manageGuidesService.saveTestGuide(testGuide));
