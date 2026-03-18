@@ -10,17 +10,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.core.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -109,5 +112,29 @@ public class ManageQuestionsController {
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ocurrió un error al procesar el archivo importado");
         }
+    }
+
+    @Operation(
+            summary = "Exportar preguntas",
+            description = "Método para exportar las preguntas de una evaluación",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Preguntas exportadas exitosamente"),
+                    @ApiResponse(responseCode = "400", description = "No se indicaron las preguntas a exportar")
+            }
+    )
+    @PostMapping("/export")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    public ResponseEntity<byte[]> exportQuestions(@RequestBody List<Long> selectedIds){
+        if(selectedIds == null || selectedIds.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe indicar las preguntas a exportar");
+        }
+
+        byte[] xml = manageQuestionsService.exportQuestions(selectedIds);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"preguntas-exportadas.xml\"")
+                .contentType(MediaType.APPLICATION_XML)
+                .body(xml);
     }
 }

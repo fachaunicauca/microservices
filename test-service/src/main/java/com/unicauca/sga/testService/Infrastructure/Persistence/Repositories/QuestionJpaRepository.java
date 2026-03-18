@@ -21,5 +21,5 @@ public interface QuestionJpaRepository extends JpaRepository<QuestionEntity, Lon
 
     long countByTest_TestId(int testTestId);
 
-    Page<QuestionEntity> findByTest_TestIdOrderByQuestionIdDesc(int id, Pageable pageable);
+    Page<QuestionEntity> findByTest_TestId(int id, Pageable pageable);
 }

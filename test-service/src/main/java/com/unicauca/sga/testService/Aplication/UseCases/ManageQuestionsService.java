@@ -88,4 +88,10 @@ public class ManageQuestionsService {
 
         questionRepository.saveAll(importedQuestions);
     }
+
+    public byte[] exportQuestions(List<Long> selectedIds){
+        List<Question> questionList = questionRepository.getByIds(selectedIds);
+
+        return moodleQuestionParser.parseDomainQuestions(questionList);
+    }
 }

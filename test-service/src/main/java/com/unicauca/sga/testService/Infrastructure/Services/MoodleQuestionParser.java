@@ -4,6 +4,7 @@ import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Models.Test;
 import com.unicauca.sga.testService.Domain.Services.IMoodleQuestionParser;
 import com.unicauca.sga.testService.Infrastructure.Services.MoodleQuestionStructureParsers.MoodleQStructureParser;
+import com.unicauca.sga.testService.Infrastructure.Utils.XMLUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +28,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MoodleQuestionParser implements IMoodleQuestionParser {
 
-    private final Map<String, String> typesTranslator = Map.of(
+    private final Map<String, String> moodleToDomainTypeMap = Map.of(
             "multichoice", "MULTIPLE_CHOICE",
             "truefalse", "MULTIPLE_CHOICE"
     );
+
+    private static final Map<String, String> domainToMoodleTypeMap  = Map.of(
+            "MULTIPLE_CHOICE", "multichoice"
+    );
+
     private final MoodleQStructureParserRegistry parsersRegistry;
 
     public List<Question> parseMoodleQuestions(InputStream xmlStream, List<Integer> selectedIndexes, int testId) {
@@ -68,9 +75,9 @@ public class MoodleQuestionParser implements IMoodleQuestionParser {
                 System.out.println("Procesando Pregunta " + index);
                 Question question = new Question();
 
-                question.setQuestionTitle(getTextContent(questionEl, "name"));
-                question.setQuestionText(getTextContent(questionEl, "questiontext"));
-                question.setQuestionType(typesTranslator.get(type));
+                question.setQuestionTitle(XMLUtils.getTextContent(questionEl, "name"));
+                question.setQuestionText(XMLUtils.getTextContent(questionEl, "questiontext"));
+                question.setQuestionType(moodleToDomainTypeMap.get(type));
                 question.setTest(test);
 
                 // Parsear estructura de pregunta
@@ -93,14 +100,47 @@ public class MoodleQuestionParser implements IMoodleQuestionParser {
         return questions;
     }
 
-    // Helper para extraer el texto de un tag hijo
-    private String getTextContent(Element parent, String tagName) {
-        NodeList nodes = parent.getElementsByTagName(tagName);
-        if (nodes.getLength() == 0) return "";
+    @Override
+    public byte[] parseDomainQuestions(List<Question> questionList) {
+        StringBuilder xml = new StringBuilder();
+        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        xml.append("<quiz>\n");
 
-        String raw = nodes.item(0).getTextContent();
+        // Agregar categoria por defecto
+        xml.append("\t<question type=\"category\">\n")
+                .append("\t\t<category><text>$course$/Categoria por defecto</text></category>\n")
+                .append("\t</question>\n\n");
 
-        // Limpiar etiquetas HTML que Moodle puede incluir en el texto
-        return raw.replaceAll("<[^>]+>", "").trim();
+        for (Question q : questionList) {
+            String moodleType = domainToMoodleTypeMap.get(q.getQuestionType());
+
+            // Parsear estructura de pregunta
+            if (!parsersRegistry.hasSupport(moodleType)) continue;
+            MoodleQStructureParser parser = parsersRegistry.get(moodleType);
+            String xmlStructure = parser.parseQuestionStructure(q);
+
+            // Si no se pudo parsear la estructura = no agregar la pregunta
+            if (xmlStructure == null) continue;
+
+            // Tipo de pregunta
+            xml.append("\t<question type=\"").append(moodleType).append("\">\n");
+            // Titulo
+            xml.append("\t\t<name><text>").append(q.getQuestionTitle() != null ? XMLUtils.escapeXml(q.getQuestionTitle()) : "")
+                    .append("</text></name>\n");
+            // Texto
+            xml.append("\t<questiontext format=\"html\">\n")
+                    .append("\t\t<text><![CDATA[").append(q.getQuestionText()).append("]]></text>\n")
+                    .append("\t</questiontext>\n");
+            // Configuraciones por defecto
+            xml.append("\t<defaultgrade>1.0000000</defaultgrade>\n")
+                    .append("\t<penalty>0.3333333</penalty>\n");
+            // Estructura de pregunta
+            xml.append(xmlStructure);
+
+            xml.append("\t</question>\n\n");
+        }
+
+        xml.append("</quiz>");
+        return xml.toString().getBytes(StandardCharsets.UTF_8);
     }
 }

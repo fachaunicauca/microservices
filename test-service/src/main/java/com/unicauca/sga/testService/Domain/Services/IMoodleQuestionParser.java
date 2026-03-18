@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface IMoodleQuestionParser {
     List<Question> parseMoodleQuestions(InputStream xmlStream, List<Integer> selectedIndexes, int testId);
+    byte[] parseDomainQuestions(List<Question> questionList);
 }
