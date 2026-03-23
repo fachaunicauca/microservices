@@ -7,7 +7,7 @@ import com.unicauca.sga.testService.Infrastructure.Persistence.Repositories.Test
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,8 +17,8 @@ public class TestAttemptRepository implements ITestAttemptRepository {
     private final TestAttemptMapper testAttemptMapper;
 
     @Override
-    public Optional<TestAttempt> getTestAttemptById(long id) {
-        return testAttemptJpaRepository.findById(id).map(testAttemptMapper::toModel);
+    public List<TestAttempt> getAllStudentTestAttempts(String studentEmail, int testId) {
+        return testAttemptJpaRepository.findAllByStudentEmailAndTestId(studentEmail, testId).stream().map(testAttemptMapper::toModel).toList();
     }
 
     @Override

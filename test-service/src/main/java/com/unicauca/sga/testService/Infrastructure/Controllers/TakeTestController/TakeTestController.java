@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/takeTest")
@@ -67,6 +69,23 @@ public class TakeTestController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT')")
     public TestInfoDTOResponse getGeneralTest() {
         return testInfoDTOResponseMapper.toDTO(takeTestService.getGeneralTest());
+    }
+
+    @Operation(
+            summary = "Obtener intentos evaluacion estudiante",
+            description = "Método para obtener los intentos realizados por un estudiante en una evaluacion",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Evaluacion general obtenida con exito"),
+                    @ApiResponse(responseCode = "404", description = "No se encontro la evaluacion general")
+            }
+    )
+    @GetMapping("/tests/results")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_STUDENT')")
+    public List<StudentTestAttemptDTOResponse> getStudentTestAttempts(@RequestParam("studentEmail") String studentEmail,
+                                                                      @RequestParam("testId") int testId) {
+        return takeTestService.getStudentTestAttempts(studentEmail, testId)
+                .stream().map(studentTestAttemptDTOMapper::toDTO).toList();
     }
 
     @Operation(

@@ -67,6 +67,17 @@ public class TakeTestService {
         return activeTests;
     }
 
+    @Transactional(readOnly = true)
+    public List<TestAttempt> getStudentTestAttempts(String studentEmail, int testId){
+        List<TestAttempt> attempts = testAttemptRepository.getAllStudentTestAttempts(studentEmail, testId);
+
+        if(attempts.isEmpty()){
+            throw new NotFoundException("No has presentado intentos de esta evaluación");
+        }
+
+        return attempts;
+    }
+
     @Transactional
     public Test startTestAttempt(String studentEmail, int testId) {
         Test test = testRepository.getTestById(testId).orElseThrow(() ->
@@ -149,6 +160,7 @@ public class TakeTestService {
         }
 
         // Calificar las respuestas del estudiante
+        testAttempt.setFullyScored(true); // Calificado completamente por defecto
         long totalPoints = gradeStudentResponses(testAttempt);
         double score =(double) totalPoints / testAttempt.getTestAttemptNumberOfQuestions();
         testAttempt.setTestAttemptScore(score);
@@ -186,7 +198,7 @@ public class TakeTestService {
         // Obtener todos los questionIds de las respuestas
         Set<Long> questionIds = testAttempt.getStudentResponses().stream().map(StudentResponse::getQuestionId).collect(Collectors.toSet());
 
-        // Traer todas las preguntas (optimización: una sola consulta)
+        // Traer todas las preguntas
         List<Question> questions = questionRepository.getByIds(questionIds);
 
         // Mapear preguntas por su ID

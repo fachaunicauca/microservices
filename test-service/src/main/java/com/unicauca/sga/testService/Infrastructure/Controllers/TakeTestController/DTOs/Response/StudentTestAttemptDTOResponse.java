@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class StudentTestAttemptDTOResponse {
+    private Long testAttemptId;
     private String studentEmail;
     private LocalDateTime testAttemptDate;
     private Integer testAttemptNumberOfQuestions;
