@@ -8,6 +8,7 @@ import com.unicauca.sga.testService.Domain.Exceptions.AttemptNotAllowedException
 import com.unicauca.sga.testService.Domain.Exceptions.InactiveTestException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
+import com.unicauca.sga.testService.Domain.Services.IDateTimeProvider;
 import com.unicauca.sga.testService.Domain.Services.QuestionStructureGrader;
 import com.unicauca.sga.testService.Domain.Models.StudentResponse.StudentResponse;
 import com.unicauca.sga.testService.Domain.Models.StudentTestConfig;
@@ -39,6 +40,7 @@ public class TakeTestService {
     private final IStudentTestConfigRepository studentTestConfigRepository;
     private final QuestionStructureGraderRegistry questionStructureGraderRegistry;
     private final ICourseService courseService;
+    private final IDateTimeProvider dateTimeProvider;
 
     @Transactional(readOnly = true)
     public Test getGeneralTest(){
@@ -110,8 +112,8 @@ public class TakeTestService {
             // Si se ha creado es necesario realizar validaciones
             config = existingConfig.get();
 
-            // Si el test es periódico y cambió el semestre, reiniciar intentos
-            if (test.isPeriodic() && !config.isSameSemester()) {
+            // Si el test es periódico y el último intento fue en un semestre diferente, reiniciar intentos
+            if (test.isPeriodic() && !dateTimeProvider.isInCurrentSemester(config.getLastAttemptAt())) {
                 config.setAttemptsUsed(0);
                 config.setFinalScore(null);
                 studentTestConfigRepository.save(config);
@@ -119,14 +121,13 @@ public class TakeTestService {
 
             // Verificar si ya aprobó
             if (config.hasAlreadyPassed(TestConstants.PASSING_SCORE)) {
-                throw new AttemptNotAllowedException(AttemptNotAllowedCode.ALREADY_PASSED,
-                                                    "Ya has aprobado esta evaluación");
+                throw new AttemptNotAllowedException(AttemptNotAllowedCode.ALREADY_PASSED, "Ya has aprobado esta evaluación");
             }
 
             // Verificar intentos disponibles
             if (!config.hasRemainingAttempts()) {
-                throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS ,
-                                                    "No tienes intentos disponibles para esta evaluación");
+                throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS,
+                        "No tienes intentos disponibles para esta evaluación");
             }
         }
 
@@ -134,6 +135,7 @@ public class TakeTestService {
         List<Question> testQuestions = questionRepository.getRandomAndLimitedTestQuestions(testId, test.getTestNumberOfQuestions());
 
         // Construir Test solo con los campos necesarios para presentar la evaluación
+        // (Quitar las marcas de correcto o incorrecto)
         return test.toStudentView(cleanQuestionStructures(testQuestions));
     }
 
@@ -153,7 +155,7 @@ public class TakeTestService {
                                                 "Debe iniciar un intento antes de poder guardarlo")
         );
 
-        // Verificar nuevamente si tiene intentos disponibles
+        // Verificar si tiene intentos disponibles
         if (!config.hasRemainingAttempts()) {
             throw new AttemptNotAllowedException(AttemptNotAllowedCode.NO_REMAINING_ATTEMPTS ,
                     "Te has quedado sin intentos en esta evaluación");
@@ -165,7 +167,7 @@ public class TakeTestService {
         double score =(double) totalPoints / testAttempt.getTestAttemptNumberOfQuestions();
         testAttempt.setTestAttemptScore(score);
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = dateTimeProvider.getActualDateTime();
 
         // Actualizar la configuración del estudiante y guardarlo
         config.incrementAttemptsUsed();

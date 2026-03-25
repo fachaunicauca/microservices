@@ -4,6 +4,7 @@ import com.unicauca.sga.testService.Aplication.Services.QuestionImageService;
 import com.unicauca.sga.testService.Aplication.Services.QuestionStructureValidatorRegistry;
 import com.unicauca.sga.testService.Aplication.UseCases.ManageQuestionsService;
 import com.unicauca.sga.testService.Domain.Constants.TestConstants;
+import com.unicauca.sga.testService.Domain.Exceptions.InvalidQuestionStructureException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Models.Question.Question;
 import com.unicauca.sga.testService.Domain.Repositories.IQuestionRepository;
@@ -102,6 +103,23 @@ class ManageQuestionsServiceTests {
         verify(questionRepository, never()).save(any());
     }
 
+    @Test
+    void saveQuestion_shouldNotSave_whenValidatorThrowsInvalidStructure() {
+        test = mock(com.unicauca.sga.testService.Domain.Models.Test.class);
+        when(test.getTestId()).thenReturn(1);
+        when(question.getTest()).thenReturn(test);
+        when(question.getQuestionType()).thenReturn("MULTIPLE_CHOICE");
+        when(question.getQuestionStructure()).thenReturn("{invalid}");
+        when(testRepository.isPresent(1)).thenReturn(true);
+        when(validatorRegistry.get("MULTIPLE_CHOICE")).thenReturn(structureValidator);
+
+        when(structureValidator.validateStructure(any())).thenThrow(new InvalidQuestionStructureException("Estructura inválida"));
+
+        assertThrows(InvalidQuestionStructureException.class, () -> manageQuestionsService.saveQuestion(question));
+        verify(questionRepository, never()).save(any());
+    }
+
+
     // ==================== Pruebas metodo deleteQuestionById ====================
 
     @Test
@@ -176,5 +194,18 @@ class ManageQuestionsServiceTests {
     }
 
     // ==================== Pruebas metodo exportQuestions ====================
-    // Sin pruebas
+    @Test
+    void exportQuestions_shouldReturnBytes_whenQuestionsExist() {
+        List<Long> ids = List.of(1L, 2L);
+        List<Question> questions = List.of(question);
+        byte[] expectedBytes = new byte[]{1, 2, 3};
+
+        when(questionRepository.getByIds(ids)).thenReturn(questions);
+        when(moodleQuestionParser.parseDomainQuestions(questions)).thenReturn(expectedBytes);
+
+        byte[] result = manageQuestionsService.exportQuestions(ids);
+
+        assertNotNull(result);
+        assertArrayEquals(expectedBytes, result);
+    }
 }

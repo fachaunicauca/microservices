@@ -122,13 +122,16 @@ class ManageTestServiceTests {
 
     @Test
     void saveTest_shouldThrowInsufficientQuestions_whenActivatingTestWithoutEnoughQuestions() {
-        when(test.getTestId()).thenReturn(1);
-        when(testRepository.isPresent(1)).thenReturn(true);
-        when(test.isActive()).thenReturn(true);
-        when(questionRepository.getTestTotalQuestions(1)).thenReturn(0L);
-        when(test.hasEnoughQuestions(0L)).thenReturn(false);
+        com.unicauca.sga.testService.Domain.Models.Test realTest = new com.unicauca.sga.testService.Domain.Models.Test();
+        realTest.setTestId(1);
+        realTest.setTestNumberOfQuestions(10); // Requiere como minimo 10 preguntas
+        realTest.setTestState((byte) 1);
+        realTest.setCourseId(0);
 
-        assertThrows(InsufficientQuestionsException.class, () -> manageTestService.saveTest(test));
+        when(testRepository.isPresent(1)).thenReturn(true);
+        when(questionRepository.getTestTotalQuestions(1)).thenReturn(4L); // Solo tiene 4 preguntas
+
+        assertThrows(InsufficientQuestionsException.class, () -> manageTestService.saveTest(realTest));
 
         verify(testRepository, never()).save(any());
     }
