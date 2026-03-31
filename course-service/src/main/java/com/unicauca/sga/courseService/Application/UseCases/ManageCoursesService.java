@@ -73,7 +73,6 @@ public class ManageCoursesService {
         studentEnrollmentRepository.deleteByCourseId(id);
 
         courseRepository.deleteById(id);
-        // ¿Al eliminar un curso deberían eliminarse sus evaluaciones???
     }
 
 

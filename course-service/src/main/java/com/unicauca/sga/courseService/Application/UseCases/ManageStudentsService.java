@@ -52,7 +52,6 @@ public class ManageStudentsService {
         studentEnrollmentRepository.deleteByStudentId(id);
 
         studentRepository.deleteById(id);
-        // ¿Eliminar el historial de intentos del estudiante?
     }
 
     @Transactional(readOnly = true)
