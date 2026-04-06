@@ -72,7 +72,6 @@ public class MoodleQuestionParser implements IMoodleQuestionParser {
                 if (!parsersRegistry.hasSupport(type)) continue;
 
                 // Crear pregunta
-                System.out.println("Procesando Pregunta " + index);
                 Question question = new Question();
 
                 question.setQuestionTitle(XMLUtils.getTextContent(questionEl, "name"));
@@ -94,7 +93,7 @@ public class MoodleQuestionParser implements IMoodleQuestionParser {
             }
 
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ocurrió un erro al procesar el archivo importado");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ocurrió un error al procesar el archivo importado");
         }
 
         return questions;
