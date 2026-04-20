@@ -12,6 +12,7 @@ import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class MoodleQSMultipleChoiceParser implements MoodleQStructureParser {
@@ -40,7 +41,8 @@ public class MoodleQSMultipleChoiceParser implements MoodleQStructureParser {
             answer.setId((long) i + 1);
             answer.setText(XMLUtils.getTextContent(answerEl, "text"));
 
-            if(answerEl.getAttribute("fraction").equals("100")){
+            double fraction = Double.parseDouble(answerEl.getAttribute("fraction"));
+            if(fraction > 0){
                 answer.setCorrect(true);
                 correctAnswerCount++;
             }else{
@@ -67,8 +69,7 @@ public class MoodleQSMultipleChoiceParser implements MoodleQStructureParser {
             StringBuilder xmlStructure = new StringBuilder();
 
             // Configuraciones propias del tipo
-            xmlStructure.append("\t<shuffleanswers>true</shuffleanswers>\n")
-                    .append("\t<answernumbering>abc</answernumbering>\n");
+            xmlStructure.append("\t<shuffleanswers>true</shuffleanswers>\n").append("\t<answernumbering>abc</answernumbering>\n");
             int correctCount = structure.getCorrectAnswerCount();
             if (correctCount > 1) {
                 xmlStructure.append("\t<single>false</single>\n");
@@ -78,14 +79,13 @@ public class MoodleQSMultipleChoiceParser implements MoodleQStructureParser {
 
             // Fracción por respuesta correcta (deben sumar 100)
             double correctFraction = correctCount > 0 ? 100.0 / correctCount : 0;
-
+            String fractionStr = String.format(Locale.US, "%.5f", correctFraction);
             // Parsear respuestas
             for (ChoiceAnswer c : structure.getAnswers()) {
                 // Correcta
-                xmlStructure.append("\t<answer fraction=\"").append(c.getCorrect() ? correctFraction : 0).append("\">\n");
+                xmlStructure.append("\t<answer fraction=\"").append(c.getCorrect() ? fractionStr : "0").append("\">\n");
                 // Texto
                 xmlStructure.append("\t\t<text>").append(XMLUtils.escapeXml(c.getText())).append("</text>\n");
-
                 xmlStructure.append("\t</answer>\n");
             }
 

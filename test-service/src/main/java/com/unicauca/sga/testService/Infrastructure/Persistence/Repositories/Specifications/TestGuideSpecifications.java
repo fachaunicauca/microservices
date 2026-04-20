@@ -22,9 +22,13 @@ public class TestGuideSpecifications {
             // No aplicar el filtro
             if (!ALLOWED_FIELDS.contains(filterKey)) return null;
 
+            // Si se busca por el nombre, reemplazar espacios con guiones
+            String value = filterValue;
+            if(filterKey.equals("testGuideId")) value = filterValue.replace(" ", "_");
+
             return cb.like(
                     cb.lower(root.get(filterKey)),
-                    "%" + filterValue.toLowerCase() + "%"
+                    "%" + value.toLowerCase() + "%"
             );
         };
     }
