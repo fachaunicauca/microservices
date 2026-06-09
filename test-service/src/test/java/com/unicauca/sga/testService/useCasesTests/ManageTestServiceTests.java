@@ -1,6 +1,7 @@
 package com.unicauca.sga.testService.useCasesTests;
 
 import com.unicauca.sga.testService.Aplication.UseCases.ManageTestService;
+import com.unicauca.sga.testService.Domain.Constants.TestConstants;
 import com.unicauca.sga.testService.Domain.Exceptions.InsufficientQuestionsException;
 import com.unicauca.sga.testService.Domain.Exceptions.NotFoundException;
 import com.unicauca.sga.testService.Domain.Exceptions.ProtectedTestException;
@@ -122,16 +123,16 @@ class ManageTestServiceTests {
 
     @Test
     void saveTest_shouldThrowInsufficientQuestions_whenActivatingTestWithoutEnoughQuestions() {
-        com.unicauca.sga.testService.Domain.Models.Test realTest = new com.unicauca.sga.testService.Domain.Models.Test();
-        realTest.setTestId(1);
-        realTest.setTestNumberOfQuestions(10); // Requiere como minimo 10 preguntas
-        realTest.setTestState((byte) 1);
-        realTest.setCourseId(0);
+        com.unicauca.sga.testService.Domain.Models.Test newTest = new com.unicauca.sga.testService.Domain.Models.Test();
+        newTest.setTestId(1);
+        newTest.setTestNumberOfQuestions(10); // Requiere como minimo 10 preguntas
+        newTest.setTestState(TestConstants.ACTIVE); // Marcado como activo
+        newTest.setCourseId(0);
 
         when(testRepository.isPresent(1)).thenReturn(true);
         when(questionRepository.getTestTotalQuestions(1)).thenReturn(4L); // Solo tiene 4 preguntas
 
-        assertThrows(InsufficientQuestionsException.class, () -> manageTestService.saveTest(realTest));
+        assertThrows(InsufficientQuestionsException.class, () -> manageTestService.saveTest(newTest));
 
         verify(testRepository, never()).save(any());
     }

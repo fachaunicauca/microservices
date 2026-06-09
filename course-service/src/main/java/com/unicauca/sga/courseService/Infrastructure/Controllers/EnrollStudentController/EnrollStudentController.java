@@ -86,7 +86,7 @@ public class EnrollStudentController {
     )
     @PostMapping("/validate")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER', 'ROLE_STUDENT')")
     public boolean studentInCourse(@RequestParam("studentEmail") String studentEmail,
                                    @RequestParam("courseId") int courseId){
         return enrollStudentService.isStudentInCourse(studentEmail,courseId);
